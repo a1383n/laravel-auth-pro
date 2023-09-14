@@ -1,9 +1,6 @@
 name: Bug Report
 description: "Report a general library issue."
 body:
-  - type: markdown
-    attributes:
-      value: "Before submitting your report, [please ensure your Laravel version is still supported](https://laravel.com/docs/releases#support-policy)."
   - type: input
     attributes:
       label: Laravel Auth Pro version
@@ -30,6 +27,13 @@ body:
       label: Database Driver & Version
       description: If applicable, provide the database driver and version you are using.
       placeholder: "MySQL 8.0.31 for macOS 13.0 on arm64 (Homebrew)"
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: Redis version
+      description: If applicable, provide the redis driver and version you are using.
+      placeholder: "PhpRedis 7.2.1 or Predis 7.2.1"
     validations:
       required: false
   - type: textarea

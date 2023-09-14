@@ -37,6 +37,6 @@ We encourage users to follow these best practices to enhance the security of the
 
 ## License
 
-This Security Policy is subject to the terms of the [LICENSE](LICENSE) associated with this package.
+This Security Policy is subject to the terms of the [LICENSE](../LICENSE) associated with this package.
 
 Thank you for helping to keep Laravel Auth Pro secure!

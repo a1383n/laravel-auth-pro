@@ -33,7 +33,7 @@ Here's a quick example of how to get started with Laravel Auth Pro:
 
 ## Contributing
 
-We welcome contributions! Please read our [contribution guidelines](CONTRIBUTING.md) before submitting any pull requests.
+We welcome contributions! Please read our [contribution guidelines](.github/CONTRIBUTING.md) before submitting any pull requests.
 
 ## License
 

@@ -44,6 +44,6 @@ Please follow the [PSR-12](https://www.php-fig.org/psr/psr-12/) coding style sta
 
 ## License
 
-By contributing to Laravel Auth Pro, you agree that your contributions will be licensed under the [LICENSE](LICENSE) of this project.
+By contributing to Laravel Auth Pro, you agree that your contributions will be licensed under the [LICENSE](../LICENSE) of this project.
 
 Thank you for your contributions! Your help is greatly appreciated.

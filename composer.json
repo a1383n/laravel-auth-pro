@@ -15,6 +15,7 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.26",
+        "nunomaduro/larastan": "^2.0",
         "orchestra/testbench": "^8.10",
         "pestphp/pest": "^2.18",
         "phpstan/phpstan": "^1.10"

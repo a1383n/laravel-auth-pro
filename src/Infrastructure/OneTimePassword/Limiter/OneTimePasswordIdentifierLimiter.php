@@ -2,6 +2,7 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword\Limiter;
 
+use Carbon\CarbonInterval;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Limiter\Contracts\OneTimePasswordRequestLimiterInterface;
 

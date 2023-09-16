@@ -2,7 +2,6 @@
 
 namespace LaravelAuthPro\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use LaravelAuthPro\AuthIdentifier;

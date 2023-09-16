@@ -78,7 +78,7 @@ jobs:
 
       - name: Execute tests
         if: ${{ matrix.laravel }} == 9
-        run: ./vendor/bin/phpunit
+        run: composer test
 
       - name: Execute tests
         if: ${{ matrix.laravel }} != 9

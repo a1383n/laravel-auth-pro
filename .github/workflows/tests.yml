@@ -76,8 +76,10 @@ jobs:
           composer require "illuminate/contracts=^${{ matrix.laravel }}" --dev --no-update
           composer update --prefer-dist --no-interaction --no-progress
 
+      - name: Preparing
+        run: cp phpunit.dist.xml phpunit.xml
+
       - name: Execute tests
-        if: ${{ matrix.laravel }} <= 9
         run: ./vendor/bin/pest --coverage -vvv
 
 #      - name: Execute tests

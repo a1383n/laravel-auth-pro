@@ -78,7 +78,7 @@ jobs:
 
       - name: Execute tests
         if: ${{ matrix.laravel }} <= 9
-        run: composer test
+        run: ./vendor/bin/pest --coverage -vvv
 
       - name: Execute tests
         if: ${{ matrix.laravel }} > 9

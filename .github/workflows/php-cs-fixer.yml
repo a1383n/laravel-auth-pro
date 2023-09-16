@@ -1,6 +1,6 @@
 name: Style
 
-on: [push]
+on: [ push ]
 
 permissions:
   contents: write

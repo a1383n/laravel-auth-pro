@@ -12,16 +12,15 @@
     ],
     "require": {
         "php": "^8.1",
+        "laravel/framework": "^9.0|^10.0",
         "giggsey/libphonenumber-for-php": "^8.13",
-        "illuminate/contracts": "^v8.0|^v9.0|^v10.0",
-        "illuminate/support": "^10.0",
         "laravel/socialite": "^5.9"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.26",
         "nunomaduro/larastan": "^2.0",
-        "orchestra/testbench": "^8.10",
-        "pestphp/pest": "^2.18",
+        "orchestra/testbench": "^7.0|^8.0",
+        "pestphp/pest": "^1.23|^2.18",
         "phpstan/phpstan": "^1.10"
     },
     "autoload": {

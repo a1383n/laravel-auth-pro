@@ -32,7 +32,7 @@ class OneTimePasswordSignInMethod implements AuthSignInMethodInterface
 
         $result = $this->oneTimePasswordService->verifyOneTimePassword($credential->getIdentifier(), $credential->getOneTimePasswordToken(), $credential->getOneTimePassword());
 
-        if (!$result->isSuccessful()) {
+        if (! $result->isSuccessful()) {
             if ($result instanceof OneTimePasswordVerifyResultInterface) {
                 throw new AuthException($result->getVerifierError()?->value, 400, $result->getPayload());
             } else {
@@ -40,7 +40,7 @@ class OneTimePasswordSignInMethod implements AuthSignInMethodInterface
 
                 if ($error instanceof AuthExceptionInterface) {
                     $error = $error->getErrorMessage();
-                }elseif ($error instanceof \Exception) {
+                } elseif ($error instanceof \Exception) {
                     $error = $error->getMessage();
                 } else {
                     $error = json_encode($error);
@@ -60,7 +60,7 @@ class OneTimePasswordSignInMethod implements AuthSignInMethodInterface
     {
         return [
             'id',
-            'mobile'
+            'mobile',
         ];
     }
 }

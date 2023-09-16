@@ -2,13 +2,13 @@
 
 namespace LaravelAuthPro\SignInMethods;
 
+use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\GoogleProvider;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthSignInMethodInterface;
 use LaravelAuthPro\Contracts\Credentials\GoogleCredentialInterface;
 use LaravelAuthPro\Contracts\Exceptions\AuthException;
-use Laravel\Socialite\Facades\Socialite;
-use Laravel\Socialite\Two\GoogleProvider;
 
 class OAuthSignInMethod implements AuthSignInMethodInterface
 {
@@ -40,7 +40,7 @@ class OAuthSignInMethod implements AuthSignInMethodInterface
     public function getUserRequiredColumns(): array
     {
         return [
-            'email'
+            'email',
         ];
     }
 }

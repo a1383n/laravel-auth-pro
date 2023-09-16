@@ -42,7 +42,7 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
 
     public function createOneTimePasswordWithIdentifier(AuthIdentifierInterface $identifier): OneTimePasswordEntityInterface
     {
-        if (!$this->rateLimiterService->pass($identifier)) {
+        if (! $this->rateLimiterService->pass($identifier)) {
             //TODO: Returning result interface may be better approach
             throw new AuthException(OneTimePasswordError::RATE_LIMIT_EXCEEDED->value, 429);
         }

@@ -2,10 +2,10 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword\Model\Builder;
 
+use LaravelAuthPro\Contracts\Base\EntityBuilderInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordVerifyResultInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordVerifyError;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Model\OneTimePasswordVerifyResult;
-use LaravelAuthPro\Contracts\Base\EntityBuilderInterface;
 
 /**
  * @implements EntityBuilderInterface<OneTimePasswordVerifyResultInterface>

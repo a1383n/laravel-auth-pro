@@ -2,8 +2,8 @@
 
 namespace LaravelAuthPro\Contracts\Exceptions;
 
-use LaravelAuthPro\Contracts\AuthExceptionInterface;
 use Exception;
+use LaravelAuthPro\Contracts\AuthExceptionInterface;
 
 class AuthException extends Exception implements AuthExceptionInterface
 {

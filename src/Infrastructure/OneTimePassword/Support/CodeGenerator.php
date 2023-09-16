@@ -6,7 +6,6 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\Str;
 use LaravelAuthPro\Contracts\Base\GeneratorInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordCodeType;
-use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordTokenType;
 
 class CodeGenerator implements GeneratorInterface
 {
@@ -43,6 +42,6 @@ class CodeGenerator implements GeneratorInterface
 
     private function generateRandomAlphabet(int $length): string
     {
-        return Str::lower(Str::password($length, true, false, false,));
+        return Str::lower(Str::password($length, true, false, false, ));
     }
 }

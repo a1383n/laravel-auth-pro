@@ -2,6 +2,7 @@
 
 namespace LaravelAuthPro;
 
+use Illuminate\Notifications\RoutesNotifications;
 use LaravelAuthPro\Base\BaseService;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthExceptionInterface;
@@ -12,14 +13,13 @@ use LaravelAuthPro\Contracts\Repositories\UserRepositoryInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordServiceInterface;
 use LaravelAuthPro\Notifications\OneTimePasswordNotification;
 use LaravelAuthPro\Providers\AuthProvider;
-use Illuminate\Notifications\RoutesNotifications;
 
 /**
  * @extends BaseService<UserRepositoryInterface>
  */
 class AuthService extends BaseService implements AuthServiceInterface
 {
-    public function __construct(UserRepositoryInterface $repository,protected readonly OneTimePasswordServiceInterface $oneTimePasswordService)
+    public function __construct(UserRepositoryInterface $repository, protected readonly OneTimePasswordServiceInterface $oneTimePasswordService)
     {
         parent::__construct($repository);
     }
@@ -27,7 +27,7 @@ class AuthService extends BaseService implements AuthServiceInterface
     public function loginWithCredential(AuthCredentialInterface $credential): AuthResultInterface
     {
         return $this
-            ->tryAuthenticate(fn() => AuthProvider::createFromProviderId($credential->getProviderId())->authenticate($credential))
+            ->tryAuthenticate(fn () => AuthProvider::createFromProviderId($credential->getProviderId())->authenticate($credential))
             ->as($credential->getIdentifier())
             ->build();
     }

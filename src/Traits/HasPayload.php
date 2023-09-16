@@ -14,7 +14,7 @@ trait HasPayload
         $staticProperties = array_diff($staticProperties, array_keys(get_object_vars($this)));
 
         foreach ($staticProperties as $property) {
-            if (!empty($payload[$property])) {
+            if (! empty($payload[$property])) {
                 $this->{$property} = $payload[$property];
             }
         }

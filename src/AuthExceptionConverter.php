@@ -11,11 +11,11 @@ class AuthExceptionConverter implements AuthExceptionConverterInterface
     private const EXCEPTION_MAPPER = [
         'credential_not_match' => [
             'user_not_found',
-            'invalid_password'
+            'invalid_password',
         ],
         'token_not_found_or_expired' => [
-            'token_not_found'
-        ]
+            'token_not_found',
+        ],
     ];
 
     public function convert(AuthExceptionInterface $exception): AuthExceptionInterface

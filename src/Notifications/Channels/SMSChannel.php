@@ -2,11 +2,11 @@
 
 namespace LaravelAuthPro\Notifications\Channels;
 
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 use LaravelAuthPro\Notifications\Contracts\NotificationChannelInterface;
 use LaravelAuthPro\Notifications\Contracts\SMSNotificationInterface;
 use LaravelAuthPro\Notifications\Messages\SMSMessage;
-use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Log;
 
 class SMSChannel implements NotificationChannelInterface
 {

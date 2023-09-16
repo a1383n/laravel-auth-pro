@@ -2,11 +2,11 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword\Repositories;
 
+use Illuminate\Redis\Connections\Connection;
 use LaravelAuthPro\Base\BaseRepository;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordVerifierRepositoryInterface;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 use LaravelAuthPro\Traits\HasKeyPrefix;
-use Illuminate\Redis\Connections\Connection;
 
 class OneTimePasswordVerifierRepository extends BaseRepository implements OneTimePasswordVerifierRepositoryInterface
 {

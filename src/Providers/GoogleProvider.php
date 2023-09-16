@@ -16,7 +16,7 @@ class GoogleProvider extends AuthProvider implements GoogleProviderInterface
         AuthProviderSignInMethod::OAUTH,
     ];
     protected const SIGN_IN_METHODS = [
-        'oauth' => OAuthSignInMethod::class
+        'oauth' => OAuthSignInMethod::class,
     ];
 
     public function createUserWithGoogleIdToken(string $idToken): AuthenticatableInterface

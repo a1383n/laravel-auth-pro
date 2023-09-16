@@ -2,14 +2,14 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword;
 
+use Illuminate\Container\Container;
+use Illuminate\Redis\Connections\Connection;
 use LaravelAuthPro\Base\BaseService;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\Base\BaseRepositoryInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordRateLimiterServiceInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Limiter\OneTimePasswordIdentifierLimiter;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Limiter\OneTimePasswordIpAddressLimiter;
-use Illuminate\Container\Container;
-use Illuminate\Redis\Connections\Connection;
 
 /**
  * @extends BaseService<BaseRepositoryInterface>
@@ -21,7 +21,7 @@ class OneTimePasswordRateLimiterService extends BaseService implements OneTimePa
      */
     private array $limiters = [
         OneTimePasswordIpAddressLimiter::class,
-        OneTimePasswordIdentifierLimiter::class
+        OneTimePasswordIdentifierLimiter::class,
     ];
 
     /**
@@ -43,7 +43,7 @@ class OneTimePasswordRateLimiterService extends BaseService implements OneTimePa
         foreach ($this->limiterInstances as $limiterInstance) {
             $result = method_exists($limiterInstance, 'pass') ? $limiterInstance->pass($identifier) : false;
 
-            if (!$result) {
+            if (! $result) {
                 return false;
             }
         }
@@ -57,7 +57,7 @@ class OneTimePasswordRateLimiterService extends BaseService implements OneTimePa
             $this->container
                 ->when($limiterClass)
                 ->needs(AuthIdentifierInterface::class)
-                ->give(fn() => $identifier);
+                ->give(fn () => $identifier);
 
             $this->limiterInstances[] = $this->container->make($limiterClass);
         }

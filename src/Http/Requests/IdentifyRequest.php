@@ -2,7 +2,6 @@
 
 namespace LaravelAuthPro\Http\Requests;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use LaravelAuthPro\AuthIdentifier;
@@ -20,7 +19,7 @@ class IdentifyRequest extends FormRequest
     {
         return [
             'identifier' => ['required', 'string'],
-            'sign_in_method' => ['sometimes', 'nullable', 'string', Rule::enum(AuthProviderSignInMethod::class)]
+            'sign_in_method' => ['sometimes', 'nullable', 'string', Rule::enum(AuthProviderSignInMethod::class)],
         ];
     }
 

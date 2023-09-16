@@ -2,10 +2,10 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword\Model;
 
+use LaravelAuthPro\Contracts\Base\HasBuilderInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordVerifyResultInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordVerifyError;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Model\Builder\OneTimePasswordVerifyResultBuilder;
-use LaravelAuthPro\Contracts\Base\HasBuilderInterface;
 
 /**
  * @implements HasBuilderInterface<OneTimePasswordVerifyResultInterface>
@@ -26,7 +26,7 @@ class OneTimePasswordVerifyResult extends OneTimePasswordResult implements OneTi
      */
     public static function getBuilder(): OneTimePasswordVerifyResultBuilder
     {
-        return new OneTimePasswordVerifyResultBuilder;
+        return new OneTimePasswordVerifyResultBuilder();
     }
 
     public function getVerifierError(): ?OneTimePasswordVerifyError

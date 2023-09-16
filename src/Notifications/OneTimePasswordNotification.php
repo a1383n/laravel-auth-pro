@@ -2,10 +2,6 @@
 
 namespace LaravelAuthPro\Notifications;
 
-use LaravelAuthPro\Notifications\Channels\SMSChannel;
-use LaravelAuthPro\Notifications\Contracts\MailNotificationInterface;
-use LaravelAuthPro\Notifications\Contracts\NotificationMessageInterface;
-use LaravelAuthPro\Notifications\Contracts\SMSNotificationInterface;
 use Carbon\CarbonInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
@@ -16,6 +12,10 @@ use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Enums\AuthIdentifierType;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordRepositoryInterface;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
+use LaravelAuthPro\Notifications\Channels\SMSChannel;
+use LaravelAuthPro\Notifications\Contracts\MailNotificationInterface;
+use LaravelAuthPro\Notifications\Contracts\NotificationMessageInterface;
+use LaravelAuthPro\Notifications\Contracts\SMSNotificationInterface;
 use LaravelAuthPro\Notifications\Messages\SMSMessage;
 
 class OneTimePasswordNotification extends Notification implements ShouldQueue, ShouldBeEncrypted, SMSNotificationInterface, MailNotificationInterface
@@ -72,7 +72,7 @@ class OneTimePasswordNotification extends Notification implements ShouldQueue, S
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('OTP Code')
             ->line('You are receiving this email for OTP verification.')
             ->line('Your OTP code is: ' . $this->code)
@@ -81,8 +81,9 @@ class OneTimePasswordNotification extends Notification implements ShouldQueue, S
 
     public function toSMS(?object $notifiable): NotificationMessageInterface
     {
-        if (!$notifiable instanceof AuthIdentifierInterface)
+        if (! $notifiable instanceof AuthIdentifierInterface) {
             throw new \InvalidArgumentException('$notifiable is not supported');
+        }
 
         return new SMSMessage(
             $notifiable->getIdentifierValue(),

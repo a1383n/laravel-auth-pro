@@ -2,12 +2,12 @@
 
 namespace LaravelAuthPro\Credentials;
 
+use Illuminate\Support\Arr;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\Base\HasBuilderInterface;
 use LaravelAuthPro\Credentials\Builder\AuthCredentialBuilder;
 use LaravelAuthPro\Enums\AuthProviderSignInMethod;
-use Illuminate\Support\Arr;
 use LaravelAuthPro\Traits\HasPayload;
 
 /**
@@ -28,7 +28,7 @@ abstract class AuthCredential implements AuthCredentialInterface, HasBuilderInte
 
     public static function getBuilder(): AuthCredentialBuilder
     {
-        return new AuthCredentialBuilder;
+        return new AuthCredentialBuilder();
     }
 
     /**
@@ -36,8 +36,9 @@ abstract class AuthCredential implements AuthCredentialInterface, HasBuilderInte
      */
     public function throwIfIdentifierTypeNotSupported(): void
     {
-        if (!in_array($this->identifier->getIdentifierType(), $this->getSupportedIdentifiersTypes()))
+        if (! in_array($this->identifier->getIdentifierType(), $this->getSupportedIdentifiersTypes())) {
             throw new \InvalidArgumentException(sprintf('Invalid identifier type [%s] in %s', $this->identifier->getIdentifierType()->name, class_basename(static::class)));
+        }
     }
 
     public static function getPayloadRules(): array

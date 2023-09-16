@@ -2,8 +2,8 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword\Limiter;
 
-use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordLimiterInterface;
 use Illuminate\Support\Facades\RateLimiter;
+use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordLimiterInterface;
 
 abstract class OneTimePasswordLimiter implements OneTimePasswordLimiterInterface
 {
@@ -16,8 +16,9 @@ abstract class OneTimePasswordLimiter implements OneTimePasswordLimiterInterface
 
     protected function defaultPass(): bool
     {
-        if (RateLimiter::tooManyAttempts($this->getKey(), $this->maxAttempts()))
+        if (RateLimiter::tooManyAttempts($this->getKey(), $this->maxAttempts())) {
             return false;
+        }
 
         RateLimiter::hit($this->getKey(), intval($this->decayInterval()->totalSeconds));
 

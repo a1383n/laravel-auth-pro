@@ -33,7 +33,7 @@ class AuthCredentialBuilder implements EntityBuilderInterface
          * @phpstan-ignore-next-line
          */
         return key(Collection::make(AuthPro::getCredentialsMapper())
-            ->first(fn($item, $key) => AuthPro::getAuthProvidersMapper()[$key]::ID == $id));
+            ->first(fn ($item, $key) => AuthPro::getAuthProvidersMapper()[$key]::ID == $id));
     }
 
     public function with(string $providerId): self
@@ -70,15 +70,16 @@ class AuthCredentialBuilder implements EntityBuilderInterface
 
     public function build(): AuthCredentialInterface
     {
-        if (empty($this->providerId))
+        if (empty($this->providerId)) {
             throw new \InvalidArgumentException('$providerId is null');
+        }
 
         return Container::getInstance()
             ->make(self::getClassFromProviderId($this->providerId), [
                 'providerId' => $this->providerId,
                 'identifier' => $this->identifier,
                 'signInMethod' => $this->signInMethod,
-                'payload' => $this->payload
+                'payload' => $this->payload,
             ]);
     }
 }

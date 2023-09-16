@@ -2,6 +2,7 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword;
 
+use Illuminate\Support\Facades\Hash;
 use LaravelAuthPro\Base\BaseService;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordVerifierServiceInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordVerifyResultInterface;
@@ -9,7 +10,6 @@ use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordVerifyErro
 use LaravelAuthPro\Infrastructure\OneTimePassword\Model\OneTimePasswordVerifyResult;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordVerifierRepositoryInterface;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
-use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends BaseService<OneTimePasswordVerifierRepositoryInterface>

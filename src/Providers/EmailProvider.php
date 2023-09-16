@@ -15,10 +15,10 @@ class EmailProvider extends AuthProvider implements EmailProviderInterface
     public const SUPPORTED_SIGN_IN_METHODS = [
         AuthProviderSignInMethod::PASSWORD,
         AuthProviderSignInMethod::LINK,
-        AuthProviderSignInMethod::ONE_TIME_PASSWORD
+        AuthProviderSignInMethod::ONE_TIME_PASSWORD,
     ];
     protected const SIGN_IN_METHODS = [
-        'password' => PasswordSignInMethod::class
+        'password' => PasswordSignInMethod::class,
     ];
 
     public function createUserWithEmailAndPassword(string $email, string $password): AuthenticatableInterface

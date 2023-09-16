@@ -2,16 +2,16 @@
 
 namespace LaravelAuthPro;
 
-use App\Notifications\OneTimePasswordNotification;
-use App\Repositories\Auth\Contracts\UserRepositoryInterface;
+use LaravelAuthPro\Base\BaseService;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthExceptionInterface;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\AuthResultInterface;
 use LaravelAuthPro\Contracts\AuthServiceInterface;
+use LaravelAuthPro\Contracts\Repositories\UserRepositoryInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordServiceInterface;
+use LaravelAuthPro\Notifications\OneTimePasswordNotification;
 use LaravelAuthPro\Providers\AuthProvider;
-use App\Services\Base\BaseService;
 use Illuminate\Notifications\RoutesNotifications;
 
 /**

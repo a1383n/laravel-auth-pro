@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static array getAuthProvidersMapper()
+ * @method static getCredentialsMapper()
  */
 class AuthPro extends Facade
 {

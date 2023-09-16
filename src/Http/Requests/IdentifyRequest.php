@@ -2,6 +2,7 @@
 
 namespace LaravelAuthPro\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use LaravelAuthPro\AuthIdentifier;
@@ -13,7 +14,7 @@ class IdentifyRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, string[]|array<int, mixed>>
+     * @return array<string, array<int, mixed>>
      */
     public function rules(): array
     {
@@ -23,10 +24,20 @@ class IdentifyRequest extends FormRequest
         ];
     }
 
+    private function getIdentifierValue(): string
+    {
+        /**
+         * @var string $identifier
+         */
+        $identifier = $this->input('identifier');
+
+        return $identifier;
+    }
+
     public function getAuthIdentifier(): AuthIdentifierInterface
     {
         return AuthIdentifier::getBuilder()
-            ->fromPlainIdentifier($this->input('identifier'))
+            ->fromPlainIdentifier($this->getIdentifierValue())
             ->build();
     }
 }

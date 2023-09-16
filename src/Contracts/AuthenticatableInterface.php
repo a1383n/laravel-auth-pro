@@ -12,7 +12,7 @@ interface AuthenticatableInterface
 {
     /**
      * @param AuthIdentifierInterface $identifier
-     * @return Builder<AuthenticatableInterface>
+     * @return Builder<Model>
      */
     public static function whereIdentifier(AuthIdentifierInterface $identifier): Builder;
 

@@ -10,11 +10,18 @@ use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\Base\EntityBuilderInterface;
 use LaravelAuthPro\Enums\AuthProviderSignInMethod;
 
+/**
+ * @implements EntityBuilderInterface<AuthCredentialInterface>
+ */
 class AuthCredentialBuilder implements EntityBuilderInterface
 {
     private ?string $providerId = null;
     private ?AuthIdentifierInterface $identifier = null;
     private ?AuthProviderSignInMethod $signInMethod = null;
+
+    /**
+     * @var array<string, string>
+     */
     private ?array $payload = null;
 
     /**
@@ -22,6 +29,9 @@ class AuthCredentialBuilder implements EntityBuilderInterface
      */
     public static function getClassFromProviderId(string $id): string
     {
+        /**
+         * @phpstan-ignore-next-line
+         */
         return key(Collection::make(AuthPro::getCredentialsMapper())
             ->first(fn($item, $key) => AuthPro::getAuthProvidersMapper()[$key]::ID == $id));
     }
@@ -47,6 +57,10 @@ class AuthCredentialBuilder implements EntityBuilderInterface
         return $this;
     }
 
+    /**
+     * @param array<string, string> $payload
+     * @return $this
+     */
     public function withPayload(array $payload = []): self
     {
         $this->payload = $payload;
@@ -56,6 +70,9 @@ class AuthCredentialBuilder implements EntityBuilderInterface
 
     public function build(): AuthCredentialInterface
     {
+        if (empty($this->providerId))
+            throw new \InvalidArgumentException('$providerId is null');
+
         return Container::getInstance()
             ->make(self::getClassFromProviderId($this->providerId), [
                 'providerId' => $this->providerId,

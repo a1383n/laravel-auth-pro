@@ -77,4 +77,9 @@ jobs:
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
-        run: ./vendor/bin/pest --coverage --profile -vvv
+        if: ${{ matrix.laravel }} == 9
+        run: ./vendor/bin/pest --coverage -vvv
+
+      - name: Execute tests
+        if: ${{ matrix.laravel }} != 9
+        run: ./vendor/bin/pest --no-progress --coverage --profile -vvv

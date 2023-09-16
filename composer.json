@@ -20,7 +20,7 @@
         "friendsofphp/php-cs-fixer": "^3.26",
         "nunomaduro/larastan": "^2.0",
         "orchestra/testbench": "^7.0|^8.0",
-        "pestphp/pest": "^2.18",
+        "pestphp/pest": "*",
         "phpstan/phpstan": "^1.10"
     },
     "autoload": {

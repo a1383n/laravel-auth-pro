@@ -2,12 +2,12 @@
 
 namespace LaravelAuthPro;
 
+use Illuminate\Container\Container;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthExceptionInterface;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\AuthResultInterface;
 use LaravelAuthPro\Contracts\Base\HasBuilderInterface;
-use Illuminate\Container\Container;
 
 /**
  * @implements HasBuilderInterface<AuthResultInterface>

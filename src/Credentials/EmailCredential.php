@@ -2,10 +2,8 @@
 
 namespace LaravelAuthPro\Credentials;
 
-use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\Credentials\EmailCredentialInterface;
 use LaravelAuthPro\Enums\AuthIdentifierType;
-use LaravelAuthPro\Enums\AuthProviderSignInMethod;
 
 class EmailCredential extends AuthCredential implements EmailCredentialInterface
 {
@@ -26,7 +24,7 @@ class EmailCredential extends AuthCredential implements EmailCredentialInterface
     public function getSupportedIdentifiersTypes(): array
     {
         return [
-            AuthIdentifierType::EMAIL
+            AuthIdentifierType::EMAIL,
         ];
     }
 
@@ -47,7 +45,7 @@ class EmailCredential extends AuthCredential implements EmailCredentialInterface
     {
         return [
             'token' => ['required_if:credential.sign_in_method,otp', 'string', 'size:8'],
-            'code' => ['required_if:credential.sign_in_method,otp', 'digits:6']
+            'code' => ['required_if:credential.sign_in_method,otp', 'digits:6'],
         ];
     }
 
@@ -57,7 +55,7 @@ class EmailCredential extends AuthCredential implements EmailCredentialInterface
     public static function getPasswordRule(): array
     {
         return [
-            'password' => ['required_if:credential.sign_in_method,password', 'string', 'min:8', 'max:32']
+            'password' => ['required_if:credential.sign_in_method,password', 'string', 'min:8', 'max:32'],
         ];
     }
 }

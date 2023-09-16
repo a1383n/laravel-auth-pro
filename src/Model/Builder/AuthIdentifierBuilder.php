@@ -2,11 +2,11 @@
 
 namespace LaravelAuthPro\Model\Builder;
 
+use Illuminate\Validation\ValidationException;
 use LaravelAuthPro\AuthIdentifier;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
-use LaravelAuthPro\Enums\AuthIdentifierType;
 use LaravelAuthPro\Contracts\Base\EntityBuilderInterface;
-use Illuminate\Validation\ValidationException;
+use LaravelAuthPro\Enums\AuthIdentifierType;
 
 /**
  * @implements EntityBuilderInterface<AuthIdentifierInterface>
@@ -42,8 +42,9 @@ class AuthIdentifierBuilder implements EntityBuilderInterface
 
     public function build(): AuthIdentifierInterface
     {
-        if ($this->identifierType === null || $this->value === null)
+        if ($this->identifierType === null || $this->value === null) {
             throw new \InvalidArgumentException('$identifier or $value is null');
+        }
 
         return new AuthIdentifier($this->identifierType, $this->value);
     }

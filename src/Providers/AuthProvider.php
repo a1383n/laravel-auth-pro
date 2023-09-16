@@ -2,6 +2,7 @@
 
 namespace LaravelAuthPro\Providers;
 
+use Illuminate\Container\Container;
 use LaravelAuthPro\AuthProServiceProvider;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
@@ -11,7 +12,6 @@ use LaravelAuthPro\Contracts\Exceptions\AuthException;
 use LaravelAuthPro\Contracts\Repositories\UserRepositoryInterface;
 use LaravelAuthPro\Enums\AuthProviderSignInMethod;
 use LaravelAuthPro\Enums\AuthProviderType;
-use Illuminate\Container\Container;
 
 abstract class AuthProvider implements AuthProviderInterface
 {
@@ -48,8 +48,9 @@ abstract class AuthProvider implements AuthProviderInterface
 
     public function getProviderId(): string
     {
-        if (self::ID === null)
+        if (self::ID === null) {
             throw new \InvalidArgumentException('TYPE const is null');
+        }
 
         /**
          * @phpstan-ignore-next-line
@@ -59,8 +60,9 @@ abstract class AuthProvider implements AuthProviderInterface
 
     public function getProviderType(): AuthProviderType
     {
-        if (self::TYPE === null)
+        if (self::TYPE === null) {
             throw new \InvalidArgumentException('TYPE const is null');
+        }
 
         /**
          * @phpstan-ignore-next-line
@@ -70,8 +72,9 @@ abstract class AuthProvider implements AuthProviderInterface
 
     public function getProviderSignInMethods(): array
     {
-        if (self::SUPPORTED_SIGN_IN_METHODS === null)
+        if (self::SUPPORTED_SIGN_IN_METHODS === null) {
             throw new \InvalidArgumentException('TYPE const is null');
+        }
 
         /**
          * @phpstan-ignore-next-line
@@ -85,7 +88,7 @@ abstract class AuthProvider implements AuthProviderInterface
             throw new \InvalidArgumentException(sprintf('sign in method %s not defined', $signInMethodEnumValue));
         }
 
-        if (!$this->userRepository->isUserExist($credential->getIdentifier())) {
+        if (! $this->userRepository->isUserExist($credential->getIdentifier())) {
             throw new AuthException('user_not_found');
         }
 

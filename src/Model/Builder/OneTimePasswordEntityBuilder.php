@@ -2,16 +2,15 @@
 
 namespace LaravelAuthPro\Model\Builder;
 
+use Carbon\Carbon;
+use Carbon\CarbonInterval;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Date;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Support\CodeGenerator;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Support\TokenGenerator;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 use LaravelAuthPro\Model\OneTimePasswordEntity;
-use Carbon\Carbon;
-use Carbon\CarbonInterval;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Str;
 
 class OneTimePasswordEntityBuilder
 {

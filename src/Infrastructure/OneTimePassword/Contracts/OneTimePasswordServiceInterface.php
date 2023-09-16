@@ -3,8 +3,8 @@
 namespace LaravelAuthPro\Infrastructure\OneTimePassword\Contracts;
 
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
-use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 use LaravelAuthPro\Contracts\Base\BaseServiceInterface;
+use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 
 interface OneTimePasswordServiceInterface extends BaseServiceInterface
 {

@@ -6,7 +6,7 @@ use LaravelAuthPro\Notifications\Contracts\NotificationMessageInterface;
 
 class SMSMessage implements NotificationMessageInterface
 {
-    public function __construct(public string $to,public string $content)
+    public function __construct(public string $to, public string $content)
     {
         //
     }
@@ -15,7 +15,7 @@ class SMSMessage implements NotificationMessageInterface
     {
         return [
             'to' => $this->to,
-            'content' => $this->content
+            'content' => $this->content,
         ];
     }
 }

@@ -2,10 +2,10 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword\Limiter;
 
-use LaravelAuthPro\Contracts\AuthIdentifierInterface;
-use LaravelAuthPro\Infrastructure\OneTimePassword\Limiter\Contracts\OneTimePasswordRequestLimiterInterface;
 use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
+use LaravelAuthPro\Contracts\AuthIdentifierInterface;
+use LaravelAuthPro\Infrastructure\OneTimePassword\Limiter\Contracts\OneTimePasswordRequestLimiterInterface;
 
 class OneTimePasswordIpAddressLimiter extends OneTimePasswordLimiter implements OneTimePasswordRequestLimiterInterface
 {

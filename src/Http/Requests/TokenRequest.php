@@ -30,7 +30,7 @@ class TokenRequest extends FormRequest
             'credential.identifier' => ['required', 'string'],
             'credential.provider_id' => ['required', 'string', Rule::in($this->getProviderIds())],
             'credential.sign_in_method' => ['required', 'string', Rule::in($this->getProviderSignInMethod())],
-            'credential.payload' => ['required', 'array']
+            'credential.payload' => ['required', 'array'],
         ])
             ->merge($this->getCredentialPayloadRules())
             ->toArray();
@@ -45,7 +45,7 @@ class TokenRequest extends FormRequest
     {
         return Collection::make(AuthPro::getAuthProvidersMapper())
             ->values()
-            ->map(fn($provider) => $provider::ID);
+            ->map(fn ($provider) => $provider::ID);
     }
 
     /**
@@ -60,7 +60,7 @@ class TokenRequest extends FormRequest
             /**
              * @phpstan-ignore-next-line
              */
-            ->map(fn(AuthProviderSignInMethod $method) => $method->value);
+            ->map(fn (AuthProviderSignInMethod $method) => $method->value);
     }
 
     /**
@@ -72,7 +72,7 @@ class TokenRequest extends FormRequest
          * @phpstan-ignore-next-line
          */
         return Collection::make(AuthCredential::getBuilder()::getClassFromProviderId($this->input('credential.provider_id'))::getPayloadRules())
-            ->mapWithKeys(fn($item, $key) => ["credential.payload.$key" => $item]);
+            ->mapWithKeys(fn ($item, $key) => ["credential.payload.$key" => $item]);
     }
 
     public function getAuthCredential(): AuthCredentialInterface

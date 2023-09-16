@@ -55,7 +55,7 @@ class AuthProServiceProvider extends ServiceProvider
         OneTimePasswordService::register($this->app);
     }
 
-    private function registerPublishable():  void
+    private function registerPublishable(): void
     {
         if (! $this->app->runningInConsole()) {
             return;

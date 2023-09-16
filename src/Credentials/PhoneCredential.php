@@ -14,7 +14,7 @@ class PhoneCredential extends AuthCredential implements PhoneCredentialInterface
     public function getSupportedIdentifiersTypes(): array
     {
         return [
-            AuthIdentifierType::MOBILE
+            AuthIdentifierType::MOBILE,
         ];
     }
 
@@ -45,7 +45,7 @@ class PhoneCredential extends AuthCredential implements PhoneCredentialInterface
     {
         return [
             'token' => ['required_if:credential.sign_in_method,otp', 'string', 'size:8'],
-            'code' => ['required_if:credential.sign_in_method,otp', 'digits:6']
+            'code' => ['required_if:credential.sign_in_method,otp', 'digits:6'],
         ];
     }
 
@@ -55,7 +55,7 @@ class PhoneCredential extends AuthCredential implements PhoneCredentialInterface
     public static function getPasswordRule(): array
     {
         return [
-            'password' => ['required_if:credential.sign_in_method,password', 'string', 'min:8', 'max:32']
+            'password' => ['required_if:credential.sign_in_method,password', 'string', 'min:8', 'max:32'],
         ];
     }
 }

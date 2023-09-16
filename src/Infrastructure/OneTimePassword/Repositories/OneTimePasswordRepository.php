@@ -2,13 +2,13 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword\Repositories;
 
+use Illuminate\Redis\Connections\Connection;
 use LaravelAuthPro\Base\BaseRepository;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordRepositoryInterface;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 use LaravelAuthPro\Model\OneTimePasswordEntity;
 use LaravelAuthPro\Traits\HasKeyPrefix;
-use Illuminate\Redis\Connections\Connection;
 
 class OneTimePasswordRepository extends BaseRepository implements OneTimePasswordRepositoryInterface
 {
@@ -22,6 +22,7 @@ class OneTimePasswordRepository extends BaseRepository implements OneTimePasswor
     public function createOneTimePasswordWithIdentifier(OneTimePasswordEntityInterface $entity): bool
     {
         $this->connection->hMSet($key = self::getKey($entity->getKey()), $entity->toArray());
+
         return $this->connection->expire($key, intval($entity->getValidInterval()->totalSeconds * 2));
     }
 
@@ -34,7 +35,7 @@ class OneTimePasswordRepository extends BaseRepository implements OneTimePasswor
          */
         $result = $this->connection->hGetAll(self::getKey($key));
 
-        if (!is_array($result) || empty($result)) {
+        if (! is_array($result) || empty($result)) {
             return null;
         }
 

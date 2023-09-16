@@ -2,10 +2,10 @@
 
 namespace LaravelAuthPro\Model\Contracts;
 
-use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use Carbon\CarbonInterface;
 use Carbon\CarbonInterval;
 use Illuminate\Contracts\Support\Arrayable;
+use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 
 /**
  * @extends Arrayable<string, string>

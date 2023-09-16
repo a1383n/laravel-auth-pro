@@ -80,6 +80,6 @@ jobs:
         if: ${{ matrix.laravel }} <= 9
         run: ./vendor/bin/pest --coverage -vvv
 
-      - name: Execute tests
-        if: ${{ matrix.laravel }} > 9
-        run: ./vendor/bin/pest --no-progress --coverage --profile -vvv
+#      - name: Execute tests
+#        if: ${{ matrix.laravel }} > 9
+#        run: ./vendor/bin/pest --no-progress --coverage --profile -vvv

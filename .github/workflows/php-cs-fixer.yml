@@ -2,6 +2,9 @@ name: Style
 
 on: [push]
 
+permissions:
+  contents: write
+
 jobs:
   php-cs-fixer:
     runs-on: ubuntu-22.04

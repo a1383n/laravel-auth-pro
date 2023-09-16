@@ -19,6 +19,11 @@ class AuthProServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/auth_pro.php',
+            'auth_pro'
+        );
+
         // Register facade
         $this->app->bind('auth_pro', AuthProManager::class);
 
@@ -50,11 +55,22 @@ class AuthProServiceProvider extends ServiceProvider
         OneTimePasswordService::register($this->app);
     }
 
+    private function registerPublishable():  void
+    {
+        if (! $this->app->runningInConsole()) {
+            return;
+        }
+
+        $this->publishes([
+            __DIR__.'/../config/auth_pro.php' => config_path('auth_pro.php'),
+        ], 'config');
+    }
+
     /**
      * Bootstrap services.
      */
     public function boot(): void
     {
-        //
+        $this->registerPublishable();
     }
 }

@@ -30,7 +30,7 @@ jobs:
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
     env:
       extensions: curl, dom, gd, json, libxml, mbstring, zip
-      key: php_${{ matrix.php }}_test_laravel_{{ matrix.laravel }}_cache_v1
+      key: php_${{ matrix.php }}_test_laravel_${{ matrix.laravel }}_cache_v1
 
     steps:
       - name: Checkout code

@@ -45,6 +45,13 @@
             "pestphp/pest-plugin": true
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelAuthPro\\AuthProServiceProvider"
+            ]
+        }
+    },
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse",
         "baseline": "vendor/bin/phpstan analyse --generate-baseline",

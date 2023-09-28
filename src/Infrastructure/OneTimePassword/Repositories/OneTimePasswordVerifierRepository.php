@@ -3,20 +3,20 @@
 namespace LaravelAuthPro\Infrastructure\OneTimePassword\Repositories;
 
 use Illuminate\Redis\Connections\Connection;
+use Illuminate\Support\Facades\RateLimiter;
 use LaravelAuthPro\Base\BaseRepository;
-use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordVerifierRepositoryInterface;
+use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\DataSource\DataSourceInterface;
+use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\Repositories\OneTimePasswordVerifierRepositoryInterface;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 use LaravelAuthPro\Traits\HasKeyPrefix;
 
 class OneTimePasswordVerifierRepository extends BaseRepository implements OneTimePasswordVerifierRepositoryInterface
 {
-    use HasKeyPrefix;
-
     private const FAILED_ATTEMPTS_KEY = 'failed_attempts';
 
-    public function __construct(private readonly Connection $connection)
+    public function __construct(private readonly DataSourceInterface $dataSource)
     {
-        self::$prefix = 'otp';
+        //
     }
 
     public function getFailedAttemptsCount(OneTimePasswordEntityInterface $entity): int

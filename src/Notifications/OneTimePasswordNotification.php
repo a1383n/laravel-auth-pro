@@ -10,7 +10,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Enums\AuthIdentifierType;
-use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordRepositoryInterface;
+use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\Repositories\OneTimePasswordRepositoryInterface;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 use LaravelAuthPro\Notifications\Channels\SMSChannel;
 use LaravelAuthPro\Notifications\Contracts\MailNotificationInterface;

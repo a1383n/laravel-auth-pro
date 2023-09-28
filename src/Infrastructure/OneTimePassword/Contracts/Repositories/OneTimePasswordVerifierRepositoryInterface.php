@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts;
+namespace LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\Repositories;
 
 use LaravelAuthPro\Contracts\Base\BaseRepositoryInterface;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;

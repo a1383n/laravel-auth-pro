@@ -29,11 +29,11 @@ class OneTimePasswordRateLimiterService extends BaseService implements OneTimePa
     ];
 
     private const VERIFY_LIMITER = [
-        OneTimePasswordFailedAttemptsLimiter::class
+        OneTimePasswordFailedAttemptsLimiter::class,
     ];
 
     private const FAILED_LIMITER = [
-        OneTimePasswordFailedAttemptsLimiter::class
+        OneTimePasswordFailedAttemptsLimiter::class,
     ];
 
     /**
@@ -72,9 +72,9 @@ class OneTimePasswordRateLimiterService extends BaseService implements OneTimePa
         return $this->passes(
             self::REQUEST_LIMITERS,
             [
-                fn(string $concrete, ContextualBindingBuilder $builder) => $builder->needs(AuthIdentifierInterface::class)->give(fn () => $identifier),
+                fn (string $concrete, ContextualBindingBuilder $builder) => $builder->needs(AuthIdentifierInterface::class)->give(fn () => $identifier),
             ],
-            fn(OneTimePasswordLimiterInterface $limiter) => method_exists($limiter, 'pass') ? $limiter->pass($identifier) : false
+            fn (OneTimePasswordLimiterInterface $limiter) => method_exists($limiter, 'pass') ? $limiter->pass($identifier) : false
         );
     }
 
@@ -83,10 +83,10 @@ class OneTimePasswordRateLimiterService extends BaseService implements OneTimePa
         return $this->passes(
             self::VERIFY_LIMITER,
             [
-                fn(string $concrete, ContextualBindingBuilder $builder) => $builder->needs(AuthIdentifierInterface::class)->give(fn () => $identifier),
-                fn(string $concrete, ContextualBindingBuilder $builder) => $builder->needs(OneTimePasswordEntityInterface::class)->give(fn () => $entity)
+                fn (string $concrete, ContextualBindingBuilder $builder) => $builder->needs(AuthIdentifierInterface::class)->give(fn () => $identifier),
+                fn (string $concrete, ContextualBindingBuilder $builder) => $builder->needs(OneTimePasswordEntityInterface::class)->give(fn () => $entity),
             ],
-            fn(OneTimePasswordLimiterInterface $limiter) => method_exists($limiter, 'pass') ? $limiter->pass($identifier) : false
+            fn (OneTimePasswordLimiterInterface $limiter) => method_exists($limiter, 'pass') ? $limiter->pass($identifier) : false
         );
     }
 
@@ -95,8 +95,8 @@ class OneTimePasswordRateLimiterService extends BaseService implements OneTimePa
         return $this->passes(
             self::FAILED_LIMITER,
             [
-                fn(string $concrete, ContextualBindingBuilder $builder) => $builder->needs(AuthIdentifierInterface::class)->give(fn () => $identifier),
-                fn(string $concrete, ContextualBindingBuilder $builder) => $builder->needs(OneTimePasswordEntityInterface::class)->give(fn () => $entity)
+                fn (string $concrete, ContextualBindingBuilder $builder) => $builder->needs(AuthIdentifierInterface::class)->give(fn () => $identifier),
+                fn (string $concrete, ContextualBindingBuilder $builder) => $builder->needs(OneTimePasswordEntityInterface::class)->give(fn () => $entity),
             ],
             function (OneTimePasswordLimiterInterface $limiter) {
                 if (method_exists($limiter, 'hit')) {
@@ -117,8 +117,9 @@ class OneTimePasswordRateLimiterService extends BaseService implements OneTimePa
         $instances = [];
 
         foreach ($concretes as $concrete) {
-            if (isset($this->limiterInstances[$concrete]))
+            if (isset($this->limiterInstances[$concrete])) {
                 continue;
+            }
 
             foreach ($contextualBindingClosures as $closure) {
                 $closure($concrete, $this->container->when($concrete));

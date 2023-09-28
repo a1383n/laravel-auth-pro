@@ -6,5 +6,4 @@ use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordLimit
 
 interface OneTimePasswordFailedLimiterInterface extends OneTimePasswordLimiterInterface
 {
-
 }

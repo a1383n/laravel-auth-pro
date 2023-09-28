@@ -14,11 +14,11 @@ use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordRateL
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordResultInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordServiceInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordVerifierServiceInterface;
+use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\Repositories\OneTimePasswordRepositoryInterface;
+use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\Repositories\OneTimePasswordVerifierRepositoryInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordError;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordVerifyError;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Model\OneTimePasswordVerifyResult;
-use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordRepositoryInterface;
-use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordVerifierRepositoryInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\OneTimePasswordRepository;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\OneTimePasswordVerifierRepository;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
@@ -46,7 +46,7 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
 
     public function createOneTimePasswordWithIdentifier(AuthIdentifierInterface $identifier): OneTimePasswordEntityInterface
     {
-        if (! $this->rateLimiterService->pass($identifier)) {
+        if (! $this->rateLimiterService->passesRequest($identifier)) {
             //TODO: Returning result interface may be better approach
             throw new AuthException(OneTimePasswordError::RATE_LIMIT_EXCEEDED->value, 429);
         }
@@ -82,6 +82,10 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
         $result = $this->verifierService->verify($otp, $credential->getOneTimePassword() ?? throw new \Exception('code is null'));
         if ($result->isSuccessful() && ! $dry) {
             $this->repository->removeOneTimePassword($otp);
+        } else {
+            if ($result->getVerifierError() == OneTimePasswordVerifyError::INVALID_CODE) {
+
+            }
         }
 
         return $result;

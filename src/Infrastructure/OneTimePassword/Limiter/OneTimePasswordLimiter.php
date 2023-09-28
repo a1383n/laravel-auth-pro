@@ -10,6 +10,14 @@ abstract class OneTimePasswordLimiter implements OneTimePasswordLimiterInterface
 {
     private string $prefix = 'otp';
 
+    /**
+     * @return int
+     */
+    public function hit(): int
+    {
+        return RateLimiter::hit($this->getKey(), intval($this->decayInterval()->totalSeconds));
+    }
+
     protected function getKey(): string
     {
         return $this->prefix. '_' . $this->getName();
@@ -21,7 +29,7 @@ abstract class OneTimePasswordLimiter implements OneTimePasswordLimiterInterface
             return false;
         }
 
-        RateLimiter::hit($this->getKey(), intval($this->decayInterval()->totalSeconds));
+        $this->hit();
 
         return true;
     }

@@ -22,7 +22,7 @@ class CodeGenerator implements GeneratorInterface
         /**
          * @phpstan-ignore-next-line
          */
-        $this->type = OneTimePasswordCodeType::from($configRepository->get('auth_pro.one_time_password.code.type', 'digit'));
+        $this->type = $configRepository->get('auth_pro.one_time_password.code.type', OneTimePasswordCodeType::DIGIT);
     }
 
     public function generate(int $length = null): string
@@ -37,11 +37,33 @@ class CodeGenerator implements GeneratorInterface
 
     private function generateRandomDigit(int $length): string
     {
-        return Str::password($length, false, true, false);
+        if (method_exists(Str::class, 'password')) {
+            return Str::password($length, false, true, false);
+        } else {
+            $s = '';
+            $digits = '0123456789';
+
+            for ($i = 0; $i < $length; $i++) {
+                $s .= $digits[random_int(0, strlen($digits) - 1)];
+            }
+
+            return $s;
+        }
     }
 
     private function generateRandomAlphabet(int $length): string
     {
-        return Str::lower(Str::password($length, true, false, false, ));
+        if (method_exists(Str::class, 'password')) {
+            return Str::lower(Str::password($length, true, false, false));
+        } else {
+            $s = '';
+            $digits = 'abcdefghijklmnopqrstuvwxyz';
+
+            for ($i = 0; $i < $length; $i++) {
+                $s .= $digits[random_int(0, strlen($digits))];
+            }
+
+            return $s;
+        }
     }
 }

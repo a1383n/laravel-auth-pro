@@ -60,7 +60,7 @@ class OneTimePasswordEntity implements OneTimePasswordEntityInterface
 
     public function isRecentlyCreated(): bool
     {
-        return method_exists(Hash::class, 'isHashed') ? Hash::isHashed($this->code) : password_get_info($value)['algo'] !== null;
+        return method_exists(Hash::class, 'isHashed') ? Hash::isHashed($this->code) : password_get_info($this->code)['algo'] !== null;
     }
 
     public function toArray(): array

@@ -25,7 +25,7 @@ class AuthIdentifierBuilder implements EntityBuilderInterface
     {
         $isPhone = ctype_digit(str_replace('+', '', $identifier));
         if ($isPhone) {
-            throw new \Exception('not implemented');
+            // throw new \Exception('not implemented');
 
             /**
              * @phpstan-ignore-next-line

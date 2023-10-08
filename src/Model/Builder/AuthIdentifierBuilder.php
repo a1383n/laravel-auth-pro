@@ -27,9 +27,6 @@ class AuthIdentifierBuilder implements EntityBuilderInterface
         if ($isPhone) {
             // throw new \Exception('not implemented');
 
-            /**
-             * @phpstan-ignore-next-line
-             */
             $this->identifierType = AuthIdentifierType::MOBILE;
             $this->value = str_replace(' ', '', $identifier);
         } else {

@@ -74,7 +74,7 @@ class OneTimePasswordNotification extends Notification implements ShouldQueue, S
 
         return new SMSMessage(
             $notifiable->getIdentifierValue(),
-            __('auth.otp.sms.template', ['app_name' => __('global.app_name'), 'code' => $this->code])
+            ['code' => $this->code]
         );
     }
 

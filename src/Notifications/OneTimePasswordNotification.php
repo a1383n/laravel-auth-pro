@@ -2,14 +2,12 @@
 
 namespace LaravelAuthPro\Notifications;
 
-use Carbon\CarbonInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
-use LaravelAuthPro\Enums\AuthIdentifierType;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordRepositoryInterface;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 use LaravelAuthPro\Notifications\Channels\SMSChannel;

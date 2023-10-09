@@ -27,7 +27,7 @@ return [
     |
     */
 
-    'credential' => [
+    'credentials' => [
         \LaravelAuthPro\Contracts\Providers\EmailProviderInterface::class => \LaravelAuthPro\Contracts\Credentials\EmailCredentialInterface::class,
         \LaravelAuthPro\Contracts\Providers\PhoneProviderInterface::class => \LaravelAuthPro\Credentials\PhoneCredential::class,
     ],
@@ -139,7 +139,7 @@ return [
                 |
                 */
 
-                'model' => LaravelAuthPro\Infrastructure\OneTimePassword\Models\OneTimePasswordModel::class,
+//                'model' => LaravelAuthPro\Infrastructure\OneTimePassword\Models\OneTimePasswordModel::class,
             ],
         ],
 
@@ -167,8 +167,8 @@ return [
             */
 
             'via' => [
-                \LaravelAuthPro\Contracts\Providers\EmailProviderInterface::class => 'mail',
-                \LaravelAuthPro\Contracts\Providers\PhoneProviderInterface::class => 'sms',
+                'email' => ['mail'],
+                'mobile' => [\LaravelAuthPro\Notifications\Channels\SMSChannel::class],
             ],
         ],
 

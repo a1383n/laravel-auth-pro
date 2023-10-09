@@ -32,8 +32,8 @@ class AuthCredentialBuilder implements EntityBuilderInterface
         /**
          * @phpstan-ignore-next-line
          */
-        return key(Collection::make(AuthPro::getCredentialsMapper())
-            ->first(fn ($item, $key) => AuthPro::getAuthProvidersMapper()[$key]::ID == $id));
+        return Collection::make(AuthPro::getCredentialsMapper())
+            ->first(fn ($item, $key) => AuthPro::getAuthProvidersMapper()[$key]::ID == $id);
     }
 
     public function with(string $providerId): self

@@ -47,4 +47,18 @@ class UserRepository implements UserRepositoryInterface
             ->whereIdentifier($identifier)
             ->exists();
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUserById(string $id, array $columns = ['*']): ?AuthenticatableInterface
+    {
+        /**
+         * @var AuthenticatableInterface|null $user
+         */
+        $user = $this->userModel::query()
+            ->find($id, $columns);
+
+        return $user;
+    }
 }

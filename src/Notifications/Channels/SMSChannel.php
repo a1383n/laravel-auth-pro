@@ -30,7 +30,7 @@ class SMSChannel implements NotificationChannelInterface
         return $message;
     }
 
-    protected function sendSMS(SMSMessage $message)
+    protected function sendSMS(SMSMessage $message): void
     {
         //TODO: Not implemented
         throw new \RuntimeException('Not implemented');

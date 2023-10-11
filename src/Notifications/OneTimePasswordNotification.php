@@ -43,6 +43,9 @@ class OneTimePasswordNotification extends Notification implements ShouldQueue, S
      */
     public function via(AuthIdentifierInterface $notifiable): array
     {
+        /**
+         * @var array<string, array<string|class-string>> $notificationChannelMapper
+         */
         $notificationChannelMapper = config('auth_pro.one_time_password.notification.via', [
             'email' => ['mail'],
             'mobile' => [SMSChannel::class],

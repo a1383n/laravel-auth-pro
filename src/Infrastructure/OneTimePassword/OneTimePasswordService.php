@@ -3,8 +3,11 @@
 namespace LaravelAuthPro\Infrastructure\OneTimePassword;
 
 use Illuminate\Contracts\Foundation\Application;
+use LaravelAuthPro\AuthResult;
 use LaravelAuthPro\Base\BaseService;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
+use LaravelAuthPro\Contracts\AuthResultInterface;
+use LaravelAuthPro\Contracts\AuthSignatureInterface;
 use LaravelAuthPro\Contracts\Exceptions\AuthException;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordRateLimiterServiceInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordResultInterface;
@@ -72,5 +75,31 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
         }
 
         return $result;
+    }
+
+    public function verifyOneTimePasswordSignature(AuthSignatureInterface $signature): AuthResultInterface
+    {
+        /**
+         * @var int $signatureExpireSeconds
+         */
+        $signatureExpireSeconds = config('auth_pro.one_time_password.signature.expiry', 60);
+
+        if (now()->diffInSeconds($signature->getTimestamp()) > $signatureExpireSeconds) {
+            return AuthResult::getBuilder()
+                ->failed(new AuthException('signature_expired'))
+                ->build();
+        }
+
+        if ($this->repository->isSignatureUsed($signature->getId())) {
+            return AuthResult::getBuilder()
+                ->failed(new AuthException('signature_already_used'))
+                ->build();
+        }
+
+        $this->repository->markSignatureAsUsed($signature->getId(), $signatureExpireSeconds);
+
+        return AuthResult::getBuilder()
+            ->successful()
+            ->build();
     }
 }

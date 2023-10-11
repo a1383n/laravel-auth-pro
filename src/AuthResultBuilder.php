@@ -37,7 +37,7 @@ class AuthResultBuilder implements EntityBuilderInterface
         return $this;
     }
 
-    public function successful(AuthenticatableInterface $user): self
+    public function successful(?AuthenticatableInterface $user = null): self
     {
         $this->user = $user;
 

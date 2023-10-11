@@ -9,6 +9,8 @@ use LaravelAuthPro\Contracts\AuthExceptionInterface;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\AuthResultInterface;
 use LaravelAuthPro\Contracts\AuthServiceInterface;
+use LaravelAuthPro\Contracts\AuthSignatureInterface;
+use LaravelAuthPro\Contracts\Credentials\PhoneCredentialInterface;
 use LaravelAuthPro\Contracts\Repositories\UserRepositoryInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordServiceInterface;
 use LaravelAuthPro\Notifications\OneTimePasswordNotification;
@@ -67,6 +69,42 @@ class AuthService extends BaseService implements AuthServiceInterface
                 'expire_in' => $otp->getValidInterval(),
                 'created_at' => $otp->getCreatedAt(),
             ])
+            ->build();
+    }
+
+    public function getOneTimePasswordSignature(AuthCredentialInterface $phoneCredential, string $ip): AuthResultInterface
+    {
+        $result = $this->loginWithCredential($phoneCredential);
+
+        if (! $result->isSuccessful()) {
+            return $result;
+        }
+
+        $user = $result->getUser() ?? throw new \Exception('user cannot be null in result');
+
+        $signature = AuthSignature::getBuilder()
+            ->setUserId($user->getId())
+            ->setIp($ip)
+            ->build();
+
+        return AuthResult::getBuilder()
+            ->as($result->getIdentifier())
+            ->with([
+                'signature' => $signature,
+            ])
+            ->successful($user)
+            ->build();
+    }
+
+    public function verifyOneTimePasswordSignature(AuthSignatureInterface $signature): AuthResultInterface
+    {
+        $result = $this->oneTimePasswordService->verifyOneTimePasswordSignature($signature);
+        if (! $result->isSuccessful()) {
+            return $result;
+        }
+
+        return AuthResult::getBuilder()
+            ->successful($this->repository->getUserById($signature->getUserId()))
             ->build();
     }
 }

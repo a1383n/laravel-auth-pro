@@ -15,4 +15,8 @@ interface OneTimePasswordRepositoryInterface extends BaseRepositoryInterface
     public function isOneTimePasswordExists(AuthIdentifierInterface $identifier, string $token): bool;
 
     public function removeOneTimePassword(OneTimePasswordEntityInterface $entity): bool;
+
+    public function isSignatureUsed(string $signatureId): bool;
+
+    public function markSignatureAsUsed(string $signatureId, int $ttl): bool;
 }

@@ -31,13 +31,12 @@ class TokenGenerator implements GeneratorInterface
      */
     public function generate(int $length = null): string
     {
-        $length = $length ?? $this->length;
+        $length ??= $this->length;
 
         return match ($this->type) {
             OneTimePasswordTokenType::RANDOM_STRING => Str::random($length),
             OneTimePasswordTokenType::RANDOM_INT => (string)$this->generateRandomInt($length),
-            OneTimePasswordTokenType::ULID => (string)Str::ulid(),
-            OneTimePasswordTokenType::UUID => (string)Str::uuid(),
+            OneTimePasswordTokenType::ULID, OneTimePasswordTokenType::UUID => (string)Str::{$this->type->value}(),
         };
     }
 

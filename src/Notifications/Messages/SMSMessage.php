@@ -6,6 +6,10 @@ use LaravelAuthPro\Notifications\Contracts\NotificationMessageInterface;
 
 class SMSMessage implements NotificationMessageInterface
 {
+    /**
+     * @param string $to
+     * @param array<string, mixed> $attributes
+     */
     public function __construct(public string $to, public array $attributes)
     {
         //

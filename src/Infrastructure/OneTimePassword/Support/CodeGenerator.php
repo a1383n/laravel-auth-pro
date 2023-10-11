@@ -27,7 +27,7 @@ class CodeGenerator implements GeneratorInterface
 
     public function generate(int $length = null): string
     {
-        $length = $length ?? $this->length;
+        $length ??= $this->length;
 
         return match ($this->type) {
             OneTimePasswordCodeType::DIGIT => $this->generateRandomDigit($length),

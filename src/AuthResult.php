@@ -15,12 +15,12 @@ use LaravelAuthPro\Contracts\Base\HasBuilderInterface;
 class AuthResult implements AuthResultInterface, HasBuilderInterface
 {
     /**
-     * @param AuthIdentifierInterface $identifier
+     * @param AuthIdentifierInterface|null $identifier
      * @param AuthenticatableInterface|null $user
      * @param AuthExceptionInterface|null $exception
      * @param array<string,string>|null $payload
      */
-    public function __construct(protected AuthIdentifierInterface $identifier, protected ?AuthenticatableInterface $user = null, protected ?AuthExceptionInterface $exception = null, protected ?array $payload = null)
+    public function __construct(protected ?AuthIdentifierInterface $identifier = null, protected ?AuthenticatableInterface $user = null, protected ?AuthExceptionInterface $exception = null, protected ?array $payload = null)
     {
         //
     }
@@ -54,5 +54,12 @@ class AuthResult implements AuthResultInterface, HasBuilderInterface
     public function getUser(): ?AuthenticatableInterface
     {
         return $this->user;
+    }
+
+    public function throwIfError(): void
+    {
+        if (!$this->isSuccessful()) {
+            throw $this->getException();
+        }
     }
 }

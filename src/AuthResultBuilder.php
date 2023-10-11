@@ -14,7 +14,7 @@ use LaravelAuthPro\Contracts\Base\EntityBuilderInterface;
  */
 class AuthResultBuilder implements EntityBuilderInterface
 {
-    private AuthIdentifierInterface $identifier;
+    private ?AuthIdentifierInterface $identifier = null;
 
     /**
      * @var array<string, string>|null

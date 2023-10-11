@@ -14,7 +14,7 @@ class AuthSignature implements AuthSignatureInterface
         protected readonly string $id,
         protected readonly string $ip,
         protected readonly string $userId,
-        protected readonly CarbonInterface $timestamp
+        protected readonly CarbonInterface $createdAt
     ) {
         //
     }
@@ -39,7 +39,7 @@ class AuthSignature implements AuthSignatureInterface
             'id' => $this->id,
             'ip' => $this->ip,
             'sub' => $this->userId,
-            'iat' => $this->timestamp,
+            'iat' => $this->createdAt->timestamp,
         ];
     }
 
@@ -60,7 +60,7 @@ class AuthSignature implements AuthSignatureInterface
 
     public function getTimestamp(): CarbonInterface
     {
-        return $this->timestamp;
+        return $this->createdAt;
     }
 
     public function __toString(): string

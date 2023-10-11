@@ -58,7 +58,7 @@ class AuthResult implements AuthResultInterface, HasBuilderInterface
 
     public function throwIfError(): void
     {
-        if (!$this->isSuccessful()) {
+        if (! $this->isSuccessful()) {
             throw $this->getException();
         }
     }

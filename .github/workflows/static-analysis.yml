@@ -2,9 +2,6 @@ name: Static Analysis
 
 on:
   push:
-    branches:
-      - master
-      - '*.x'
     paths:
       - '**.php'
       - 'phpstan.neon.dist'

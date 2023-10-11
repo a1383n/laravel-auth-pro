@@ -10,7 +10,6 @@ use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\AuthResultInterface;
 use LaravelAuthPro\Contracts\AuthServiceInterface;
 use LaravelAuthPro\Contracts\AuthSignatureInterface;
-use LaravelAuthPro\Contracts\Credentials\PhoneCredentialInterface;
 use LaravelAuthPro\Contracts\Repositories\UserRepositoryInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordServiceInterface;
 use LaravelAuthPro\Notifications\OneTimePasswordNotification;

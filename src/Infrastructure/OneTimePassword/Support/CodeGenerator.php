@@ -60,7 +60,7 @@ class CodeGenerator implements GeneratorInterface
             $digits = 'abcdefghijklmnopqrstuvwxyz';
 
             for ($i = 0; $i < $length; $i++) {
-                $s .= $digits[random_int(0, strlen($digits))];
+                $s .= $digits[random_int(0, strlen($digits) - 1)];
             }
 
             return $s;

@@ -57,10 +57,10 @@ class CodeGenerator implements GeneratorInterface
             return Str::lower(Str::password($length, true, false, false));
         } else {
             $s = '';
-            $digits = 'abcdefghijklmnopqrstuvwxyz';
+            $characters = 'abcdefghijklmnopqrstuvwxyz';
 
             for ($i = 0; $i < $length; $i++) {
-                $s .= $digits[random_int(0, strlen($digits) - 1)];
+                $s .= $characters[random_int(0, strlen($characters) - 1)];
             }
 
             return $s;

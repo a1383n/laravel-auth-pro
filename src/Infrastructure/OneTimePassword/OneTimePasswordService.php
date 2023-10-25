@@ -44,7 +44,7 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
         $app->bind(OneTimePasswordServiceInterface::class, OneTimePasswordService::class);
     }
 
-    public function createOneTimePasswordWithIdentifier(AuthIdentifierInterface $identifier): OneTimePasswordEntityInterface
+    public function createOneTimePasswordWithIdentifier(AuthIdentifierInterface $identifier, bool $withToken = true): OneTimePasswordEntityInterface
     {
         if (! $this->rateLimiterService->pass($identifier)) {
             //TODO: Returning result interface may be better approach
@@ -52,8 +52,15 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
         }
 
         $otp = OneTimePasswordEntity::getBuilder()
-            ->as($identifier)
-            ->build();
+            ->as($identifier);
+
+        if (! $withToken) {
+            $otp->withoutToken();
+        } else {
+            $otp->withToken();
+        }
+
+        $otp = $otp->build();
 
         if (! $this->repository->createOneTimePasswordWithIdentifier($otp)) {
             throw new AuthException(OneTimePasswordError::CONFLICT->value, 409);

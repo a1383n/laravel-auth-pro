@@ -2,7 +2,6 @@
 
 namespace LaravelAuthPro\Contracts;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use LaravelAuthPro\Enums\AuthIdentifierType;
 use LaravelAuthPro\Enums\AuthProviderSignInMethod;
 

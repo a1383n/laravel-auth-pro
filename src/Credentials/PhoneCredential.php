@@ -10,7 +10,7 @@ use LaravelAuthPro\Enums\AuthIdentifierType;
 class PhoneCredential extends AuthCredential implements PhoneCredentialInterface
 {
     protected ?string $password;
-    protected ?string $token;
+    protected ?string $token = null;
     protected ?string $code;
     protected ?string $signature;
 

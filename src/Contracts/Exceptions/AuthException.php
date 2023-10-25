@@ -2,6 +2,7 @@
 
 namespace LaravelAuthPro\Contracts\Exceptions;
 
+use Closure;
 use Exception;
 use LaravelAuthPro\Contracts\AuthExceptionInterface;
 
@@ -9,6 +10,8 @@ class AuthException extends Exception implements AuthExceptionInterface
 {
     private const ERROR_MESSAGE_TEMPLE = '[%s]';
     private const ERROR_MESSAGE_TEMPLE_WITH_EXCEPTION = '[%s] - %s';
+
+    private static ?Closure $renderClosure = null;
 
     /**
      * @param string|null $error
@@ -38,6 +41,11 @@ class AuthException extends Exception implements AuthExceptionInterface
         );
     }
 
+    public static function setRenderClosure(?Closure $renderClosure): void
+    {
+        self::$renderClosure = $renderClosure;
+    }
+
     /**
      * Report the exception.
      *
@@ -56,11 +64,15 @@ class AuthException extends Exception implements AuthExceptionInterface
      */
     public function render($request)
     {
-        return response([
-            'is_successful' => false,
-            'error' => $this->error,
-            'message' => __($this->error),
-        ], $this->code);
+        if ($this->renderClosure !== null) {
+            return $this->renderClosure->call($this);
+        }else {
+            return response([
+                'is_successful' => false,
+                'error' => $this->error,
+                'message' => __($this->error),
+            ], $this->code);
+        }
     }
 
     public function getErrorMessage(): string

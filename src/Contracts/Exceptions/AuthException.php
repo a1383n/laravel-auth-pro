@@ -64,9 +64,9 @@ class AuthException extends Exception implements AuthExceptionInterface
      */
     public function render($request)
     {
-        if ($this->renderClosure !== null) {
-            return $this->renderClosure->call($this);
-        } else {
+        if (self::$renderClosure !== null) {
+            return self::$renderClosure->call($this);
+        }else {
             return response([
                 'is_successful' => false,
                 'error' => $this->error,

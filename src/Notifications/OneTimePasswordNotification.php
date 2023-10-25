@@ -24,7 +24,7 @@ class OneTimePasswordNotification extends Notification implements ShouldQueue, S
 
     protected string $code;
 
-    protected string $token;
+    protected ?string $token;
 
     /**
      * Create a new notification instance.

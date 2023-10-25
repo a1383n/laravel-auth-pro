@@ -8,6 +8,7 @@ use LaravelAuthPro\Base\BaseService;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\AuthResultInterface;
 use LaravelAuthPro\Contracts\AuthSignatureInterface;
+use LaravelAuthPro\Contracts\Credentials\PhoneCredentialInterface;
 use LaravelAuthPro\Contracts\Exceptions\AuthException;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordRateLimiterServiceInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordResultInterface;
@@ -54,14 +55,16 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
             ->as($identifier)
             ->build();
 
-        $this->repository->createOneTimePasswordWithIdentifier($otp);
+        if (! $this->repository->createOneTimePasswordWithIdentifier($otp)) {
+            throw new AuthException(OneTimePasswordError::CONFLICT->value, 409);
+        }
 
         return $otp;
     }
 
-    public function verifyOneTimePassword(AuthIdentifierInterface $identifier, string $token, string $code): OneTimePasswordResultInterface
+    public function verifyOneTimePassword(AuthIdentifierInterface $identifier, PhoneCredentialInterface $credential, bool $dry = false): OneTimePasswordResultInterface
     {
-        $otp = $this->repository->getOneTimePasswordWithIdentifierAndToken($identifier, $token);
+        $otp = $this->repository->getOneTimePasswordWithIdentifierAndToken($identifier, $credential->getOneTimePasswordToken());
 
         if ($otp === null) {
             return OneTimePasswordVerifyResult::getBuilder()
@@ -69,8 +72,8 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
                 ->build();
         }
 
-        $result = $this->verifierService->verify($otp, $code);
-        if ($result->isSuccessful()) {
+        $result = $this->verifierService->verify($otp, $credential->getOneTimePassword());
+        if ($result->isSuccessful() && ! $dry) {
             $this->repository->removeOneTimePassword($otp);
         }
 

@@ -28,9 +28,9 @@ class OneTimePasswordEntity implements OneTimePasswordEntityInterface
         return self::getKeyStatically($this->identifier, $this->token);
     }
 
-    public static function getKeyStatically(AuthIdentifierInterface $identifier, string $token): string
+    public static function getKeyStatically(AuthIdentifierInterface $identifier, string $token = null): string
     {
-        return substr(hash('sha256', $identifier->getIdentifierValue()), 0, 16) . ':' . $token;
+        return substr(hash('sha256', $identifier->getIdentifierValue()), 0, 16) . ':' . ($token ?? 'otp');
     }
 
     public function getIdentifier(): AuthIdentifierInterface

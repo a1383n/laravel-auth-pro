@@ -6,7 +6,7 @@ interface AuthResultInterface
 {
     public function isSuccessful(): bool;
 
-    public function throwIfError(): void;
+    public function throwIfError(): self;
 
     public function getIdentifier(): AuthIdentifierInterface;
 

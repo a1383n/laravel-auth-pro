@@ -10,6 +10,7 @@ use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\AuthResultInterface;
 use LaravelAuthPro\Contracts\AuthServiceInterface;
 use LaravelAuthPro\Contracts\AuthSignatureInterface;
+use LaravelAuthPro\Contracts\Credentials\PhoneCredentialInterface;
 use LaravelAuthPro\Contracts\Repositories\UserRepositoryInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordServiceInterface;
 use LaravelAuthPro\Notifications\OneTimePasswordNotification;
@@ -92,6 +93,20 @@ class AuthService extends BaseService implements AuthServiceInterface
                 'signature' => $signature,
             ])
             ->successful($user)
+            ->build();
+    }
+
+    public function verifyOneTimePassword(PhoneCredentialInterface $phoneCredential, bool $dry = false): AuthResultInterface
+    {
+        $result = $this->oneTimePasswordService->verifyOneTimePassword($phoneCredential->getIdentifier(), $phoneCredential, $dry);
+        if (! $result->isSuccessful()) {
+            return AuthResult::getBuilder()
+                ->failed($result->getError())
+                ->build();
+        }
+
+        return AuthResult::getBuilder()
+            ->successful($this->repository->getUserByIdentifier($phoneCredential->getIdentifier()))
             ->build();
     }
 

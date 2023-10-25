@@ -10,6 +10,8 @@ interface AuthServiceInterface
 
     public function getOneTimePasswordSignature(PhoneCredentialInterface $phoneCredential, string $ip): AuthResultInterface;
 
+    public function verifyOneTimePassword(PhoneCredentialInterface $phoneCredential, bool $dry = false): AuthResultInterface;
+
     public function verifyOneTimePasswordSignature(AuthSignatureInterface $signature): AuthResultInterface;
 
     public function sendOneTimePassword(AuthIdentifierInterface $identifier): AuthResultInterface;

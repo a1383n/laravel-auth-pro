@@ -10,9 +10,9 @@ interface OneTimePasswordRepositoryInterface extends BaseRepositoryInterface
 {
     public function createOneTimePasswordWithIdentifier(OneTimePasswordEntityInterface $entity): bool;
 
-    public function getOneTimePasswordWithIdentifierAndToken(AuthIdentifierInterface $identifier, string $token): ?OneTimePasswordEntityInterface;
+    public function getOneTimePasswordWithIdentifierAndToken(AuthIdentifierInterface $identifier, string $token = null): ?OneTimePasswordEntityInterface;
 
-    public function isOneTimePasswordExists(AuthIdentifierInterface $identifier, string $token): bool;
+    public function isOneTimePasswordExists(AuthIdentifierInterface $identifier, string $token = null): bool;
 
     public function removeOneTimePassword(OneTimePasswordEntityInterface $entity): bool;
 

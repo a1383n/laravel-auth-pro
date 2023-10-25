@@ -26,11 +26,11 @@ class OneTimePasswordSignInMethod implements AuthSignInMethodInterface
      */
     public function __invoke(AuthenticatableInterface $user, PhoneCredentialInterface|AuthCredentialInterface $credential): AuthenticatableInterface
     {
-        if ($credential->getOneTimePasswordToken() === null || $credential->getOneTimePassword() === null) {
-            throw new \InvalidArgumentException('$token or $code is null in $credential');
+        if ($credential->getOneTimePassword() === null) {
+            throw new \InvalidArgumentException('$code is null in $credential');
         }
 
-        $result = $this->oneTimePasswordService->verifyOneTimePassword($credential->getIdentifier(), $credential->getOneTimePasswordToken(), $credential->getOneTimePassword());
+        $result = $this->oneTimePasswordService->verifyOneTimePassword($credential->getIdentifier(), $credential);
 
         if (! $result->isSuccessful()) {
             if ($result instanceof OneTimePasswordVerifyResultInterface) {

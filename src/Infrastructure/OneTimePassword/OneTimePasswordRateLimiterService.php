@@ -19,10 +19,7 @@ class OneTimePasswordRateLimiterService extends BaseService implements OneTimePa
     /**
      * @var array<class-string>
      */
-    private array $limiters = [
-        OneTimePasswordIpAddressLimiter::class,
-        OneTimePasswordIdentifierLimiter::class,
-    ];
+    private readonly array $limiters;
 
     /**
      * @var array<int, object>
@@ -32,6 +29,11 @@ class OneTimePasswordRateLimiterService extends BaseService implements OneTimePa
     public function __construct(protected readonly Connection $connection, private readonly Container $container)
     {
         parent::__construct();
+
+        /**
+         * @phpstan-ignore-next-line
+         */
+        $this->limiters = array_keys(config('auth_pro.one_time_password.rate_limit', [OneTimePasswordIpAddressLimiter::class, OneTimePasswordIdentifierLimiter::class]));
     }
 
     public function pass(AuthIdentifierInterface $identifier): bool

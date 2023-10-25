@@ -2,8 +2,6 @@
 
 namespace LaravelAuthPro\Contracts\Credentials\Base;
 
-use Illuminate\Contracts\Validation\ValidationRule;
-
 interface HasOneTimePasswordInterface
 {
     public function getOneTimePassword(): ?string;
@@ -11,7 +9,7 @@ interface HasOneTimePasswordInterface
     public function getOneTimePasswordToken(): ?string;
 
     /**
-     * @return array<string, string|string[]|ValidationRule>
+     * @return array<string, string|string[]>
      */
     public static function getOneTimePasswordRule(): array;
 }

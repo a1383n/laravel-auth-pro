@@ -3,8 +3,12 @@
 namespace LaravelAuthPro\Infrastructure\OneTimePassword;
 
 use Illuminate\Contracts\Foundation\Application;
+use LaravelAuthPro\AuthResult;
 use LaravelAuthPro\Base\BaseService;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
+use LaravelAuthPro\Contracts\AuthResultInterface;
+use LaravelAuthPro\Contracts\AuthSignatureInterface;
+use LaravelAuthPro\Contracts\Credentials\PhoneCredentialInterface;
 use LaravelAuthPro\Contracts\Exceptions\AuthException;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordRateLimiterServiceInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordResultInterface;
@@ -48,17 +52,26 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
         }
 
         $otp = OneTimePasswordEntity::getBuilder()
-            ->as($identifier)
-            ->build();
+            ->as($identifier);
 
-        $this->repository->createOneTimePasswordWithIdentifier($otp);
+        if (! config('auth_pro.one_time_password.token.enabled', true)) {
+            $otp->withoutToken();
+        } else {
+            $otp->withToken();
+        }
+
+        $otp = $otp->build();
+
+        if (! $this->repository->createOneTimePasswordWithIdentifier($otp)) {
+            throw new AuthException(OneTimePasswordError::CONFLICT->value, 409);
+        }
 
         return $otp;
     }
 
-    public function verifyOneTimePassword(AuthIdentifierInterface $identifier, string $token, string $code): OneTimePasswordResultInterface
+    public function verifyOneTimePassword(AuthIdentifierInterface $identifier, PhoneCredentialInterface $credential, bool $dry = false): OneTimePasswordResultInterface
     {
-        $otp = $this->repository->getOneTimePasswordWithIdentifierAndToken($identifier, $token);
+        $otp = $this->repository->getOneTimePasswordWithIdentifierAndToken($identifier, $credential->getOneTimePasswordToken());
 
         if ($otp === null) {
             return OneTimePasswordVerifyResult::getBuilder()
@@ -66,11 +79,37 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
                 ->build();
         }
 
-        $result = $this->verifierService->verify($otp, $code);
-        if ($result->isSuccessful()) {
+        $result = $this->verifierService->verify($otp, $credential->getOneTimePassword() ?? throw new \Exception('code is null'));
+        if ($result->isSuccessful() && ! $dry) {
             $this->repository->removeOneTimePassword($otp);
         }
 
         return $result;
+    }
+
+    public function verifyOneTimePasswordSignature(AuthSignatureInterface $signature): AuthResultInterface
+    {
+        /**
+         * @var int $signatureExpireSeconds
+         */
+        $signatureExpireSeconds = config('auth_pro.one_time_password.signature.expiry', 60);
+
+        if (now()->diffInSeconds($signature->getTimestamp()) > $signatureExpireSeconds) {
+            return AuthResult::getBuilder()
+                ->failed(new AuthException('signature_expired'))
+                ->build();
+        }
+
+        if ($this->repository->isSignatureUsed($signature->getId())) {
+            return AuthResult::getBuilder()
+                ->failed(new AuthException('signature_already_used'))
+                ->build();
+        }
+
+        $this->repository->markSignatureAsUsed($signature->getId(), $signatureExpireSeconds);
+
+        return AuthResult::getBuilder()
+            ->successful()
+            ->build();
     }
 }

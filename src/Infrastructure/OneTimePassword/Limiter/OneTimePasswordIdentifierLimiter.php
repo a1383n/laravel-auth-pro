@@ -2,7 +2,6 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword\Limiter;
 
-use Carbon\CarbonInterval;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Limiter\Contracts\OneTimePasswordRequestLimiterInterface;
 
@@ -17,16 +16,6 @@ class OneTimePasswordIdentifierLimiter extends OneTimePasswordLimiter implements
     {
         //TODO: Return hash
         return $this->identifier->getIdentifierValue();
-    }
-
-    public function decayInterval(): CarbonInterval
-    {
-        return CarbonInterval::hour();
-    }
-
-    public function maxAttempts(): int
-    {
-        return 5;
     }
 
     public function pass(AuthIdentifierInterface $identifier): bool

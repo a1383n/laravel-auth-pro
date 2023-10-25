@@ -5,6 +5,7 @@ namespace LaravelAuthPro;
 use Illuminate\Contracts\Config\Repository;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthProviderInterface;
+use LaravelAuthPro\Contracts\AuthServiceInterface;
 use LaravelAuthPro\Contracts\Credentials\EmailCredentialInterface;
 use LaravelAuthPro\Contracts\Providers\EmailProviderInterface;
 use LaravelAuthPro\Providers\EmailProvider;
@@ -48,5 +49,10 @@ class AuthProManager
     public function getCredentialsMapper(): array
     {
         return $this->authCredentialClass;
+    }
+
+    public function getService(): AuthServiceInterface
+    {
+        return app(AuthServiceInterface::class);
     }
 }

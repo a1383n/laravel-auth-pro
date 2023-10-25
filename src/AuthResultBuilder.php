@@ -14,10 +14,10 @@ use LaravelAuthPro\Contracts\Base\EntityBuilderInterface;
  */
 class AuthResultBuilder implements EntityBuilderInterface
 {
-    private AuthIdentifierInterface $identifier;
+    private ?AuthIdentifierInterface $identifier = null;
 
     /**
-     * @var array<string, string>|null
+     * @var array<string, string|mixed>|null
      */
     private ?array $payload = null;
 
@@ -37,7 +37,7 @@ class AuthResultBuilder implements EntityBuilderInterface
         return $this;
     }
 
-    public function successful(AuthenticatableInterface $user): self
+    public function successful(?AuthenticatableInterface $user = null): self
     {
         $this->user = $user;
 
@@ -52,7 +52,7 @@ class AuthResultBuilder implements EntityBuilderInterface
     }
 
     /**
-     * @param array<string, string> $payload
+     * @param array<string, string|mixed> $payload
      * @return $this
      */
     public function with(array $payload): self

@@ -2,14 +2,17 @@
 
 namespace LaravelAuthPro\Credentials;
 
+use LaravelAuthPro\AuthSignature;
+use LaravelAuthPro\Contracts\AuthSignatureInterface;
 use LaravelAuthPro\Contracts\Credentials\PhoneCredentialInterface;
 use LaravelAuthPro\Enums\AuthIdentifierType;
 
 class PhoneCredential extends AuthCredential implements PhoneCredentialInterface
 {
     protected ?string $password;
-    protected ?string $token;
+    protected ?string $token = null;
     protected ?string $code;
+    protected ?string $signature;
 
     public function getSupportedIdentifiersTypes(): array
     {
@@ -57,5 +60,11 @@ class PhoneCredential extends AuthCredential implements PhoneCredentialInterface
         return [
             'password' => ['required_if:credential.sign_in_method,password', 'string', 'min:8', 'max:32'],
         ];
+    }
+
+    public function getSignature(): AuthSignatureInterface
+    {
+        return AuthSignature::getBuilder()
+            ->fromEncryptedPlainSignature($this->signature ?? throw new \Exception('signature not provided'));
     }
 }

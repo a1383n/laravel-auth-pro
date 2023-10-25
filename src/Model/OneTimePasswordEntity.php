@@ -12,7 +12,7 @@ use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 
 class OneTimePasswordEntity implements OneTimePasswordEntityInterface
 {
-    public function __construct(protected AuthIdentifierInterface $identifier, protected string $token, protected string $code, protected CarbonInterval $interval, protected CarbonInterface $createdAt)
+    public function __construct(protected AuthIdentifierInterface $identifier, protected ?string $token, protected string $code, protected CarbonInterval $interval, protected CarbonInterface $createdAt)
     {
         //
     }
@@ -28,9 +28,9 @@ class OneTimePasswordEntity implements OneTimePasswordEntityInterface
         return self::getKeyStatically($this->identifier, $this->token);
     }
 
-    public static function getKeyStatically(AuthIdentifierInterface $identifier, string $token): string
+    public static function getKeyStatically(AuthIdentifierInterface $identifier, string $token = null): string
     {
-        return substr(hash('sha256', $identifier->getIdentifierValue()), 0, 16) . ':' . $token;
+        return substr(hash('sha256', $identifier->getIdentifierValue()), 0, 16) . ':' . ($token ?? 'otp');
     }
 
     public function getIdentifier(): AuthIdentifierInterface
@@ -38,7 +38,7 @@ class OneTimePasswordEntity implements OneTimePasswordEntityInterface
         return $this->identifier;
     }
 
-    public function getToken(): string
+    public function getToken(): ?string
     {
         return $this->token;
     }
@@ -60,7 +60,7 @@ class OneTimePasswordEntity implements OneTimePasswordEntityInterface
 
     public function isRecentlyCreated(): bool
     {
-        return Hash::isHashed($this->code);
+        return method_exists(Hash::class, 'isHashed') ? Hash::isHashed($this->code) : password_get_info($this->code)['algo'] !== null;
     }
 
     public function toArray(): array

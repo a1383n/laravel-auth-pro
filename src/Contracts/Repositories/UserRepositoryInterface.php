@@ -20,4 +20,11 @@ interface UserRepositoryInterface extends BaseRepositoryInterface
      * @return AuthenticatableInterface|null
      */
     public function getUserByIdentifier(AuthIdentifierInterface $identifier, array $columns = ['*']): ?AuthenticatableInterface;
+
+    /**
+     * @param string $id
+     * @param string[] $columns
+     * @return AuthenticatableInterface|null
+     */
+    public function getUserById(string $id, array $columns = ['*']): ?AuthenticatableInterface;
 }

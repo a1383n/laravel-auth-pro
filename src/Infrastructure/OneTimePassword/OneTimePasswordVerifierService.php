@@ -16,11 +16,16 @@ use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
  */
 class OneTimePasswordVerifierService extends BaseService implements OneTimePasswordVerifierServiceInterface
 {
-    protected const MAX_FAILED_ATTEMPTS = 3;
+    protected readonly int $maxFailedAttempts;
 
     public function __construct(OneTimePasswordVerifierRepositoryInterface $repository)
     {
         parent::__construct($repository);
+
+        /**
+         * @phpstan-ignore-next-line
+         */
+        $this->maxFailedAttempts = config('auth_pro.one_time_password.max_attempts', 3);
     }
 
     public function verify(OneTimePasswordEntityInterface $oneTimePasswordEntity, string $code): OneTimePasswordVerifyResultInterface
@@ -28,7 +33,7 @@ class OneTimePasswordVerifierService extends BaseService implements OneTimePassw
         $result = OneTimePasswordVerifyResult::getBuilder();
 
         $failedAttempts = $this->repository->getFailedAttemptsCount($oneTimePasswordEntity);
-        if ($failedAttempts >= self::MAX_FAILED_ATTEMPTS) {
+        if ($failedAttempts >= $this->maxFailedAttempts) {
             return $result
                 ->failed(OneTimePasswordVerifyError::TOO_MANY_FAILED_ATTEMPTS)
                 ->build();

@@ -22,11 +22,17 @@ class SMSChannel implements NotificationChannelInterface
         $message = $notification->toSMS($notifiable);
 
         if (app()->isLocal()) {
-            Log::debug($message->content, $message->toArray());
+            Log::debug($message->to, $message->toArray());
         } else {
-            //TODO: Implement this
+            $this->sendSMS($message);
         }
 
         return $message;
+    }
+
+    protected function sendSMS(SMSMessage $message): void
+    {
+        //TODO: Not implemented
+        throw new \RuntimeException('Not implemented');
     }
 }

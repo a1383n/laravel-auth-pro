@@ -2,7 +2,6 @@
 
 namespace LaravelAuthPro\Contracts;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use LaravelAuthPro\Enums\AuthIdentifierType;
 use LaravelAuthPro\Enums\AuthProviderSignInMethod;
 
@@ -17,7 +16,7 @@ interface AuthCredentialInterface
     public function __construct(string $providerId, AuthIdentifierInterface $identifier, AuthProviderSignInMethod $signInMethod, array $payload);
 
     /**
-     * @return array<string, string|string[]|ValidationRule>
+     * @return array<string, string|string[]>
      */
     public static function getPayloadRules(): array;
 

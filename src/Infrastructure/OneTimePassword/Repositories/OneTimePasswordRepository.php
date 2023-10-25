@@ -21,12 +21,16 @@ class OneTimePasswordRepository extends BaseRepository implements OneTimePasswor
 
     public function createOneTimePasswordWithIdentifier(OneTimePasswordEntityInterface $entity): bool
     {
+        if ($this->isOneTimePasswordExists($entity->getIdentifier())) {
+            return false;
+        }
+
         $this->connection->hMSet($key = self::getKey($entity->getKey()), $entity->toArray());
 
         return $this->connection->expire($key, intval($entity->getValidInterval()->totalSeconds * 2));
     }
 
-    public function getOneTimePasswordWithIdentifierAndToken(AuthIdentifierInterface $identifier, string $token): ?OneTimePasswordEntityInterface
+    public function getOneTimePasswordWithIdentifierAndToken(AuthIdentifierInterface $identifier, string $token = null): ?OneTimePasswordEntityInterface
     {
         $key = OneTimePasswordEntity::getKeyStatically($identifier, $token);
 
@@ -42,7 +46,7 @@ class OneTimePasswordRepository extends BaseRepository implements OneTimePasswor
         return OneTimePasswordEntity::getBuilder()::fromArray($identifier, $key, $result);
     }
 
-    public function isOneTimePasswordExists(AuthIdentifierInterface $identifier, string $token): bool
+    public function isOneTimePasswordExists(AuthIdentifierInterface $identifier, string $token = null): bool
     {
         $key = OneTimePasswordEntity::getKeyStatically($identifier, $token);
 
@@ -52,5 +56,15 @@ class OneTimePasswordRepository extends BaseRepository implements OneTimePasswor
     public function removeOneTimePassword(OneTimePasswordEntityInterface $entity): bool
     {
         return $this->connection->unlink(self::getKey($entity->getKey())) === 1;
+    }
+
+    public function isSignatureUsed(string $signatureId): bool
+    {
+        return $this->connection->exists(self::getKey('signature:' . $signatureId)) === 1;
+    }
+
+    public function markSignatureAsUsed(string $signatureId, int $ttl): bool
+    {
+        return $this->connection->setex(self::getKey('signature:' . $signatureId), $ttl + 10, "1");
     }
 }

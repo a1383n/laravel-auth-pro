@@ -2,14 +2,12 @@
 
 namespace LaravelAuthPro\Notifications;
 
-use Carbon\CarbonInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
-use LaravelAuthPro\Enums\AuthIdentifierType;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordRepositoryInterface;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 use LaravelAuthPro\Notifications\Channels\SMSChannel;
@@ -26,7 +24,7 @@ class OneTimePasswordNotification extends Notification implements ShouldQueue, S
 
     protected string $code;
 
-    protected string $token;
+    protected ?string $token;
 
     /**
      * Create a new notification instance.
@@ -45,23 +43,15 @@ class OneTimePasswordNotification extends Notification implements ShouldQueue, S
      */
     public function via(AuthIdentifierInterface $notifiable): array
     {
-        return match ($notifiable->getIdentifierType()) {
-            AuthIdentifierType::EMAIL => ['mail'],
-            AuthIdentifierType::MOBILE => [SMSChannel::class],
-        };
-    }
+        /**
+         * @var array<string, array<string|class-string>> $notificationChannelMapper
+         */
+        $notificationChannelMapper = config('auth_pro.one_time_password.notification.via', [
+            'email' => ['mail'],
+            'mobile' => [SMSChannel::class],
+        ]);
 
-    /**
-     * @param object|null $notifiable
-     * @param string $channel
-     * @return array<string|class-string, CarbonInterface>|CarbonInterface|null
-     */
-    public function withDelay(?object $notifiable, string $channel): array|CarbonInterface|null
-    {
-        return match ($channel) {
-            SMSChannel::class => now()->addSeconds(3),
-            default => null
-        };
+        return $notificationChannelMapper[$notifiable->getIdentifierType()->value];
     }
 
     public function shouldSend(AuthIdentifierInterface $notifiable, string $channel): bool
@@ -87,7 +77,7 @@ class OneTimePasswordNotification extends Notification implements ShouldQueue, S
 
         return new SMSMessage(
             $notifiable->getIdentifierValue(),
-            __('auth.otp.sms.template', ['app_name' => __('global.app_name'), 'code' => $this->code])
+            ['code' => $this->code]
         );
     }
 

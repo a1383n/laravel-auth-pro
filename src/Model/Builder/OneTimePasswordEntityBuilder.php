@@ -16,6 +16,7 @@ class OneTimePasswordEntityBuilder
 {
     protected AuthIdentifierInterface $identifier;
     protected ?string $token = null;
+    protected bool $withToken = true;
     protected ?string $code = null;
     protected ?CarbonInterval $interval = null;
 
@@ -53,6 +54,20 @@ class OneTimePasswordEntityBuilder
         return $this;
     }
 
+    public function withToken(): self
+    {
+        $this->withToken = true;
+
+        return $this;
+    }
+
+    public function withoutToken(): self
+    {
+        $this->withToken = false;
+
+        return $this;
+    }
+
     public function validFor(CarbonInterval $interval): self
     {
         $this->interval = $interval;
@@ -62,7 +77,7 @@ class OneTimePasswordEntityBuilder
 
     public function build(): OneTimePasswordEntityInterface
     {
-        if ($this->token === null) {
+        if ($this->token === null && $this->withToken) {
             $this->token = $this->tokenGenerator->generate();
         }
 

@@ -2,6 +2,7 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword\Limiter;
 
+use Carbon\CarbonInterval;
 use Illuminate\Support\Facades\RateLimiter;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordLimiterInterface;
 
@@ -23,5 +24,21 @@ abstract class OneTimePasswordLimiter implements OneTimePasswordLimiterInterface
         RateLimiter::hit($this->getKey(), intval($this->decayInterval()->totalSeconds));
 
         return true;
+    }
+
+    public function decayInterval(): CarbonInterval
+    {
+        /**
+         * @phpstan-ignore-next-line
+         */
+        return CarbonInterval::seconds(config('auth_pro.one_time_password.rate_limit')[static::class]['decay_in_seconds'] ?? 900);
+    }
+
+    public function maxAttempts(): int
+    {
+        /**
+         * @phpstan-ignore-next-line
+         */
+        return config('auth_pro.one_time_password.rate_limit')[static::class]['max_attempts'] ?? 6;
     }
 }

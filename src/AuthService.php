@@ -51,9 +51,9 @@ class AuthService extends BaseService implements AuthServiceInterface
         return $result;
     }
 
-    public function sendOneTimePassword(AuthIdentifierInterface $identifier, bool $withToken = true): AuthResultInterface
+    public function sendOneTimePassword(AuthIdentifierInterface $identifier): AuthResultInterface
     {
-        $otp = $this->oneTimePasswordService->createOneTimePasswordWithIdentifier($identifier, $withToken);
+        $otp = $this->oneTimePasswordService->createOneTimePasswordWithIdentifier($identifier);
 
         if (isset(array_flip(class_uses_recursive($identifier))[RoutesNotifications::class])) {
             /**

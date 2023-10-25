@@ -194,6 +194,7 @@ return [
         */
 
         'token' => [
+            'enabled' => true,
             'length' => 16,
             'type' => \LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordTokenType::RANDOM_STRING,
         ],
@@ -234,5 +235,23 @@ return [
 
         'max_attempts' => 3,
 
+        /*
+        |--------------------------------------------------------------------------
+        | OTP Rate-limit configurations
+        |--------------------------------------------------------------------------
+        |
+        | Define the rate-limit configuration
+        |
+        */
+        'rate_limit' => [
+            \LaravelAuthPro\Infrastructure\OneTimePassword\Limiter\OneTimePasswordIpAddressLimiter::class => [
+                'decay_in_seconds' => 1800,
+                'max_attempts' => 5
+            ],
+            \LaravelAuthPro\Infrastructure\OneTimePassword\Limiter\OneTimePasswordIdentifierLimiter::class => [
+                'decay_in_seconds' => 900,
+                'max_attempts' => 10
+            ]
+        ]
     ],
 ];

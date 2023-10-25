@@ -12,7 +12,7 @@ use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 
 class OneTimePasswordEntity implements OneTimePasswordEntityInterface
 {
-    public function __construct(protected AuthIdentifierInterface $identifier, protected string $token, protected string $code, protected CarbonInterval $interval, protected CarbonInterface $createdAt)
+    public function __construct(protected AuthIdentifierInterface $identifier, protected ?string $token, protected string $code, protected CarbonInterval $interval, protected CarbonInterface $createdAt)
     {
         //
     }
@@ -38,7 +38,7 @@ class OneTimePasswordEntity implements OneTimePasswordEntityInterface
         return $this->identifier;
     }
 
-    public function getToken(): string
+    public function getToken(): ?string
     {
         return $this->token;
     }

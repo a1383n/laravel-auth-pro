@@ -22,15 +22,18 @@ class OneTimePasswordVerifierRepository extends BaseRepository implements OneTim
     public function getFailedAttemptsCount(OneTimePasswordEntityInterface $entity): int
     {
         /**
-         * @var int|false $result
+         * @var null|int|false $result
          */
-        $result = $this->connection->hGet(self::FAILED_ATTEMPTS_KEY, self::getKey($entity->getKey()));
+        $result = $this->connection->get(self::getKey($entity->getKey()));
 
-        return $result === false ? 0 : $result;
+        return $result === false || $result === null ? 0 : $result;
     }
 
     public function incrementFailAttemptsCount(OneTimePasswordEntityInterface $entity, int $value = 1): int
     {
-        return $this->connection->hIncrBy(self::FAILED_ATTEMPTS_KEY, self::getKey($entity->getKey()), $value);
+        $value = $this->connection->incr($key = self::getKey($entity->getKey()), $value);
+        $this->connection->expire($key, $entity->getValidInterval()->addDays(1)->totalSeconds);
+
+        return $value;
     }
 }

@@ -14,5 +14,5 @@ interface AuthServiceInterface
 
     public function verifyOneTimePasswordSignature(AuthSignatureInterface $signature): AuthResultInterface;
 
-    public function sendOneTimePassword(AuthIdentifierInterface $identifier, bool $withToken = true): AuthResultInterface;
+    public function sendOneTimePassword(AuthIdentifierInterface $identifier): AuthResultInterface;
 }

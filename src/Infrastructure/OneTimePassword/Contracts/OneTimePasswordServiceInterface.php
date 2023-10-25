@@ -11,7 +11,7 @@ use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 
 interface OneTimePasswordServiceInterface extends BaseServiceInterface
 {
-    public function createOneTimePasswordWithIdentifier(AuthIdentifierInterface $identifier, bool $withToken = true): OneTimePasswordEntityInterface;
+    public function createOneTimePasswordWithIdentifier(AuthIdentifierInterface $identifier): OneTimePasswordEntityInterface;
 
     public function verifyOneTimePassword(AuthIdentifierInterface $identifier, PhoneCredentialInterface $credential, bool $dry = false): OneTimePasswordResultInterface;
 

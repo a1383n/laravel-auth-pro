@@ -19,16 +19,6 @@ class OneTimePasswordIdentifierLimiter extends OneTimePasswordLimiter implements
         return $this->identifier->getIdentifierValue();
     }
 
-    public function decayInterval(): CarbonInterval
-    {
-        return CarbonInterval::hour();
-    }
-
-    public function maxAttempts(): int
-    {
-        return 5;
-    }
-
     public function pass(AuthIdentifierInterface $identifier): bool
     {
         return $this->defaultPass();

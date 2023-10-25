@@ -13,22 +13,12 @@ class OneTimePasswordIpAddressLimiter extends OneTimePasswordLimiter implements 
 
     public function __construct(Request $request)
     {
-        $this->ipAddress = $request->ip() ?? '0.0.0.0';
+        $this->ipAddress = $request->ip() ?? throw new \RuntimeException('Unknown IP Address');
     }
 
     public function getName(): string
     {
         return $this->ipAddress;
-    }
-
-    public function decayInterval(): CarbonInterval
-    {
-        return CarbonInterval::minute(30);
-    }
-
-    public function maxAttempts(): int
-    {
-        return 5;
     }
 
     public function pass(AuthIdentifierInterface $identifier): bool

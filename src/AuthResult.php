@@ -18,7 +18,7 @@ class AuthResult implements AuthResultInterface, HasBuilderInterface
      * @param AuthIdentifierInterface|null $identifier
      * @param AuthenticatableInterface|null $user
      * @param AuthExceptionInterface|null $exception
-     * @param array<string,string>|null $payload
+     * @param array<string,string|mixed>|null $payload
      */
     public function __construct(protected ?AuthIdentifierInterface $identifier = null, protected ?AuthenticatableInterface $user = null, protected ?AuthExceptionInterface $exception = null, protected ?array $payload = null)
     {
@@ -31,7 +31,7 @@ class AuthResult implements AuthResultInterface, HasBuilderInterface
             ->make(AuthResultBuilder::class);
     }
 
-    public function getIdentifier(): AuthIdentifierInterface
+    public function getIdentifier(): ?AuthIdentifierInterface
     {
         return $this->identifier;
     }
@@ -58,10 +58,6 @@ class AuthResult implements AuthResultInterface, HasBuilderInterface
 
     public function throwIfError(): self
     {
-        if (! $this->isSuccessful()) {
-            throw $this->getException();
-        }
-
-        return $this;
+        return !$this->isSuccessful() ? throw $this->getException() : $this;
     }
 }

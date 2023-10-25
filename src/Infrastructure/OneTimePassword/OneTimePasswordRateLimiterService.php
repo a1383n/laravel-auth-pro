@@ -30,6 +30,9 @@ class OneTimePasswordRateLimiterService extends BaseService implements OneTimePa
     {
         parent::__construct();
 
+        /**
+         * @phpstan-ignore-next-line
+         */
         $this->limiters = array_keys(config('auth_pro.one_time_password.rate_limit', [OneTimePasswordIpAddressLimiter::class, OneTimePasswordIdentifierLimiter::class]));
     }
 

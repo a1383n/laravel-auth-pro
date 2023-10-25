@@ -79,7 +79,7 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
                 ->build();
         }
 
-        $result = $this->verifierService->verify($otp, $credential->getOneTimePassword());
+        $result = $this->verifierService->verify($otp, $credential->getOneTimePassword() ?? throw new \Exception('code is null'));
         if ($result->isSuccessful() && ! $dry) {
             $this->repository->removeOneTimePassword($otp);
         }

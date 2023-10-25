@@ -12,8 +12,6 @@ class OneTimePasswordVerifierRepository extends BaseRepository implements OneTim
 {
     use HasKeyPrefix;
 
-    private const FAILED_ATTEMPTS_KEY = 'failed_attempts';
-
     public function __construct(private readonly Connection $connection)
     {
         self::$prefix = 'otp';
@@ -31,8 +29,12 @@ class OneTimePasswordVerifierRepository extends BaseRepository implements OneTim
 
     public function incrementFailAttemptsCount(OneTimePasswordEntityInterface $entity, int $value = 1): int
     {
-        $value = $this->connection->incr($key = self::getKey($entity->getKey()), $value);
-        $this->connection->expire($key, $entity->getValidInterval()->addDays(1)->totalSeconds);
+        /**
+         * @phpstan-ignore-next-line
+         */
+        $value = $this->connection->incr($key = self::getKey($entity->getKey()),$value);
+
+        $this->connection->expire($key, (int)$entity->getValidInterval()->addDays(1)->totalSeconds);
 
         return $value;
     }

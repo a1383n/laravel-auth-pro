@@ -89,7 +89,7 @@ class AuthService extends BaseService implements AuthServiceInterface
             ->build();
 
         return AuthResult::getBuilder()
-            ->as($result->getIdentifier())
+            ->as($result->getIdentifier() ?? throw new \Exception('identifier is null'))
             ->with([
                 'signature' => $signature,
             ])
@@ -102,6 +102,9 @@ class AuthService extends BaseService implements AuthServiceInterface
         $result = $this->oneTimePasswordService->verifyOneTimePassword($phoneCredential->getIdentifier(), $phoneCredential, $dry);
         if (! $result->isSuccessful()) {
             return AuthResult::getBuilder()
+                /**
+                 * @phpstan-ignore-next-line
+                 */
                 ->failed(new AuthException($result->getError()->value))
                 ->build();
         }

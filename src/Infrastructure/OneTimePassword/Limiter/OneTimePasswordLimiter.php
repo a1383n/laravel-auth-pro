@@ -28,11 +28,17 @@ abstract class OneTimePasswordLimiter implements OneTimePasswordLimiterInterface
 
     public function decayInterval(): CarbonInterval
     {
+        /**
+         * @phpstan-ignore-next-line
+         */
         return CarbonInterval::seconds(config('auth_pro.one_time_password.rate_limit')[static::class]['decay_in_seconds'] ?? 900);
     }
 
     public function maxAttempts(): int
     {
+        /**
+         * @phpstan-ignore-next-line
+         */
         return config('auth_pro.one_time_password.rate_limit')[static::class]['max_attempts'] ?? 6;
     }
 }

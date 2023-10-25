@@ -65,6 +65,9 @@ class AuthException extends Exception implements AuthExceptionInterface
     public function render($request)
     {
         if (self::$renderClosure !== null) {
+            /**
+             * @phpstan-ignore-next-line
+             */
             return self::$renderClosure->call($this, $this);
         } else {
             return response([

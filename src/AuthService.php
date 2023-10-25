@@ -102,7 +102,7 @@ class AuthService extends BaseService implements AuthServiceInterface
         $result = $this->oneTimePasswordService->verifyOneTimePassword($phoneCredential->getIdentifier(), $phoneCredential, $dry);
         if (! $result->isSuccessful()) {
             return AuthResult::getBuilder()
-                ->failed(new AuthException($result->getError()))
+                ->failed(new AuthException($result->getError()->value))
                 ->build();
         }
 

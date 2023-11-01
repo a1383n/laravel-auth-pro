@@ -13,9 +13,7 @@ use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordTokenType;
 trait OneTimePasswordConcerns
 {
     /**
-     * Get the rules for the one-time password fields.
-     *
-     * @return array
+     * @inheritDoc
      */
     public static function getOneTimePasswordRule(): array
     {
@@ -28,7 +26,7 @@ trait OneTimePasswordConcerns
     /**
      * Get the rules for the one-time password token field.
      *
-     * @return array
+     * @return array<int, Rule|string>
      */
     protected static function getOneTimePasswordTokenRule(): array
     {
@@ -42,8 +40,13 @@ trait OneTimePasswordConcerns
          */
         $length = config('auth_pro.one_time_password.token.length', $enumType == OneTimePasswordTokenType::RANDOM_STRING || $enumType == OneTimePasswordTokenType::RANDOM_INT ? 6 : null);
 
+        /**
+         * @var bool $isRequired
+         */
+        $isRequired = config('auth_pro.one_time_password.token.enabled', true);
+
         return [
-            Rule::requiredIf(config('auth_pro.one_time_password.token.enabled', true)),
+            Rule::requiredIf($isRequired),
             ...self::mapTokenTypeToValidationRule($enumType, $length),
         ];
     }
@@ -51,7 +54,7 @@ trait OneTimePasswordConcerns
     /**
      * Get the rules for the one-time password code field.
      *
-     * @return array
+     * @return array<int, Rule|string>
      */
     protected static function getOneTimePasswordCodeRule(): array
     {
@@ -76,13 +79,13 @@ trait OneTimePasswordConcerns
      *
      * @param OneTimePasswordTokenType $enumType
      * @param int|null $length
-     * @return array
+     * @return array<int, Rule|string>
      */
-    protected static function mapTokenTypeToValidationRule(OneTimePasswordTokenType $enumType, ?int $length): array
+    protected static function mapTokenTypeToValidationRule(OneTimePasswordTokenType $enumType, ?int $length = null): array
     {
         return match ($enumType) {
-            OneTimePasswordTokenType::RANDOM_STRING => ['string', 'size:' . $length ?? throw new \InvalidArgumentException('$length cannot be null when type is' . $enumType->name)],
-            OneTimePasswordTokenType::RANDOM_INT => ['int', 'digits:' . $length ?? throw new \InvalidArgumentException('$length cannot be null when type is' . $enumType->name)],
+            OneTimePasswordTokenType::RANDOM_STRING => ['string', 'size:' . ($length ?? throw new \InvalidArgumentException('$length cannot be null when type is' . $enumType->name))],
+            OneTimePasswordTokenType::RANDOM_INT => ['int', 'digits:' . ($length ?? throw new \InvalidArgumentException('$length cannot be null when type is' . $enumType->name))],
             OneTimePasswordTokenType::UUID, OneTimePasswordTokenType::ULID => [$enumType->value]
         };
     }
@@ -92,7 +95,7 @@ trait OneTimePasswordConcerns
      *
      * @param OneTimePasswordCodeType $enumType
      * @param int $length
-     * @return array
+     * @return array<int, Rule|string>
      */
     protected static function mapCodeTypeToValidationRule(OneTimePasswordCodeType $enumType, int $length): array
     {

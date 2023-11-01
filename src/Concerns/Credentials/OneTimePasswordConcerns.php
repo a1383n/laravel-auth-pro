@@ -21,7 +21,7 @@ trait OneTimePasswordConcerns
     {
         return [
             'token' => self::getOneTimePasswordTokenRule(),
-            'code' => self::getOneTimePasswordCodeRule()
+            'code' => self::getOneTimePasswordCodeRule(),
         ];
     }
 
@@ -44,7 +44,7 @@ trait OneTimePasswordConcerns
 
         return [
             Rule::requiredIf(config('auth_pro.one_time_password.token.enabled', true)),
-            ...self::mapTokenTypeToValidationRule($enumType, $length)
+            ...self::mapTokenTypeToValidationRule($enumType, $length),
         ];
     }
 
@@ -67,7 +67,7 @@ trait OneTimePasswordConcerns
 
         return [
             'required',
-            ...self::mapCodeTypeToValidationRule($enumType, $length)
+            ...self::mapCodeTypeToValidationRule($enumType, $length),
         ];
     }
 

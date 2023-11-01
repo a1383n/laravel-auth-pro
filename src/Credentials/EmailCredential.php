@@ -9,7 +9,8 @@ use LaravelAuthPro\Enums\AuthIdentifierType;
 
 class EmailCredential extends AuthCredential implements EmailCredentialInterface
 {
-    use OneTimePasswordConcerns, PasswordConcerns;
+    use OneTimePasswordConcerns;
+    use PasswordConcerns;
 
     protected ?string $password;
     protected ?string $token;

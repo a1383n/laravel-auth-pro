@@ -14,7 +14,7 @@ trait PasswordConcerns
     public static function getPasswordRule(): array
     {
         return [
-            'password' => self::getPasswordPropertyRule()
+            'password' => self::getPasswordPropertyRule(),
         ];
     }
 
@@ -22,7 +22,7 @@ trait PasswordConcerns
     {
         return [
             Rule::requiredIf($isRequired),
-            $validateAsString ? 'string' : Password::default()
+            $validateAsString ? 'string' : Password::default(),
         ];
     }
 }

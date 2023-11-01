@@ -11,7 +11,8 @@ use LaravelAuthPro\Enums\AuthIdentifierType;
 
 class PhoneCredential extends AuthCredential implements PhoneCredentialInterface
 {
-    use OneTimePasswordConcerns, PasswordConcerns;
+    use OneTimePasswordConcerns;
+    use PasswordConcerns;
 
     protected ?string $password;
     protected ?string $token = null;

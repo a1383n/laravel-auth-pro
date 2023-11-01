@@ -2,11 +2,15 @@
 
 namespace LaravelAuthPro\Credentials;
 
+use LaravelAuthPro\Concerns\Credentials\OneTimePasswordConcerns;
+use LaravelAuthPro\Concerns\Credentials\PasswordConcerns;
 use LaravelAuthPro\Contracts\Credentials\EmailCredentialInterface;
 use LaravelAuthPro\Enums\AuthIdentifierType;
 
 class EmailCredential extends AuthCredential implements EmailCredentialInterface
 {
+    use OneTimePasswordConcerns, PasswordConcerns;
+
     protected ?string $password;
     protected ?string $token;
     protected ?string $code;
@@ -36,26 +40,5 @@ class EmailCredential extends AuthCredential implements EmailCredentialInterface
     public function getOneTimePasswordToken(): ?string
     {
         return $this->token ?? null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function getOneTimePasswordRule(): array
-    {
-        return [
-            'token' => ['required_if:credential.sign_in_method,otp', 'string', 'size:8'],
-            'code' => ['required_if:credential.sign_in_method,otp', 'digits:6'],
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public static function getPasswordRule(): array
-    {
-        return [
-            'password' => ['required_if:credential.sign_in_method,password', 'string', 'min:8', 'max:32'],
-        ];
     }
 }

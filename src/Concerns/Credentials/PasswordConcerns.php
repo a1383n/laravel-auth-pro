@@ -29,7 +29,7 @@ trait PasswordConcerns
      * @param bool $validateAsString
      * @return array<int,string|Rule|RequiredIf|Password>
      */
-    protected static function getPasswordPropertyRule(callable|bool $isRequired = true, bool $validateAsString = true): array
+    public static function getPasswordPropertyRule(callable|bool $isRequired = true, bool $validateAsString = true): array
     {
         return [
             Rule::requiredIf($isRequired),

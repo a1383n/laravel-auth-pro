@@ -28,7 +28,7 @@ trait OneTimePasswordConcerns
      *
      * @return array<int, Rule|string>
      */
-    protected static function getOneTimePasswordTokenRule(): array
+    public static function getOneTimePasswordTokenRule(): array
     {
         /**
          * @var OneTimePasswordTokenType $enumType
@@ -56,12 +56,12 @@ trait OneTimePasswordConcerns
      *
      * @return array<int, Rule|string>
      */
-    protected static function getOneTimePasswordCodeRule(): array
+    public static function getOneTimePasswordCodeRule(callable|bool $isRequired = true): array
     {
         /**
          * @var OneTimePasswordCodeType $enumType
          */
-        $enumType = config('auth_pro.one_time_password.token.type', OneTimePasswordCodeType::DIGIT);
+        $enumType = config('auth_pro.one_time_password.code.type', OneTimePasswordCodeType::DIGIT);
 
         /**
          * @var int $length
@@ -69,7 +69,7 @@ trait OneTimePasswordConcerns
         $length = config('auth_pro.one_time_password.code.length', 6);
 
         return [
-            'required',
+            Rule::requiredIf($isRequired),
             ...self::mapCodeTypeToValidationRule($enumType, $length),
         ];
     }

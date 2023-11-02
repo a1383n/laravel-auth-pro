@@ -18,7 +18,7 @@ class AuthException extends Exception implements AuthExceptionInterface
      * @param int $code
      * @param array<string, mixed> $payload
      */
-    public function __construct(protected ?string $error, protected $code = 400,protected array $payload = [])
+    public function __construct(protected ?string $error, protected $code = 400, protected array $payload = [])
     {
         $key = 'auth.error.' . ($this->error ?? 'unknown');
         $this->code = $this->error === null ? 500 : $this->code;

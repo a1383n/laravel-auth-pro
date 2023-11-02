@@ -29,7 +29,7 @@ class OneTimePasswordRepository extends BaseRepository implements OneTimePasswor
 
         $this->connection->hMSet($key = self::getKey($entity->getKey()), $entity->toArray());
 
-        return $this->connection->expire($key, intval($entity->getValidInterval()->totalSeconds * 2));
+        return $this->connection->expire($key, intval($entity->getValidInterval()->totalSeconds));
     }
 
     public function getOneTimePasswordWithIdentifierAndToken(AuthIdentifierInterface $identifier, string $token = null): ?OneTimePasswordEntityInterface

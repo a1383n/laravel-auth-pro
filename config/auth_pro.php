@@ -186,6 +186,21 @@ return [
 
         /*
         |--------------------------------------------------------------------------
+        | Allow Simultaneous Multiple OTP Requests
+        |--------------------------------------------------------------------------
+        |
+        | Set this to true to allow multiple OTP requests simultaneously. When set
+        | to false, attempting to request an OTP while one is pending will return
+        | 'auth.error.conflict'.
+        |
+        | Note: When setting this to false, you should set 'token.enabled' to false too
+        */
+
+        'allow_simultaneously_multiple_requests' => true,
+
+
+        /*
+        |--------------------------------------------------------------------------
         | OTP Token Configuration
         |--------------------------------------------------------------------------
         |

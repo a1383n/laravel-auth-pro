@@ -22,12 +22,14 @@ class OneTimePasswordRepository extends BaseRepository implements OneTimePasswor
     public function createOneTimePasswordWithIdentifier(OneTimePasswordEntityInterface $entity): bool
     {
         if ($this->isOneTimePasswordExists($entity->getIdentifier())) {
-            return false;
+            if (! config('auth_pro.one_time_password.allow_simultaneously_multiple_requests', true)) {
+                return false;
+            }
         }
 
         $this->connection->hMSet($key = self::getKey($entity->getKey()), $entity->toArray());
 
-        return $this->connection->expire($key, intval($entity->getValidInterval()->totalSeconds * 2));
+        return $this->connection->expire($key, intval($entity->getValidInterval()->totalSeconds));
     }
 
     public function getOneTimePasswordWithIdentifierAndToken(AuthIdentifierInterface $identifier, string $token = null): ?OneTimePasswordEntityInterface

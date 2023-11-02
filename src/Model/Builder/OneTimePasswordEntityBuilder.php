@@ -86,7 +86,7 @@ class OneTimePasswordEntityBuilder
         }
 
         if ($this->interval === null) {
-            $this->interval = CarbonInterval::minute(2);
+            $this->interval = CarbonInterval::seconds(config('auth_pro.one_time_password.expiry', 120));
         }
 
         return new OneTimePasswordEntity($this->identifier, $this->token, $this->code, $this->interval, Date::now());

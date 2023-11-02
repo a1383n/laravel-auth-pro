@@ -16,9 +16,9 @@ class AuthException extends Exception implements AuthExceptionInterface
     /**
      * @param string|null $error
      * @param int $code
-     * @param array<string, mixed>|null $payload
+     * @param array<string, mixed> $payload
      */
-    public function __construct(protected ?string $error, protected $code = 400, array $payload = null)
+    public function __construct(protected ?string $error, protected $code = 400,protected array $payload = [])
     {
         $key = 'auth.error.' . ($this->error ?? 'unknown');
         $this->code = $this->error === null ? 500 : $this->code;
@@ -73,13 +73,27 @@ class AuthException extends Exception implements AuthExceptionInterface
             return response([
                 'is_successful' => false,
                 'error' => $this->error,
-                'message' => __($this->error),
+                /**
+                 * @phpstan-ignore-next-line
+                 */
+                'message' => __($this->error, $this->payload ?? []),
             ], $this->code);
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getErrorMessage(): string
     {
         return $this->error ?? 'unknown';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getPayload(): array
+    {
+        return $this->payload;
     }
 }

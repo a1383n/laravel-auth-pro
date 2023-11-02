@@ -63,7 +63,12 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
         $otp = $otp->build();
 
         if (! $this->repository->createOneTimePasswordWithIdentifier($otp)) {
-            throw new AuthException(OneTimePasswordError::CONFLICT->value, 409);
+            /**
+             * @var OneTimePasswordEntity $otp
+             */
+            $otp = $this->repository->getOneTimePasswordWithIdentifierAndToken($identifier);
+
+            throw new AuthException(OneTimePasswordError::CONFLICT->value, 409, ['try_again_in' => now()->diffForHumans(now()->addSeconds((int)$otp->getValidInterval()->totalSeconds))]);
         }
 
         return $otp;

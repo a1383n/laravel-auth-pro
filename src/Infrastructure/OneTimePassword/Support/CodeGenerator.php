@@ -2,14 +2,13 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword\Support;
 
-use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\Str;
 use LaravelAuthPro\Contracts\Base\GeneratorInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordCodeType;
 
 class CodeGenerator implements GeneratorInterface
 {
-    public function __construct(protected readonly OneTimePasswordCodeType $type = OneTimePasswordCodeType::DIGIT, protected readonly int $length = 6, )
+    public function __construct(protected readonly OneTimePasswordCodeType $type = OneTimePasswordCodeType::DIGIT, protected readonly int $length = 6)
     {
         //
     }

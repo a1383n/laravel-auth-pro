@@ -5,12 +5,12 @@ beforeAll(function () {
 
     \LaravelAuthPro\AuthPro::shouldReceive('getCredentialsMapper')->andReturn([
         \LaravelAuthPro\Contracts\Providers\EmailProviderInterface::class => \LaravelAuthPro\Contracts\Credentials\EmailCredentialInterface::class,
-        \LaravelAuthPro\Contracts\Providers\PhoneProviderInterface::class => \LaravelAuthPro\Contracts\Credentials\PhoneCredentialInterface::class
+        \LaravelAuthPro\Contracts\Providers\PhoneProviderInterface::class => \LaravelAuthPro\Contracts\Credentials\PhoneCredentialInterface::class,
     ]);
 
     \LaravelAuthPro\AuthPro::shouldReceive('getAuthProvidersMapper')->andReturn([
         \LaravelAuthPro\Contracts\Providers\EmailProviderInterface::class => \LaravelAuthPro\Providers\EmailProvider::class,
-        \LaravelAuthPro\Contracts\Providers\PhoneProviderInterface::class => \LaravelAuthPro\Providers\PhoneProvider::class
+        \LaravelAuthPro\Contracts\Providers\PhoneProviderInterface::class => \LaravelAuthPro\Providers\PhoneProvider::class,
     ]);
 });
 

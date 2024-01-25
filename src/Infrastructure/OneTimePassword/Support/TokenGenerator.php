@@ -2,14 +2,13 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword\Support;
 
-use Illuminate\Contracts\Config\Repository;
 use Illuminate\Support\Str;
 use LaravelAuthPro\Contracts\Base\GeneratorInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordTokenType;
 
 class TokenGenerator implements GeneratorInterface
 {
-    public function __construct( protected readonly OneTimePasswordTokenType $type = OneTimePasswordTokenType::RANDOM_STRING, protected readonly int $length = 8)
+    public function __construct(protected readonly OneTimePasswordTokenType $type = OneTimePasswordTokenType::RANDOM_STRING, protected readonly int $length = 8)
     {
         //
     }

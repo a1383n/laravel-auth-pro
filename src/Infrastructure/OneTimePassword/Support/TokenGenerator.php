@@ -9,20 +9,9 @@ use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordTokenType;
 
 class TokenGenerator implements GeneratorInterface
 {
-    protected readonly int $length;
-    protected readonly OneTimePasswordTokenType $type;
-
-    public function __construct(Repository $configRepository)
+    public function __construct( protected readonly OneTimePasswordTokenType $type = OneTimePasswordTokenType::RANDOM_STRING, protected readonly int $length = 8)
     {
-        /**
-         * @phpstan-ignore-next-line
-         */
-        $this->length = $configRepository->get('one_time_password.token.length', 8);
-
-        /**
-         * @phpstan-ignore-next-line
-         */
-        $this->type = OneTimePasswordTokenType::from($configRepository->get('one_time_password.token.type', 'random_string'));
+        //
     }
 
     /**
@@ -42,6 +31,11 @@ class TokenGenerator implements GeneratorInterface
 
     private function generateRandomInt(int $length): int
     {
+        if ($length > 18) {
+            // It's reached PHP_MAX_INT value and will convert to float, but random_int method accept int as min and max.
+            throw new \RuntimeException('$length is too large. Length should not above 18');
+        }
+
         return random_int(10 ** ($length - 1), (10 ** $length) - 1);
     }
 }

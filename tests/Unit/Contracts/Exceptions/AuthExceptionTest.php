@@ -4,7 +4,7 @@ describe('test auth exception', function () {
     it('create new instance', function () {
         $e = new \LaravelAuthPro\Contracts\Exceptions\AuthException('my_error', 500, ['foo' => 'bar']);
 
-        $translatorMock =  Mockery::mock(\Illuminate\Translation\Translator::class)
+        $translatorMock = Mockery::mock(\Illuminate\Translation\Translator::class)
             ->shouldReceive('get')
             ->andReturn('My Error')
             ->getMock();

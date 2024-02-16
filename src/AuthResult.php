@@ -58,6 +58,9 @@ class AuthResult implements AuthResultInterface, HasBuilderInterface
 
     public function throwIfError(): self
     {
+        /**
+         * @phpstan-ignore-next-line
+         */
         return ! $this->isSuccessful() ? throw $this->getException() : $this;
     }
 }

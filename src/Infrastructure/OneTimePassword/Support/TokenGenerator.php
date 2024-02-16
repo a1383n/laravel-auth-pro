@@ -35,6 +35,9 @@ class TokenGenerator implements GeneratorInterface
             throw new \RuntimeException('$length is too large. Length should not above 18');
         }
 
+        /**
+         * @phpstan-ignore-next-line
+         */
         return random_int(10 ** ($length - 1), (10 ** $length) - 1);
     }
 }

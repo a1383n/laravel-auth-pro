@@ -10,7 +10,8 @@ use LaravelAuthPro\Traits\HasBuilder;
 
 class AuthIdentifier implements AuthIdentifierInterface
 {
-    use HasBuilder, RoutesNotifications;
+    use HasBuilder;
+    use RoutesNotifications;
 
     protected AuthIdentifierType $type;
     protected string $value;

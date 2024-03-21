@@ -46,7 +46,7 @@ trait AuthProAuthenticatable
     {
         return [
             'email' => AuthIdentifierType::EMAIL,
-            'mobile' => AuthIdentifierType::MOBILE
+            'mobile' => AuthIdentifierType::MOBILE,
         ];
     }
 }

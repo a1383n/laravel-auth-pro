@@ -22,6 +22,6 @@ class EmailProvider extends AuthProvider implements EmailProviderInterface
 
     public function createUserWithEmailAndPassword(string $email, string $password): AuthenticatableInterface
     {
-        return $this->createAuthenticatable($email, fn(AuthenticatableBuilder $authenticatableBuilder) => $authenticatableBuilder->withPassword($password));
+        return $this->createAuthenticatable($email, fn (AuthenticatableBuilder $authenticatableBuilder) => $authenticatableBuilder->withPassword($password));
     }
 }

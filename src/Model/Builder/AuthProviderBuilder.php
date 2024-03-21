@@ -15,12 +15,14 @@ class AuthProviderBuilder implements EntityBuilderInterface
     public function setProviderId(?string $providerId = null): AuthProviderBuilder
     {
         $this->providerId = $providerId;
+
         return $this;
     }
 
     public function setProviderClass(?string $providerClass = null): AuthProviderBuilder
     {
         $this->providerClass = $providerClass;
+
         return $this;
     }
 

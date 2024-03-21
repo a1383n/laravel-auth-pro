@@ -19,7 +19,6 @@ use LaravelAuthPro\Enums\AuthProviderType;
 use LaravelAuthPro\Model\Builder\AuthProviderBuilder;
 use LaravelAuthPro\Traits\HasBuilder;
 
-
 abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterface
 {
     use HasBuilder;
@@ -77,7 +76,7 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
 
     protected function getSignInMethodClass(AuthProviderSignInMethod $signInMethod): string
     {
-       return (static::SIGN_IN_METHODS + AuthPro::getDefaultSignInMethodsMapper())[$signInMethod->value] ?? throw new \InvalidArgumentException("SignInMethod $signInMethod->value is not defined in mapper");
+        return (static::SIGN_IN_METHODS + AuthPro::getDefaultSignInMethodsMapper())[$signInMethod->value] ?? throw new \InvalidArgumentException("SignInMethod $signInMethod->value is not defined in mapper");
     }
 
     protected function createAuthenticatable(string $identifierValue, ?callable $beforeBuildClosure = null): AuthenticatableInterface

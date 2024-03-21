@@ -28,7 +28,7 @@ class PhoneProvider extends AuthProvider implements PhoneProviderInterface
 
     public function createUserWithPhoneAndPassword(string $phone, string $password): AuthenticatableInterface
     {
-        return $this->createAuthenticatable($phone, fn(AuthenticatableBuilder $authenticatableBuilder) => $authenticatableBuilder->withPassword($password));
+        return $this->createAuthenticatable($phone, fn (AuthenticatableBuilder $authenticatableBuilder) => $authenticatableBuilder->withPassword($password));
     }
 
     public function createUserWithPhone(string $phone): AuthenticatableInterface

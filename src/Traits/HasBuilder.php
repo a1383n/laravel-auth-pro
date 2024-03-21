@@ -17,5 +17,5 @@ trait HasBuilder
             ->make(static::getBuilderClass());
     }
 
-    protected static abstract function getBuilderClass(): string;
+    abstract protected static function getBuilderClass(): string;
 }

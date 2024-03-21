@@ -4,10 +4,12 @@ namespace LaravelAuthPro\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Enums\AuthIdentifierType;
 use LaravelAuthPro\Model\Builder\AuthenticatableBuilder;
+use LaravelAuthPro\Model\UserAuthProvider;
 
 /**
  * @mixin AuthenticatableInterface
@@ -48,5 +50,10 @@ trait AuthProAuthenticatable
             'email' => AuthIdentifierType::EMAIL,
             'mobile' => AuthIdentifierType::MOBILE,
         ];
+    }
+
+    public function authProviders(): HasMany
+    {
+        return $this->hasMany(UserAuthProvider::class, 'user_id');
     }
 }

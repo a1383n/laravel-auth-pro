@@ -4,6 +4,7 @@ namespace LaravelAuthPro\Contracts;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use LaravelAuthPro\Contracts\Base\HasBuilderInterface;
 use LaravelAuthPro\Enums\AuthIdentifierType;
 
@@ -37,4 +38,6 @@ interface AuthenticatableInterface extends HasBuilderInterface
      * @return array
      */
     public static function getIdentifierMapper(): array;
+
+    public function authProviders(): HasMany;
 }

@@ -3,30 +3,26 @@
 namespace LaravelAuthPro\SignInMethods;
 
 use Laravel\Socialite\Facades\Socialite;
-use Laravel\Socialite\Two\GoogleProvider;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthSignInMethodInterface;
-use LaravelAuthPro\Contracts\Credentials\GoogleCredentialInterface;
+use LaravelAuthPro\Contracts\Credentials\OAuthCredentialInterface;
 use LaravelAuthPro\Contracts\Exceptions\AuthException;
 
 class OAuthSignInMethod implements AuthSignInMethodInterface
 {
     /**
      * @param AuthenticatableInterface $user
-     * @param GoogleCredentialInterface $credential
+     * @param OAuthCredentialInterface|AuthCredentialInterface $credential
      * @return AuthenticatableInterface
      * @throws AuthException
      */
-    public function __invoke(AuthenticatableInterface $user, GoogleCredentialInterface|AuthCredentialInterface $credential): AuthenticatableInterface
+    public function __invoke(AuthenticatableInterface $user, OAuthCredentialInterface|AuthCredentialInterface $credential): AuthenticatableInterface
     {
         try {
-            /**
-             * @var GoogleProvider $socialite
-             */
-            $socialite = Socialite::driver($credential->getProviderId());
+            $oauthUser = Socialite::driver($credential->getDriver())->userFromToken($credential->getIdToken());
 
-            $oauthUser = $socialite->userFromToken($credential->getIdToken());
+            dump($user, $oauthUser);
 
             throw new \Exception('not implemented');
         } catch (\Exception $e) {

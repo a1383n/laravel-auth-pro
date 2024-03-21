@@ -4,26 +4,24 @@ namespace LaravelAuthPro\Providers;
 
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\Providers\EmailProviderInterface;
+use LaravelAuthPro\Enums\AuthIdentifierType;
 use LaravelAuthPro\Enums\AuthProviderSignInMethod;
 use LaravelAuthPro\Enums\AuthProviderType;
-use LaravelAuthPro\SignInMethods\PasswordSignInMethod;
+use LaravelAuthPro\Model\Builder\AuthenticatableBuilder;
 
 class EmailProvider extends AuthProvider implements EmailProviderInterface
 {
     public const ID = 'email';
     public const TYPE = AuthProviderType::INTERNAL;
+    public const IDENTIFIER_TYPE = AuthIdentifierType::EMAIL;
     public const SUPPORTED_SIGN_IN_METHODS = [
         AuthProviderSignInMethod::PASSWORD,
         AuthProviderSignInMethod::LINK,
         AuthProviderSignInMethod::ONE_TIME_PASSWORD,
     ];
-    protected const SIGN_IN_METHODS = [
-        'password' => PasswordSignInMethod::class,
-    ];
 
     public function createUserWithEmailAndPassword(string $email, string $password): AuthenticatableInterface
     {
-        // TODO: Implement createUserWithEmailAndPassword() method.
-        throw new \Exception('not implemented');
+        return $this->createAuthenticatable($email, fn(AuthenticatableBuilder $authenticatableBuilder) => $authenticatableBuilder->withPassword($password));
     }
 }

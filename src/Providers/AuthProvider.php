@@ -3,18 +3,27 @@
 namespace LaravelAuthPro\Providers;
 
 use Illuminate\Container\Container;
-use LaravelAuthPro\AuthProServiceProvider;
+use LaravelAuthPro\AuthIdentifier;
+use LaravelAuthPro\AuthPro;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
+use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\AuthProviderInterface;
 use LaravelAuthPro\Contracts\AuthSignInMethodInterface;
+use LaravelAuthPro\Contracts\Base\HasBuilderInterface;
 use LaravelAuthPro\Contracts\Exceptions\AuthException;
 use LaravelAuthPro\Contracts\Repositories\UserRepositoryInterface;
+use LaravelAuthPro\Enums\AuthIdentifierType;
 use LaravelAuthPro\Enums\AuthProviderSignInMethod;
 use LaravelAuthPro\Enums\AuthProviderType;
+use LaravelAuthPro\Model\Builder\AuthProviderBuilder;
+use LaravelAuthPro\Traits\HasBuilder;
 
-abstract class AuthProvider implements AuthProviderInterface
+
+abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterface
 {
+    use HasBuilder;
+
     /**
      * @type string|null
      */
@@ -26,69 +35,72 @@ abstract class AuthProvider implements AuthProviderInterface
     public const TYPE = null;
 
     /**
+     * @type AuthIdentifierType|null
+     */
+    public const IDENTIFIER_TYPE = null;
+
+    /**
      * @type AuthProviderSignInMethod[]|null
      */
-    public const SUPPORTED_SIGN_IN_METHODS = null;
+    public const SUPPORTED_SIGN_IN_METHODS = [];
 
     /**
      * @type array<string, class-string<AuthSignInMethodInterface>>
      */
     protected const SIGN_IN_METHODS = [];
 
-    public function __construct(protected UserRepositoryInterface $userRepository)
+    public function __construct(private readonly UserRepositoryInterface $userRepository, protected readonly ?string $authenticatableModel = null)
     {
         //
     }
 
-    public static function createFromProviderId(string $id): AuthProviderInterface
+    protected static function getBuilderClass(): string
     {
-        return Container::getInstance()
-            ->make(sprintf(AuthProServiceProvider::CONTAINER_ALIAS_AUTH_PROVIDER_TEMPLATE, $id));
+        return AuthProviderBuilder::class;
     }
 
-    public function getProviderId(): string
+    protected function getRepository(): UserRepositoryInterface
     {
-        if (self::ID === null) {
-            throw new \InvalidArgumentException('TYPE const is null');
-        }
-
-        /**
-         * @phpstan-ignore-next-line
-         */
-        return self::ID;
+        return $this->userRepository
+            ->setUserModelClass($this->getAuthenticatableModel());
     }
 
-    public function getProviderType(): AuthProviderType
+    public function createIdentifier(string $value): AuthIdentifierInterface
     {
-        if (self::TYPE === null) {
-            throw new \InvalidArgumentException('TYPE const is null');
-        }
-
-        /**
-         * @phpstan-ignore-next-line
-         */
-        return self::TYPE;
+        return new AuthIdentifier(static::IDENTIFIER_TYPE, $value);
     }
 
-    public function getProviderSignInMethods(): array
+    protected function getAuthenticatableModel(): string
     {
-        if (self::SUPPORTED_SIGN_IN_METHODS === null) {
-            throw new \InvalidArgumentException('TYPE const is null');
+        return $this->authenticatableModel ?? AuthPro::getDefaultAuthenticatableModel();
+    }
+
+    protected function getSignInMethodClass(AuthProviderSignInMethod $signInMethod): string
+    {
+       return (static::SIGN_IN_METHODS + AuthPro::getDefaultSignInMethodsMapper())[$signInMethod->value] ?? throw new \InvalidArgumentException("SignInMethod $signInMethod->value is not defined in mapper");
+    }
+
+    protected function createAuthenticatable(string $identifierValue, ?callable $beforeBuildClosure = null): AuthenticatableInterface
+    {
+        $builder = $this->getAuthenticatableModel()::getBuilder()
+            ->as($identifier = $this->createIdentifier($identifierValue));
+
+        if ($beforeBuildClosure !== null) {
+            $beforeBuildClosure($builder);
         }
 
-        /**
-         * @phpstan-ignore-next-line
-         */
-        return self::SUPPORTED_SIGN_IN_METHODS;
+        if (! $this->getRepository()->createByAuthenticatable($identifier, $authenticatable = $builder->build())) {
+            throw new \Exception('Failed to save the user to the database');
+        }
+
+        return $authenticatable;
     }
 
     public function authenticate(AuthCredentialInterface $credential): AuthenticatableInterface
     {
-        if (empty($signInMethodClass = static::SIGN_IN_METHODS[$signInMethodEnumValue = $credential->getSignInMethod()->value] ?? null)) {
-            throw new \InvalidArgumentException(sprintf('sign in method %s not defined', $signInMethodEnumValue));
-        }
+        $signInMethodClass = $this->getSignInMethodClass($credential->getSignInMethod());
 
-        if (! $this->userRepository->isUserExist($credential->getIdentifier())) {
+        if (! $this->getRepository()->isUserExist($credential->getIdentifier())) {
             throw new AuthException('user_not_found');
         }
 
@@ -100,8 +112,8 @@ abstract class AuthProvider implements AuthProviderInterface
         /**
          * @var AuthenticatableInterface $user
          */
-        $user = $this->userRepository->getUserByIdentifier($credential->getIdentifier(), $signInMethod->getUserRequiredColumns());
+        $user = $this->getRepository()->getUserByIdentifier($credential->getIdentifier(), $signInMethod->getUserRequiredColumns());
 
-        return $signInMethod->__invoke($user, $credential);
+        return $signInMethod($user, $credential);
     }
 }

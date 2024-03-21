@@ -2,6 +2,7 @@
 
 namespace LaravelAuthPro\Model\Builder;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
@@ -19,6 +20,15 @@ class AuthSignatureBuilder implements EntityBuilderInterface
 
     private ?string $ip = null;
     private ?string $userId = null;
+
+    /**
+     * @param array<string, string> $array
+     * @return AuthSignatureInterface
+     */
+    public static function fromArray(array $array): AuthSignatureInterface
+    {
+        return new AuthSignature($array['id'], $array['ip'], $array['sub'], Carbon::createFromTimestamp($array['iat']));
+    }
 
     public function fromEncryptedPlainSignature(string $signature): AuthSignatureInterface
     {
@@ -50,7 +60,7 @@ class AuthSignatureBuilder implements EntityBuilderInterface
                  */
                 $array = Crypt::decrypt($this->plainSignature);
 
-                return AuthSignature::fromArray($array);
+                return AuthSignature::getBuilder()::fromArray($array);
             } catch (DecryptException $e) {
                 throw new AuthException('invalid_signature', 422, ['e' => $e]);
             }

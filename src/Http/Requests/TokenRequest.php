@@ -56,7 +56,7 @@ class TokenRequest extends FormRequest
         /**
          * @phpstan-ignore-next-line
          */
-        return Collection::make(AuthProvider::createFromProviderId($this->input('credential.provider_id'))::SUPPORTED_SIGN_IN_METHODS)
+        return Collection::make(AuthProvider::getBuilder()->fromId($this->input('credential.provider_id'))::SUPPORTED_SIGN_IN_METHODS)
             /**
              * @phpstan-ignore-next-line
              */

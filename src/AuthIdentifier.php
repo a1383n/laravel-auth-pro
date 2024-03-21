@@ -4,21 +4,13 @@ namespace LaravelAuthPro;
 
 use Illuminate\Notifications\RoutesNotifications;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
-use LaravelAuthPro\Contracts\Base\HasBuilderInterface;
 use LaravelAuthPro\Enums\AuthIdentifierType;
 use LaravelAuthPro\Model\Builder\AuthIdentifierBuilder;
+use LaravelAuthPro\Traits\HasBuilder;
 
-/**
- * @implements HasBuilderInterface<AuthIdentifierInterface>
- */
-class AuthIdentifier implements AuthIdentifierInterface, HasBuilderInterface
+class AuthIdentifier implements AuthIdentifierInterface
 {
-    use RoutesNotifications;
-
-    protected const PAYLOAD_NAME_IDENTIFIER_TYPE_MAPPER = [
-        'email' => AuthIdentifierType::EMAIL,
-        'phone' => AuthIdentifierType::MOBILE,
-    ];
+    use HasBuilder, RoutesNotifications;
 
     protected AuthIdentifierType $type;
     protected string $value;
@@ -33,9 +25,9 @@ class AuthIdentifier implements AuthIdentifierInterface, HasBuilderInterface
         $this->value = $value;
     }
 
-    public static function getBuilder(): AuthIdentifierBuilder
+    protected static function getBuilderClass(): string
     {
-        return new AuthIdentifierBuilder();
+        return AuthIdentifierBuilder::class;
     }
 
     public function getIdentifierType(): AuthIdentifierType

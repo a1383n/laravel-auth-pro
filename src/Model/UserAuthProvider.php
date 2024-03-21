@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class UserAuthProvider extends Model
 {
     protected $casts = [
-        'payload' => 'json'
+        'payload' => 'json',
     ];
 }

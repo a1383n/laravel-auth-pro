@@ -31,8 +31,8 @@ class OAuthProvider extends AuthProvider implements OAuthProviderInterface
                 'provider_id' => static::ID . '.' . $driver,
                 'payload' => [
                     'id' => $user->getId(),
-                    'extra' => $user->getRaw()
-                ]
+                    'extra' => $user->getRaw(),
+                ],
             ]);
 
         return $authenticatable;

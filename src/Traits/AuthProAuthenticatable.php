@@ -11,7 +11,7 @@ use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\Base\EntityBuilderInterface;
 use LaravelAuthPro\Enums\AuthIdentifierType;
 use LaravelAuthPro\Model\Builder\AuthenticatableBuilder;
-use LaravelAuthPro\Model\UserAuthProvider;
+use LaravelAuthPro\Model\AuthenticatableProviders;
 
 /**
  * @mixin AuthenticatableInterface
@@ -62,6 +62,6 @@ trait AuthProAuthenticatable
 
     public function authProviders(): HasMany
     {
-        return $this->hasMany(UserAuthProvider::class, 'user_id');
+        return $this->hasMany(AuthenticatableProviders::class, 'user_id');
     }
 }

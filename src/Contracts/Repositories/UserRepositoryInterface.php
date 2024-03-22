@@ -8,6 +8,8 @@ use LaravelAuthPro\Contracts\Base\BaseRepositoryInterface;
 
 interface UserRepositoryInterface extends BaseRepositoryInterface
 {
+    public function setUserModelClass(?string $model = null): self;
+
     /**
      * @param AuthIdentifierInterface $identifier
      * @return bool
@@ -27,4 +29,6 @@ interface UserRepositoryInterface extends BaseRepositoryInterface
      * @return AuthenticatableInterface|null
      */
     public function getUserById(string $id, array $columns = ['*']): ?AuthenticatableInterface;
+
+    public function createByAuthenticatable(AuthIdentifierInterface $identifier, AuthenticatableInterface $authenticatable): bool;
 }

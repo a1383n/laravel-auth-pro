@@ -10,13 +10,13 @@ trait HasPayload
      */
     private function fillAttributes(array $payload): void
     {
-        $staticProperties = array_keys(get_class_vars(static::class));
-        $staticProperties = array_diff($staticProperties, array_keys(get_object_vars($this)));
-
-        foreach ($staticProperties as $property) {
-            if (! empty($payload[$property])) {
-                $this->{$property} = $payload[$property];
-            }
-        }
+        collect(get_class_vars(static::class))
+            ->keys()
+            ->diff(collect(get_object_vars($this))->keys())
+            ->each(function ($property) use ($payload) {
+                if (! empty($payload[$property])) {
+                    $this->{$property} = $payload[$property];
+                }
+            });
     }
 }

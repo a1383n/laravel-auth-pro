@@ -2,24 +2,26 @@
 
 namespace LaravelAuthPro\Repositories;
 
-use Illuminate\Contracts\Config\Repository;
+use LaravelAuthPro\AuthPro;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
+use LaravelAuthPro\Contracts\Exceptions\AuthException;
 use LaravelAuthPro\Contracts\Repositories\UserRepositoryInterface;
 
 class UserRepository implements UserRepositoryInterface
 {
-    /**
-     * @var class-string<AuthenticatableInterface>
-     */
-    protected readonly string $userModel;
-
-    public function __construct(Repository $configRepository)
+    public function __construct(protected ?string $userModel = null)
     {
-        /**
-         * @phpstan-ignore-next-line
-         */
-        $this->userModel = $configRepository->get('auth_pro.authenticatable_model', 'App\\Models\\User');
+        if ($this->userModel === null) {
+            $this->setUserModelClass();
+        }
+    }
+
+    public function setUserModelClass(?string $model = null): UserRepositoryInterface
+    {
+        $this->userModel ??= $model ?? AuthPro::getDefaultAuthenticatableModel();
+
+        return $this;
     }
 
     /**
@@ -43,7 +45,6 @@ class UserRepository implements UserRepositoryInterface
     public function isUserExist(AuthIdentifierInterface $identifier): bool
     {
         return $this->userModel::query()
-            ->selectRaw('1')
             ->whereIdentifier($identifier)
             ->exists();
     }
@@ -60,5 +61,14 @@ class UserRepository implements UserRepositoryInterface
             ->find($id, $columns);
 
         return $user;
+    }
+
+    public function createByAuthenticatable(AuthIdentifierInterface $identifier, AuthenticatableInterface $authenticatable): bool
+    {
+        if ($this->isUserExist($identifier)) {
+            throw new AuthException('user_already_exits');
+        }
+
+        return $authenticatable->save();
     }
 }

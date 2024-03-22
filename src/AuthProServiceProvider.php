@@ -45,7 +45,7 @@ class AuthProServiceProvider extends ServiceProvider
     private function registerAuthProviders(): void
     {
         collect(AuthPro::getAuthProvidersConfiguration())
-            ->filter(fn($provider) => $provider['enabled'])
+            ->filter(fn ($provider) => $provider['enabled'])
             ->each(function ($provider, $providerInterface) {
                 $this->app->bind($providerInterface, $provider['class']);
                 $this->app->alias($providerInterface, sprintf(self::CONTAINER_ALIAS_AUTH_PROVIDER_TEMPLATE, $provider['class']::ID));

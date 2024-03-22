@@ -3,7 +3,6 @@
 namespace LaravelAuthPro\Credentials\Builder;
 
 use Illuminate\Container\Container;
-use Illuminate\Support\Collection;
 use LaravelAuthPro\AuthPro;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
@@ -33,7 +32,7 @@ class AuthCredentialBuilder implements EntityBuilderInterface
          * @phpstan-ignore-next-line
          */
         return collect(AuthPro::getAuthProvidersConfiguration())
-            ->first(fn($provider) => $provider['class']::ID === $id)['credential'];
+            ->first(fn ($provider) => $provider['class']::ID === $id)['credential'];
     }
 
     public function with(string $providerId): self

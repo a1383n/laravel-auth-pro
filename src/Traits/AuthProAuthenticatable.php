@@ -62,6 +62,6 @@ trait AuthProAuthenticatable
 
     public function authProviders(): MorphMany
     {
-        return $this->morphMany(AuthenticatableProviders::class, 'authenticatable', 'user_id');
+        return $this->morphMany(AuthenticatableProviders::class, 'authenticatable');
     }
 }

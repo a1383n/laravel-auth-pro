@@ -43,9 +43,9 @@ class TokenRequest extends FormRequest
      */
     private function getProviderIds(): Collection
     {
-        return Collection::make(AuthPro::getAuthProvidersMapper())
+        return Collection::make(AuthPro::getAuthProvidersConfiguration())
             ->values()
-            ->map(fn ($provider) => $provider::ID);
+            ->map(fn ($provider) => $provider['class']::ID);
     }
 
     /**

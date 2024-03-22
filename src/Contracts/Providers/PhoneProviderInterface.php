@@ -7,7 +7,7 @@ use LaravelAuthPro\Contracts\AuthProviderInterface;
 
 interface PhoneProviderInterface extends AuthProviderInterface
 {
-    public function createUserWithPhoneAndPassword(string $phone, string $password): AuthenticatableInterface;
+    public function createUserWithPhoneAndPassword(string $phone, string $password, ?callable $beforeBuildClosure = null): AuthenticatableInterface;
 
-    public function createUserWithPhone(string $phone): AuthenticatableInterface;
+    public function createUserWithPhone(string $phone, ?callable $beforeBuildClosure = null): AuthenticatableInterface;
 }

@@ -2,11 +2,13 @@
 
 namespace LaravelAuthPro\Traits;
 
+use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
+use LaravelAuthPro\Contracts\Base\EntityBuilderInterface;
 use LaravelAuthPro\Enums\AuthIdentifierType;
 use LaravelAuthPro\Model\Builder\AuthenticatableBuilder;
 use LaravelAuthPro\Model\UserAuthProvider;
@@ -22,6 +24,12 @@ trait AuthProAuthenticatable
     protected static function getBuilderClass(): string
     {
         return AuthenticatableBuilder::class;
+    }
+
+    public static function getBuilder(): EntityBuilderInterface
+    {
+        return Container::getInstance()
+            ->make(static::getBuilderClass(), ['authenticatableModel' => static::class]);
     }
 
     public function scopeWhereIdentifier(Builder $builder, AuthIdentifierInterface $identifier): Builder
@@ -44,7 +52,7 @@ trait AuthProAuthenticatable
         return $this->getKey();
     }
 
-    public function getIdentifierMapper(): array
+    public static function getIdentifierMapper(): array
     {
         return [
             'email' => AuthIdentifierType::EMAIL,

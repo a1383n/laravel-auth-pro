@@ -5,7 +5,7 @@ namespace LaravelAuthPro;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static array getAuthProvidersMapper()
+ * @method static array getAuthProvidersConfiguration()
  * @method static array getCredentialsMapper()
  * @method static string getDefaultAuthenticatableModel()
  * @method static array getDefaultSignInMethodsMapper()

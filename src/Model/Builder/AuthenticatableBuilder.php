@@ -10,6 +10,7 @@ class AuthenticatableBuilder implements EntityBuilderInterface
 {
     protected AuthIdentifierInterface $authIdentifier;
     protected ?string $password;
+    protected array $attributes = [];
 
     public function __construct(protected readonly string $authenticatableModel)
     {
@@ -30,6 +31,13 @@ class AuthenticatableBuilder implements EntityBuilderInterface
         return $this;
     }
 
+    public function withAttributes(array $attributes = []): self
+    {
+        $this->attributes = $attributes;
+
+        return $this;
+    }
+
     public function build(): AuthenticatableInterface
     {
         $identifierKey = collect($this->authenticatableModel::getIdentifierMapper())
@@ -37,14 +45,12 @@ class AuthenticatableBuilder implements EntityBuilderInterface
             ->keys()
             ->first();
 
-        $attributes = [
-            $identifierKey => $this->authIdentifier->getIdentifierValue(),
-        ];
+        $this->attributes = [$identifierKey => $this->authIdentifier->getIdentifierValue()] + $this->attributes;
 
         if (! empty($this->password)) {
-            $attributes[$this->authenticatableModel::getPasswordKey()] = $this->password;
+            $this->attributes[$this->authenticatableModel::getPasswordKey()] = $this->password;
         }
 
-        return new $this->authenticatableModel($attributes);
+        return new $this->authenticatableModel($this->attributes);
     }
 }

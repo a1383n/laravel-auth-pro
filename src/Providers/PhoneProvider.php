@@ -26,13 +26,19 @@ class PhoneProvider extends AuthProvider implements PhoneProviderInterface
         'otp' => OneTimePasswordSignInMethod::class,
     ];
 
-    public function createUserWithPhoneAndPassword(string $phone, string $password): AuthenticatableInterface
+    public function createUserWithPhoneAndPassword(string $phone, string $password, ?callable $beforeBuildClosure = null): AuthenticatableInterface
     {
-        return $this->createAuthenticatable($phone, fn (AuthenticatableBuilder $authenticatableBuilder) => $authenticatableBuilder->withPassword($password));
+        return $this->createAuthenticatable($phone, function (AuthenticatableBuilder $authenticatableBuilder) use ($beforeBuildClosure, $password) {
+            $authenticatableBuilder->withPassword($password);
+
+            if ($beforeBuildClosure !== null) {
+                $beforeBuildClosure($authenticatableBuilder);
+            }
+        });
     }
 
-    public function createUserWithPhone(string $phone): AuthenticatableInterface
+    public function createUserWithPhone(string $phone, ?callable $beforeBuildClosure = null): AuthenticatableInterface
     {
-        return $this->createAuthenticatable($phone);
+        return $this->createAuthenticatable($phone, $beforeBuildClosure);
     }
 }

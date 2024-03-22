@@ -2,13 +2,12 @@
 
 namespace LaravelAuthPro;
 
-use Illuminate\Contracts\Config\Repository;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthProviderInterface;
 use LaravelAuthPro\Contracts\AuthServiceInterface;
-use LaravelAuthPro\Contracts\Credentials\EmailCredentialInterface;
 use LaravelAuthPro\Contracts\Providers\EmailProviderInterface;
+use LaravelAuthPro\Credentials\EmailCredential;
 use LaravelAuthPro\Enums\AuthProviderSignInMethod;
 use LaravelAuthPro\Providers\EmailProvider;
 use LaravelAuthPro\SignInMethods\OAuthSignInMethod;
@@ -27,43 +26,24 @@ class AuthProManager
      */
     protected readonly array $authCredentialClass;
 
-    public function __construct(Repository $configRepository)
-    {
-        /**
-         * @phpstan-ignore-next-line
-         */
-        $this->authProvidersClass = $configRepository->get('auth_pro.providers', [EmailProviderInterface::class => EmailProvider::class]);
-
-        /**
-         * @phpstan-ignore-next-line
-         */
-        $this->authCredentialClass = $configRepository->get('auth_pro.credentials', [EmailProviderInterface::class => EmailCredentialInterface::class]);
-    }
-
     /**
      * @return array<class-string<AuthProviderInterface>, class-string<AuthProviderInterface>>
      */
-    public function getAuthProvidersMapper(): array
+    public function getAuthProvidersConfiguration(): array
     {
-        return $this->authProvidersClass;
-    }
-
-    /**
-     * @return array<class-string<AuthCredentialInterface>>
-     */
-    public function getCredentialsMapper(): array
-    {
-        return $this->authCredentialClass;
+        return config('auth_pro.providers', [EmailProviderInterface::class => ['enabled' => true, 'class' => EmailProvider::class, 'credential' => EmailCredential::class]]);
     }
 
     public function getDefaultSignInMethodsMapper(): array
     {
-        return [
+        $default =  [
             AuthProviderSignInMethod::PASSWORD->value => PasswordSignInMethod::class,
             AuthProviderSignInMethod::ONE_TIME_PASSWORD->value => OneTimePasswordSignInMethod::class,
             AuthProviderSignInMethod::OAUTH->value => OAuthSignInMethod::class,
 //            AuthProviderSignInMethod::LINK => LinkSignInMethod::class,
         ];
+
+        return config('auth_pro.sign_in_methods', $default);
     }
 
     public function getService(): AuthServiceInterface
@@ -76,6 +56,6 @@ class AuthProManager
      */
     public function getDefaultAuthenticatableModel(): string
     {
-        return "App\\Models\\User";
+        return config('auth_pro.default_authenticatable_model', \App\Models\User::class);
     }
 }

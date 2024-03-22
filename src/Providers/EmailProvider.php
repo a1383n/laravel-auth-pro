@@ -20,8 +20,14 @@ class EmailProvider extends AuthProvider implements EmailProviderInterface
         AuthProviderSignInMethod::ONE_TIME_PASSWORD,
     ];
 
-    public function createUserWithEmailAndPassword(string $email, string $password): AuthenticatableInterface
+    public function createUserWithEmailAndPassword(string $email, string $password, ?callable $beforeBuildClosure = null): AuthenticatableInterface
     {
-        return $this->createAuthenticatable($email, fn (AuthenticatableBuilder $authenticatableBuilder) => $authenticatableBuilder->withPassword($password));
+        return $this->createAuthenticatable($email, function (AuthenticatableBuilder $authenticatableBuilder) use ($beforeBuildClosure, $password) {
+            $authenticatableBuilder->withPassword($password);
+
+            if ($beforeBuildClosure !== null) {
+                $beforeBuildClosure($authenticatableBuilder);
+            }
+        });
     }
 }

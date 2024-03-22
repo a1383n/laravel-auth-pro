@@ -7,5 +7,5 @@ use LaravelAuthPro\Contracts\AuthProviderInterface;
 
 interface EmailProviderInterface extends AuthProviderInterface
 {
-    public function createUserWithEmailAndPassword(string $email, string $password): AuthenticatableInterface;
+    public function createUserWithEmailAndPassword(string $email, string $password, ?callable $beforeBuildClosure = null): AuthenticatableInterface;
 }

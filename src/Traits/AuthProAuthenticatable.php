@@ -10,8 +10,8 @@ use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\Base\EntityBuilderInterface;
 use LaravelAuthPro\Enums\AuthIdentifierType;
-use LaravelAuthPro\Model\Builder\AuthenticatableBuilder;
 use LaravelAuthPro\Model\AuthenticatableProviders;
+use LaravelAuthPro\Model\Builder\AuthenticatableBuilder;
 
 /**
  * @mixin AuthenticatableInterface

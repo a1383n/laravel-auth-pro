@@ -6,6 +6,7 @@ use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\Base\EntityBuilderInterface;
@@ -60,8 +61,8 @@ trait AuthProAuthenticatable
         ];
     }
 
-    public function authProviders(): HasMany
+    public function authProviders(): MorphMany
     {
-        return $this->hasMany(AuthenticatableProviders::class, 'user_id');
+        return $this->morphMany(AuthenticatableProviders::class, 'authenticatable', 'user_id');
     }
 }

@@ -9,7 +9,7 @@ class AuthenticatableProviders extends Model
     protected $fillable = [
         'provider_type',
         'provider_id',
-        'payload'
+        'payload',
     ];
 
     protected $casts = [

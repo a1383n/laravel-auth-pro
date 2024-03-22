@@ -44,7 +44,7 @@ return [
     'sign_in_methods' => [
         'password' => \LaravelAuthPro\SignInMethods\PasswordSignInMethod::class,
         'otp' => \LaravelAuthPro\SignInMethods\OneTimePasswordSignInMethod::class,
-        'oauth' => \LaravelAuthPro\SignInMethods\OneTimePasswordSignInMethod::class,
+        'oauth' => \LaravelAuthPro\SignInMethods\OAuthSignInMethod::class,
     ],
 
     /*

@@ -53,13 +53,7 @@ class TokenRequest extends FormRequest
      */
     private function getProviderSignInMethod(): Collection
     {
-        /**
-         * @phpstan-ignore-next-line
-         */
         return Collection::make(AuthProvider::getBuilder()->fromId($this->input('credential.provider_id'))::SUPPORTED_SIGN_IN_METHODS)
-            /**
-             * @phpstan-ignore-next-line
-             */
             ->map(fn (AuthProviderSignInMethod $method) => $method->value);
     }
 
@@ -68,9 +62,6 @@ class TokenRequest extends FormRequest
      */
     private function getCredentialPayloadRules(): Collection
     {
-        /**
-         * @phpstan-ignore-next-line
-         */
         return Collection::make(AuthCredential::getBuilder()::getClassFromProviderId($this->input('credential.provider_id'))::getPayloadRules())
             ->mapWithKeys(fn ($item, $key) => ["credential.payload.$key" => $item]);
     }
@@ -78,21 +69,9 @@ class TokenRequest extends FormRequest
     public function getAuthCredential(): AuthCredentialInterface
     {
         return AuthCredential::getBuilder()
-            /**
-             * @phpstan-ignore-next-line
-             */
             ->with($this->input('credential.provider_id'))
-            /**
-             * @phpstan-ignore-next-line
-             */
             ->as(AuthIdentifier::getBuilder()->fromPlainIdentifier($this->input('credential.identifier'))->build())
-            /**
-             * @phpstan-ignore-next-line
-             */
             ->by($this->enum('credential.sign_in_method', AuthSignInMethodInterface::class))
-            /**
-             * @phpstan-ignore-next-line
-             */
             ->withPayload($this->input('credential.payload'))
             ->build();
     }

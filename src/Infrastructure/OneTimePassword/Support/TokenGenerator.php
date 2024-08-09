@@ -14,14 +14,7 @@ class TokenGenerator implements GeneratorInterface
 
     public function __construct(Repository $configRepository)
     {
-        /**
-         * @phpstan-ignore-next-line
-         */
         $this->length = $configRepository->get('one_time_password.token.length', 8);
-
-        /**
-         * @phpstan-ignore-next-line
-         */
         $this->type = OneTimePasswordTokenType::from($configRepository->get('one_time_password.token.type', 'random_string'));
     }
 

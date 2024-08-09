@@ -22,7 +22,6 @@ trait MultiAuthProvider
     }
 
     /**
-     * @phpstan-ignore-next-line
      * @return Collection<UserProviderInterface>
      */
     public function getProviders(): Collection

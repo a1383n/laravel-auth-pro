@@ -28,9 +28,6 @@ class AuthCredentialBuilder implements EntityBuilderInterface
      */
     public static function getClassFromProviderId(string $id): string
     {
-        /**
-         * @phpstan-ignore-next-line
-         */
         return collect(AuthPro::getAuthProvidersConfiguration())
             ->first(fn ($provider) => $provider['class']::ID === $id)['credential'];
     }

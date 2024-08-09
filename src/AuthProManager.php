@@ -17,17 +17,7 @@ use LaravelAuthPro\SignInMethods\PasswordSignInMethod;
 class AuthProManager
 {
     /**
-     * @var array<class-string<AuthProviderInterface>>
-     */
-    protected readonly array $authProvidersClass;
-
-    /**
-     * @var array<class-string<AuthCredentialInterface>>
-     */
-    protected readonly array $authCredentialClass;
-
-    /**
-     * @return array<class-string<AuthProviderInterface>, class-string<AuthProviderInterface>>
+     * @return array<class-string<AuthProviderInterface>, array>
      */
     public function getAuthProvidersConfiguration(): array
     {
@@ -56,6 +46,6 @@ class AuthProManager
      */
     public function getDefaultAuthenticatableModel(): string
     {
-        return config('auth_pro.default_authenticatable_model', \App\Models\User::class);
+        return config('auth_pro.default_authenticatable_model', '\App\Models\User');
     }
 }

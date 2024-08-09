@@ -22,9 +22,6 @@ class OneTimePasswordVerifierService extends BaseService implements OneTimePassw
     {
         parent::__construct($repository);
 
-        /**
-         * @phpstan-ignore-next-line
-         */
         $this->maxFailedAttempts = config('auth_pro.one_time_password.max_attempts', 3);
     }
 

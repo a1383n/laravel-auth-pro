@@ -14,14 +14,7 @@ class CodeGenerator implements GeneratorInterface
 
     public function __construct(Repository $configRepository)
     {
-        /**
-         * @phpstan-ignore-next-line
-         */
         $this->length = $configRepository->get('auth_pro.one_time_password.code.length', 6);
-
-        /**
-         * @phpstan-ignore-next-line
-         */
         $this->type = $configRepository->get('auth_pro.one_time_password.code.type', OneTimePasswordCodeType::DIGIT);
     }
 

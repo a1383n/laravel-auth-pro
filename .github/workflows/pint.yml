@@ -2,9 +2,6 @@ name: Fix Code Style
 
 on: [ push ]
 
-permissions:
-
-
 jobs:
   lint:
     runs-on: ubuntu-latest

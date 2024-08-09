@@ -2,6 +2,9 @@ name: Fix Code Style
 
 on: [ push ]
 
+permissions:
+
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -9,6 +12,9 @@ jobs:
       fail-fast: true
       matrix:
         php: [ 8.2 ]
+
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code

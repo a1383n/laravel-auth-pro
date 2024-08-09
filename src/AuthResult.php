@@ -2,18 +2,16 @@
 
 namespace LaravelAuthPro;
 
-use Illuminate\Container\Container;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthExceptionInterface;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\AuthResultInterface;
-use LaravelAuthPro\Contracts\Base\HasBuilderInterface;
+use LaravelAuthPro\Traits\HasBuilder;
 
-/**
- * @implements HasBuilderInterface<AuthResultInterface>
- */
-class AuthResult implements AuthResultInterface, HasBuilderInterface
+class AuthResult implements AuthResultInterface
 {
+    use HasBuilder;
+
     /**
      * @param AuthIdentifierInterface|null $identifier
      * @param AuthenticatableInterface|null $user
@@ -25,10 +23,9 @@ class AuthResult implements AuthResultInterface, HasBuilderInterface
         //
     }
 
-    public static function getBuilder(): AuthResultBuilder
+    protected static function getBuilderClass(): string
     {
-        return Container::getInstance()
-            ->make(AuthResultBuilder::class);
+        return AuthResultBuilder::class;
     }
 
     public function getIdentifier(): ?AuthIdentifierInterface

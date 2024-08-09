@@ -2,7 +2,9 @@
 
 namespace LaravelAuthPro\Contracts;
 
-interface AuthResultInterface
+use LaravelAuthPro\Contracts\Base\HasBuilderInterface;
+
+interface AuthResultInterface extends HasBuilderInterface
 {
     public function isSuccessful(): bool;
 

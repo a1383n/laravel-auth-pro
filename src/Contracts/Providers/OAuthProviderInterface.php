@@ -5,7 +5,7 @@ namespace LaravelAuthPro\Contracts\Providers;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthProviderInterface;
 
-interface GoogleProviderInterface extends AuthProviderInterface
+interface OAuthProviderInterface extends AuthProviderInterface
 {
-    public function createUserWithGoogleIdToken(string $idToken): AuthenticatableInterface;
+    public function createUserWithIdToken(string $driver, string $idToken): AuthenticatableInterface;
 }

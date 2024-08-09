@@ -8,55 +8,56 @@ return [
     |--------------------------------------------------------------------------
     |
     | Define the authentication providers for your package here.
-    | You can specify custom provider implementations.
+    | You can specify custom provider implementations along with their credentials.
     |
     */
 
     'providers' => [
-        \LaravelAuthPro\Contracts\Providers\EmailProviderInterface::class => \LaravelAuthPro\Providers\EmailProvider::class,
-        \LaravelAuthPro\Contracts\Providers\PhoneProviderInterface::class => \LaravelAuthPro\Providers\PhoneProvider::class,
+        \LaravelAuthPro\Contracts\Providers\EmailProviderInterface::class => [
+            'enabled' => true,
+            'class' => \LaravelAuthPro\Providers\EmailProvider::class,
+            'credential' => \LaravelAuthPro\Credentials\EmailCredential::class,
+        ],
+        \LaravelAuthPro\Contracts\Providers\PhoneProviderInterface::class => [
+            'enabled' => false,
+            'class' => \LaravelAuthPro\Providers\PhoneProvider::class,
+            'credential' => \LaravelAuthPro\Credentials\PhoneCredential::class,
+        ],
+        \LaravelAuthPro\Contracts\Providers\OAuthProviderInterface::class => [
+            'enabled' => false,
+            'class' => \LaravelAuthPro\Providers\OAuthProvider::class,
+            'credential' => \LaravelAuthPro\Credentials\OAuthCredential::class,
+            'drivers' => ['google', 'github']
+        ]
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Credential Implementations
+    | Sign in Methods
     |--------------------------------------------------------------------------
     |
-    | Define the credential implementations for your authentication providers.
-    | Customize the credential classes for different providers as needed.
+    | Define the sign in methods for your authentication providers.
+    | Customize the sign in method classes as needed.
     |
     */
 
-    'credentials' => [
-        \LaravelAuthPro\Contracts\Providers\EmailProviderInterface::class => \LaravelAuthPro\Contracts\Credentials\EmailCredentialInterface::class,
-        \LaravelAuthPro\Contracts\Providers\PhoneProviderInterface::class => \LaravelAuthPro\Credentials\PhoneCredential::class,
+    'sign_in_methods' => [
+        'password' => \LaravelAuthPro\SignInMethods\PasswordSignInMethod::class,
+        'otp' => \LaravelAuthPro\SignInMethods\OneTimePasswordSignInMethod::class,
+        'oauth' => \LaravelAuthPro\SignInMethods\OAuthSignInMethod::class,
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Multi-Provider Configuration
+    | Default Authenticatable Model
     |--------------------------------------------------------------------------
     |
-    | Customize multi-provider authentication options here.
+    | Specify the default authenticatable model used by the package.
+    | This model will be used if not explicitly specified in the provider.
     |
     */
 
-    'multi_provider' => [
-
-        /*
-        |--------------------------------------------------------------------------
-        | Default Multi-Provider
-        |--------------------------------------------------------------------------
-        |
-        | Specify the default multi-provider to use when multiple providers
-        | are available. Users can choose their preferred provider during
-        | authentication.
-        |
-        */
-
-        'default' => 'email',
-
-    ],
+    'default_authenticatable_model' => \App\Models\User::class,
 
     /*
     |--------------------------------------------------------------------------

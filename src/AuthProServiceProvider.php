@@ -44,10 +44,12 @@ class AuthProServiceProvider extends ServiceProvider
 
     private function registerAuthProviders(): void
     {
-        foreach (AuthPro::getAuthProvidersMapper() as $providerAbstract => $providerInstance) {
-            $this->app->bind($providerAbstract, $providerInstance);
-            $this->app->alias($providerAbstract, sprintf(self::CONTAINER_ALIAS_AUTH_PROVIDER_TEMPLATE, $providerInstance::ID));
-        }
+        collect(AuthPro::getAuthProvidersConfiguration())
+            ->filter(fn ($provider) => $provider['enabled'])
+            ->each(function ($provider, $providerInterface) {
+                $this->app->bind($providerInterface, $provider['class']);
+                $this->app->alias($providerInterface, sprintf(self::CONTAINER_ALIAS_AUTH_PROVIDER_TEMPLATE, $provider['class']::ID));
+            });
     }
 
     private function registerInfrastructures(): void
@@ -64,6 +66,12 @@ class AuthProServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/auth_pro.php' => config_path('auth_pro.php'),
         ], 'config');
+
+        if (empty(glob(database_path('migrations/*_create_user_auth_providers.php')))) {
+            $this->publishes([
+                __DIR__ . '/../database/migrations/0001_01_01_000001_create_user_auth_providers.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_user_auth_providers.php'),
+            ], 'migrations');
+        }
     }
 
     /**

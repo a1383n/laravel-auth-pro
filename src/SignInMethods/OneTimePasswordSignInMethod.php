@@ -19,11 +19,9 @@ class OneTimePasswordSignInMethod implements AuthSignInMethodInterface
     }
 
     /**
-     * @param  PhoneCredentialInterface  $credential
-     *
      * @throws AuthException
      */
-    public function __invoke(AuthenticatableInterface $user, PhoneCredentialInterface|AuthCredentialInterface $credential): AuthenticatableInterface
+    public function __invoke(AuthCredentialInterface $credential, ?AuthenticatableInterface $user = null): void
     {
         if ($credential->getOneTimePassword() === null) {
             throw new \InvalidArgumentException('$code is null in $credential');
@@ -51,8 +49,6 @@ class OneTimePasswordSignInMethod implements AuthSignInMethodInterface
                 throw new AuthException($error, 400, $result->getPayload());
             }
         }
-
-        return $user;
     }
 
     public function getUserRequiredColumns(): array

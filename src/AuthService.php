@@ -27,10 +27,10 @@ class AuthService extends BaseService implements AuthServiceInterface
         parent::__construct($repository);
     }
 
-    public function loginWithCredential(AuthCredentialInterface $credential): AuthResultInterface
+    public function loginWithCredential(AuthCredentialInterface $credential, bool $strictMode = true): AuthResultInterface
     {
         return $this
-            ->tryAuthenticate(fn () => AuthProvider::getBuilder()->fromId($credential->getProviderId())->authenticate($credential))
+            ->tryAuthenticate(fn () => AuthProvider::getBuilder()->fromId($credential->getProviderId())->setStrictMode($strictMode)->authenticate($credential))
             ->as($credential->getIdentifier())
             ->build();
     }

@@ -14,7 +14,7 @@ class OAuthSignInMethod implements AuthSignInMethodInterface
     /**
      * @throws AuthException
      */
-    public function __invoke(AuthenticatableInterface $user, OAuthCredentialInterface|AuthCredentialInterface $credential): AuthenticatableInterface
+    public function __invoke(AuthCredentialInterface $credential, ?AuthenticatableInterface $user = null): void
     {
         try {
             $oauthUser = Socialite::driver($credential->getDriver())->userFromToken($credential->getIdToken());

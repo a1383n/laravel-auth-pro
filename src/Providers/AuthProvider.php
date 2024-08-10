@@ -48,7 +48,7 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
      */
     protected const SIGN_IN_METHODS = [];
 
-    private bool $strictMode = false;
+    private bool $strictMode = true;
 
     public function __construct(private readonly UserRepositoryInterface $userRepository, protected readonly ?string $authenticatableModel = null)
     {
@@ -60,9 +60,11 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
         return $this->strictMode;
     }
 
-    public function setStrictMode(bool $strictMode): void
+    public function setStrictMode(bool $strictMode): self
     {
         $this->strictMode = $strictMode;
+
+        return $this;
     }
 
     protected static function getBuilderClass(): string

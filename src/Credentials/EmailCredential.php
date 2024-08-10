@@ -13,7 +13,9 @@ class EmailCredential extends AuthCredential implements EmailCredentialInterface
     use PasswordConcerns;
 
     protected ?string $password;
+
     protected ?string $token;
+
     protected ?string $code;
 
     public function getEmail(): string

@@ -16,7 +16,7 @@ use LaravelAuthPro\Notifications\Contracts\NotificationMessageInterface;
 use LaravelAuthPro\Notifications\Contracts\SMSNotificationInterface;
 use LaravelAuthPro\Notifications\Messages\SMSMessage;
 
-class OneTimePasswordNotification extends Notification implements ShouldQueue, ShouldBeEncrypted, SMSNotificationInterface, MailNotificationInterface
+class OneTimePasswordNotification extends Notification implements MailNotificationInterface, ShouldBeEncrypted, ShouldQueue, SMSNotificationInterface
 {
     use Queueable;
 
@@ -31,7 +31,7 @@ class OneTimePasswordNotification extends Notification implements ShouldQueue, S
      */
     public function __construct(OneTimePasswordEntityInterface $entity)
     {
-        $this->tag = $entity->getIdentifier()->getIdentifierType()->value. ':' . $entity->getIdentifier()->getIdentifierValue();
+        $this->tag = $entity->getIdentifier()->getIdentifierType()->value.':'.$entity->getIdentifier()->getIdentifierValue();
         $this->code = $entity->getCode();
         $this->token = $entity->getToken();
     }
@@ -62,10 +62,10 @@ class OneTimePasswordNotification extends Notification implements ShouldQueue, S
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject('OTP Code')
             ->line('You are receiving this email for OTP verification.')
-            ->line('Your OTP code is: ' . $this->code)
+            ->line('Your OTP code is: '.$this->code)
             ->line('If you did not request this OTP, no further action is required.');
     }
 

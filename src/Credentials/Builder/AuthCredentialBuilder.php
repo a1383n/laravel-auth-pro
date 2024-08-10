@@ -15,7 +15,9 @@ use LaravelAuthPro\Enums\AuthProviderSignInMethod;
 class AuthCredentialBuilder implements EntityBuilderInterface
 {
     private ?string $providerId = null;
+
     private ?AuthIdentifierInterface $identifier = null;
+
     private ?AuthProviderSignInMethod $signInMethod = null;
 
     /**
@@ -29,7 +31,7 @@ class AuthCredentialBuilder implements EntityBuilderInterface
     public static function getClassFromProviderId(string $id): string
     {
         return collect(AuthPro::getAuthProvidersConfiguration())
-            ->first(fn ($provider) => $provider['class']::ID === $id)['credential'];
+            ->first(fn ($provider) => $id === $provider['class']::ID)['credential'];
     }
 
     public function with(string $providerId): self
@@ -54,7 +56,7 @@ class AuthCredentialBuilder implements EntityBuilderInterface
     }
 
     /**
-     * @param array<string, string> $payload
+     * @param  array<string, string>  $payload
      * @return $this
      */
     public function withPayload(array $payload = []): self

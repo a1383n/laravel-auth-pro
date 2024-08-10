@@ -35,10 +35,6 @@ class AuthService extends BaseService implements AuthServiceInterface
             ->build();
     }
 
-    /**
-     * @param callable $closure
-     * @return AuthResultBuilder
-     */
     private function tryAuthenticate(callable $closure): AuthResultBuilder
     {
         $result = AuthResult::getBuilder();

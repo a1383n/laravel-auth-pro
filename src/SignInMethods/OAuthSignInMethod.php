@@ -12,9 +12,6 @@ use LaravelAuthPro\Contracts\Exceptions\AuthException;
 class OAuthSignInMethod implements AuthSignInMethodInterface
 {
     /**
-     * @param AuthenticatableInterface $user
-     * @param OAuthCredentialInterface|AuthCredentialInterface $credential
-     * @return AuthenticatableInterface
      * @throws AuthException
      */
     public function __invoke(AuthenticatableInterface $user, OAuthCredentialInterface|AuthCredentialInterface $credential): AuthenticatableInterface
@@ -31,7 +28,7 @@ class OAuthSignInMethod implements AuthSignInMethodInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUserRequiredColumns(): array
     {

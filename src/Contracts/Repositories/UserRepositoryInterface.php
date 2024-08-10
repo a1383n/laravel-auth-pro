@@ -10,23 +10,15 @@ interface UserRepositoryInterface extends BaseRepositoryInterface
 {
     public function setUserModelClass(?string $model = null): self;
 
-    /**
-     * @param AuthIdentifierInterface $identifier
-     * @return bool
-     */
     public function isUserExist(AuthIdentifierInterface $identifier): bool;
 
     /**
-     * @param AuthIdentifierInterface $identifier
-     * @param string[] $columns
-     * @return AuthenticatableInterface|null
+     * @param  string[]  $columns
      */
     public function getUserByIdentifier(AuthIdentifierInterface $identifier, array $columns = ['*']): ?AuthenticatableInterface;
 
     /**
-     * @param string $id
-     * @param string[] $columns
-     * @return AuthenticatableInterface|null
+     * @param  string[]  $columns
      */
     public function getUserById(string $id, array $columns = ['*']): ?AuthenticatableInterface;
 

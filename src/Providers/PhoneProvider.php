@@ -14,13 +14,17 @@ use LaravelAuthPro\SignInMethods\PasswordSignInMethod;
 class PhoneProvider extends AuthProvider implements PhoneProviderInterface
 {
     public const ID = 'phone';
+
     public const IDENTIFIER_TYPE = AuthIdentifierType::MOBILE;
+
     public const TYPE = AuthProviderType::INTERNAL;
+
     public const SUPPORTED_SIGN_IN_METHODS = [
         AuthProviderSignInMethod::PASSWORD,
         AuthProviderSignInMethod::LINK,
         AuthProviderSignInMethod::ONE_TIME_PASSWORD,
     ];
+
     protected const SIGN_IN_METHODS = [
         'password' => PasswordSignInMethod::class,
         'otp' => OneTimePasswordSignInMethod::class,

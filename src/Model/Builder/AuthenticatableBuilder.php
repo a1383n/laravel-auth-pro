@@ -9,7 +9,9 @@ use LaravelAuthPro\Contracts\Base\EntityBuilderInterface;
 class AuthenticatableBuilder implements EntityBuilderInterface
 {
     protected AuthIdentifierInterface $authIdentifier;
+
     protected ?string $password;
+
     protected array $attributes = [];
 
     public function __construct(protected readonly string $authenticatableModel)

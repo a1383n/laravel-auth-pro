@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Facade;
 class AuthPro extends Facade
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected static function getFacadeAccessor(): string
     {

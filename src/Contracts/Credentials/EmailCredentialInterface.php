@@ -7,7 +7,7 @@ use LaravelAuthPro\Contracts\Credentials\Base\HasEmailInterface;
 use LaravelAuthPro\Contracts\Credentials\Base\HasOneTimePasswordInterface;
 use LaravelAuthPro\Contracts\Credentials\Base\HasPasswordInterface;
 
-interface EmailCredentialInterface extends AuthCredentialInterface, HasEmailInterface, HasPasswordInterface, HasOneTimePasswordInterface
+interface EmailCredentialInterface extends AuthCredentialInterface, HasEmailInterface, HasOneTimePasswordInterface, HasPasswordInterface
 {
     //
 }

@@ -10,11 +10,10 @@ use LaravelAuthPro\Infrastructure\OneTimePassword\Model\Builder\OneTimePasswordV
 /**
  * @implements HasBuilderInterface<OneTimePasswordVerifyResultInterface>
  */
-class OneTimePasswordVerifyResult extends OneTimePasswordResult implements OneTimePasswordVerifyResultInterface, HasBuilderInterface
+class OneTimePasswordVerifyResult extends OneTimePasswordResult implements HasBuilderInterface, OneTimePasswordVerifyResultInterface
 {
     /**
-     * @param OneTimePasswordVerifyError|null $verifyError
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     public function __construct(protected ?OneTimePasswordVerifyError $verifyError, array $payload = [])
     {
@@ -22,11 +21,11 @@ class OneTimePasswordVerifyResult extends OneTimePasswordResult implements OneTi
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getBuilder(): OneTimePasswordVerifyResultBuilder
     {
-        return new OneTimePasswordVerifyResultBuilder();
+        return new OneTimePasswordVerifyResultBuilder;
     }
 
     public function getVerifierError(): ?OneTimePasswordVerifyError

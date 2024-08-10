@@ -10,6 +10,7 @@ use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordTokenType;
 class TokenGenerator implements GeneratorInterface
 {
     protected readonly int $length;
+
     protected readonly OneTimePasswordTokenType $type;
 
     public function __construct(Repository $configRepository)
@@ -18,18 +19,14 @@ class TokenGenerator implements GeneratorInterface
         $this->type = OneTimePasswordTokenType::from($configRepository->get('one_time_password.token.type', 'random_string'));
     }
 
-    /**
-     * @param int|null $length
-     * @return string
-     */
-    public function generate(int $length = null): string
+    public function generate(?int $length = null): string
     {
         $length ??= $this->length;
 
         return match ($this->type) {
             OneTimePasswordTokenType::RANDOM_STRING => Str::random($length),
-            OneTimePasswordTokenType::RANDOM_INT => (string)$this->generateRandomInt($length),
-            OneTimePasswordTokenType::ULID, OneTimePasswordTokenType::UUID => (string)Str::{$this->type->value}(),
+            OneTimePasswordTokenType::RANDOM_INT => (string) $this->generateRandomInt($length),
+            OneTimePasswordTokenType::ULID, OneTimePasswordTokenType::UUID => (string) Str::{$this->type->value}(),
         };
     }
 

@@ -18,7 +18,7 @@ abstract class AuthCredential implements AuthCredentialInterface, HasBuilderInte
     use HasPayload;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __construct(protected readonly string $providerId, protected readonly AuthIdentifierInterface $identifier, protected readonly AuthProviderSignInMethod $signInMethod, array $payload)
     {
@@ -28,12 +28,9 @@ abstract class AuthCredential implements AuthCredentialInterface, HasBuilderInte
 
     public static function getBuilder(): AuthCredentialBuilder
     {
-        return new AuthCredentialBuilder();
+        return new AuthCredentialBuilder;
     }
 
-    /**
-     * @return void
-     */
     public function throwIfIdentifierTypeNotSupported(): void
     {
         if (! in_array($this->identifier->getIdentifierType(), $this->getSupportedIdentifiersTypes())) {

@@ -27,8 +27,8 @@ return [
             'enabled' => false,
             'class' => \LaravelAuthPro\Providers\OAuthProvider::class,
             'credential' => \LaravelAuthPro\Credentials\OAuthCredential::class,
-            'drivers' => ['google', 'github']
-        ]
+            'drivers' => ['google', 'github'],
+        ],
     ],
 
     /*
@@ -122,8 +122,8 @@ return [
 
                 'redis' => [
                     'prefix' => 'auth_pro_otp',
-                    'database' => 3
-                ]
+                    'database' => 3,
+                ],
             ],
 
             'database' => [
@@ -140,7 +140,7 @@ return [
                 |
                 */
 
-//                'model' => LaravelAuthPro\Infrastructure\OneTimePassword\Models\OneTimePasswordModel::class,
+                //                'model' => LaravelAuthPro\Infrastructure\OneTimePassword\Models\OneTimePasswordModel::class,
             ],
         ],
 
@@ -182,7 +182,7 @@ return [
         |
         */
         'signature' => [
-            'expiry' => 60
+            'expiry' => 60,
         ],
 
         /*
@@ -198,7 +198,6 @@ return [
         */
 
         'allow_simultaneously_multiple_requests' => true,
-
 
         /*
         |--------------------------------------------------------------------------
@@ -262,12 +261,12 @@ return [
         'rate_limit' => [
             \LaravelAuthPro\Infrastructure\OneTimePassword\Limiter\OneTimePasswordIpAddressLimiter::class => [
                 'decay_in_seconds' => 1800,
-                'max_attempts' => 5
+                'max_attempts' => 5,
             ],
             \LaravelAuthPro\Infrastructure\OneTimePassword\Limiter\OneTimePasswordIdentifierLimiter::class => [
                 'decay_in_seconds' => 900,
-                'max_attempts' => 10
-            ]
-        ]
+                'max_attempts' => 10,
+            ],
+        ],
     ],
 ];

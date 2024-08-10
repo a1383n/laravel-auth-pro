@@ -12,7 +12,8 @@ use LaravelAuthPro\Repositories\UserRepository;
 class AuthProServiceProvider extends ServiceProvider
 {
     protected const CONTAINER_ALIAS_AUTH_PROVIDER_PREFIX = 'auth.provider.';
-    public const CONTAINER_ALIAS_AUTH_PROVIDER_TEMPLATE = self::CONTAINER_ALIAS_AUTH_PROVIDER_PREFIX . '%s';
+
+    public const CONTAINER_ALIAS_AUTH_PROVIDER_TEMPLATE = self::CONTAINER_ALIAS_AUTH_PROVIDER_PREFIX.'%s';
 
     /**
      * Register services.
@@ -20,7 +21,7 @@ class AuthProServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/auth_pro.php',
+            __DIR__.'/../config/auth_pro.php',
             'auth_pro'
         );
 
@@ -69,7 +70,7 @@ class AuthProServiceProvider extends ServiceProvider
 
         if (empty(glob(database_path('migrations/*_create_user_auth_providers.php')))) {
             $this->publishes([
-                __DIR__ . '/../database/migrations/0001_01_01_000001_create_user_auth_providers.php' => database_path('migrations/' . date('Y_m_d_His', time()) . '_create_user_auth_providers.php'),
+                __DIR__.'/../database/migrations/0001_01_01_000001_create_user_auth_providers.php' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_user_auth_providers.php'),
             ], 'migrations');
         }
     }

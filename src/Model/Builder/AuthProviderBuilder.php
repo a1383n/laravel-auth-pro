@@ -10,6 +10,7 @@ use LaravelAuthPro\Contracts\Base\EntityBuilderInterface;
 class AuthProviderBuilder implements EntityBuilderInterface
 {
     protected ?string $providerId;
+
     protected ?string $providerClass;
 
     public function setProviderId(?string $providerId = null): AuthProviderBuilder

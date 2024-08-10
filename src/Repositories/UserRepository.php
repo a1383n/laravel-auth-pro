@@ -25,7 +25,7 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUserByIdentifier(AuthIdentifierInterface $identifier, array $columns = ['*']): ?AuthenticatableInterface
     {
@@ -40,7 +40,7 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function isUserExist(AuthIdentifierInterface $identifier): bool
     {
@@ -50,7 +50,7 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUserById(string $id, array $columns = ['*']): ?AuthenticatableInterface
     {

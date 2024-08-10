@@ -12,7 +12,7 @@ use LaravelAuthPro\Contracts\Exceptions\AuthException;
 class PasswordSignInMethod implements AuthSignInMethodInterface
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function __invoke(AuthenticatableInterface $user, EmailCredentialInterface|AuthCredentialInterface $credential): AuthenticatableInterface
     {
@@ -32,7 +32,7 @@ class PasswordSignInMethod implements AuthSignInMethodInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUserRequiredColumns(): array
     {

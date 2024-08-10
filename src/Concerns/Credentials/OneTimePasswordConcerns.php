@@ -13,7 +13,7 @@ use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordTokenType;
 trait OneTimePasswordConcerns
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getOneTimePasswordRule(): array
     {
@@ -77,15 +77,13 @@ trait OneTimePasswordConcerns
     /**
      * Map the one-time password token type to a validation rule.
      *
-     * @param OneTimePasswordTokenType $enumType
-     * @param int|null $length
      * @return array<int, Rule|string>
      */
     protected static function mapTokenTypeToValidationRule(OneTimePasswordTokenType $enumType, ?int $length = null): array
     {
         return match ($enumType) {
-            OneTimePasswordTokenType::RANDOM_STRING => ['string', 'size:' . ($length ?? throw new \InvalidArgumentException('$length cannot be null when type is' . $enumType->name))],
-            OneTimePasswordTokenType::RANDOM_INT => ['int', 'digits:' . ($length ?? throw new \InvalidArgumentException('$length cannot be null when type is' . $enumType->name))],
+            OneTimePasswordTokenType::RANDOM_STRING => ['string', 'size:'.($length ?? throw new \InvalidArgumentException('$length cannot be null when type is'.$enumType->name))],
+            OneTimePasswordTokenType::RANDOM_INT => ['int', 'digits:'.($length ?? throw new \InvalidArgumentException('$length cannot be null when type is'.$enumType->name))],
             OneTimePasswordTokenType::UUID, OneTimePasswordTokenType::ULID => [$enumType->value]
         };
     }
@@ -93,15 +91,13 @@ trait OneTimePasswordConcerns
     /**
      * Map the one-time password code type to a validation rule.
      *
-     * @param OneTimePasswordCodeType $enumType
-     * @param int $length
      * @return array<int, Rule|string>
      */
     protected static function mapCodeTypeToValidationRule(OneTimePasswordCodeType $enumType, int $length): array
     {
         return match ($enumType) {
-            OneTimePasswordCodeType::DIGIT => ['digits:' . $length],
-            OneTimePasswordCodeType::ALPHA => ['alpha:ascii', 'size:' . $length],
+            OneTimePasswordCodeType::DIGIT => ['digits:'.$length],
+            OneTimePasswordCodeType::ALPHA => ['alpha:ascii', 'size:'.$length],
         };
     }
 }

@@ -31,7 +31,7 @@ class OneTimePasswordVerifierRepository extends BaseRepository implements OneTim
     {
         $value = $this->connection->incr($key = self::getKey($entity->getKey()), $value);
 
-        $this->connection->expire($key, (int)$entity->getValidInterval()->addDays(1)->totalSeconds);
+        $this->connection->expire($key, (int) $entity->getValidInterval()->addDays(1)->totalSeconds);
 
         return $value;
     }

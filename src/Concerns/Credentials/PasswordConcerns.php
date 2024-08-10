@@ -13,7 +13,7 @@ use LaravelAuthPro\Contracts\Credentials\Base\HasPasswordInterface;
 trait PasswordConcerns
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public static function getPasswordRule(): array
     {
@@ -25,8 +25,6 @@ trait PasswordConcerns
     /**
      * Get the rules for the password field.
      *
-     * @param callable|bool $isRequired
-     * @param bool $validateAsString
      * @return array<int,string|Rule|RequiredIf|Password>
      */
     public static function getPasswordPropertyRule(callable|bool $isRequired = true, bool $validateAsString = true): array

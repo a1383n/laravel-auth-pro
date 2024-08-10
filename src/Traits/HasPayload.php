@@ -5,8 +5,7 @@ namespace LaravelAuthPro\Traits;
 trait HasPayload
 {
     /**
-     * @param array<string, string> $payload
-     * @return void
+     * @param  array<string, string>  $payload
      */
     private function fillAttributes(array $payload): void
     {

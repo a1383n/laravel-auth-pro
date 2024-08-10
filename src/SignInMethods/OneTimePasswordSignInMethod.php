@@ -19,9 +19,8 @@ class OneTimePasswordSignInMethod implements AuthSignInMethodInterface
     }
 
     /**
-     * @param AuthenticatableInterface $user
-     * @param PhoneCredentialInterface $credential
-     * @return AuthenticatableInterface
+     * @param  PhoneCredentialInterface  $credential
+     *
      * @throws AuthException
      */
     public function __invoke(AuthenticatableInterface $user, PhoneCredentialInterface|AuthCredentialInterface $credential): AuthenticatableInterface

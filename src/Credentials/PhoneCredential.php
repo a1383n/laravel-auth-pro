@@ -15,8 +15,11 @@ class PhoneCredential extends AuthCredential implements PhoneCredentialInterface
     use PasswordConcerns;
 
     protected ?string $password;
+
     protected ?string $token = null;
+
     protected ?string $code;
+
     protected ?string $signature;
 
     public function getSupportedIdentifiersTypes(): array

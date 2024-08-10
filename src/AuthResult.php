@@ -13,10 +13,7 @@ class AuthResult implements AuthResultInterface
     use HasBuilder;
 
     /**
-     * @param AuthIdentifierInterface|null $identifier
-     * @param AuthenticatableInterface|null $user
-     * @param AuthExceptionInterface|null $exception
-     * @param array<string,string|mixed>|null $payload
+     * @param  array<string,string|mixed>|null  $payload
      */
     public function __construct(protected ?AuthIdentifierInterface $identifier = null, protected ?AuthenticatableInterface $user = null, protected ?AuthExceptionInterface $exception = null, protected ?array $payload = null)
     {

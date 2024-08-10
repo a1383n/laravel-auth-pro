@@ -15,9 +15,13 @@ use LaravelAuthPro\Model\OneTimePasswordEntity;
 class OneTimePasswordEntityBuilder
 {
     protected AuthIdentifierInterface $identifier;
+
     protected ?string $token = null;
+
     protected bool $withToken = true;
+
     protected ?string $code = null;
+
     protected ?CarbonInterval $interval = null;
 
     public function __construct(private readonly TokenGenerator $tokenGenerator, private readonly CodeGenerator $codeGenerator)
@@ -26,10 +30,7 @@ class OneTimePasswordEntityBuilder
     }
 
     /**
-     * @param AuthIdentifierInterface $identifier
-     * @param string $key
-     * @param array<string, string> $array
-     * @return OneTimePasswordEntityInterface
+     * @param  array<string, string>  $array
      */
     public static function fromArray(AuthIdentifierInterface $identifier, string $key, array $array): OneTimePasswordEntityInterface
     {

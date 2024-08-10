@@ -11,10 +11,13 @@ use Stringable;
  * @extends HasBuilderInterface<AuthSignatureInterface>
  * @extends Arrayable<string, string>
  */
-interface AuthSignatureInterface extends HasBuilderInterface, Arrayable, Stringable
+interface AuthSignatureInterface extends Arrayable, HasBuilderInterface, Stringable
 {
     public function getId(): string;
+
     public function getRequestedIp(): string;
+
     public function getUserId(): string;
+
     public function getTimestamp(): CarbonInterface;
 }

@@ -6,7 +6,6 @@ use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthExceptionInterface;
 use LaravelAuthPro\Contracts\AuthSignInMethodInterface;
-use LaravelAuthPro\Contracts\Credentials\PhoneCredentialInterface;
 use LaravelAuthPro\Contracts\Exceptions\AuthException;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordServiceInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordVerifyResultInterface;

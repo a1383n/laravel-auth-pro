@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Hash;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthSignInMethodInterface;
-use LaravelAuthPro\Contracts\Credentials\EmailCredentialInterface;
 use LaravelAuthPro\Contracts\Exceptions\AuthException;
 
 class PasswordSignInMethod implements AuthSignInMethodInterface

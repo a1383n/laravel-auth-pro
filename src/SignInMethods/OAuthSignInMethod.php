@@ -6,7 +6,6 @@ use Laravel\Socialite\Facades\Socialite;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthSignInMethodInterface;
-use LaravelAuthPro\Contracts\Credentials\OAuthCredentialInterface;
 use LaravelAuthPro\Contracts\Exceptions\AuthException;
 
 class OAuthSignInMethod implements AuthSignInMethodInterface

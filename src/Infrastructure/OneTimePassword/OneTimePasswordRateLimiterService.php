@@ -42,7 +42,7 @@ class OneTimePasswordRateLimiterService extends BaseService implements OneTimePa
         foreach ($this->limiterInstances as $limiterInstance) {
             $result = method_exists($limiterInstance, 'pass') ? $limiterInstance->pass($identifier) : false;
 
-            if (! $result) {
+            if (!$result) {
                 return false;
             }
         }

@@ -55,7 +55,7 @@ trait AuthProAuthenticatable
     public static function getIdentifierMapper(): array
     {
         return [
-            'email' => AuthIdentifierType::EMAIL,
+            'email'  => AuthIdentifierType::EMAIL,
             'mobile' => AuthIdentifierType::MOBILE,
         ];
     }

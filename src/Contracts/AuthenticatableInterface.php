@@ -14,7 +14,8 @@ use LaravelAuthPro\Enums\AuthIdentifierType;
 interface AuthenticatableInterface extends HasBuilderInterface
 {
     /**
-     * @param  Builder<Model>  $builder
+     * @param Builder<Model> $builder
+     *
      * @return Builder<Model>
      */
     public function scopeWhereIdentifier(Builder $builder, AuthIdentifierInterface $identifier): Builder;
@@ -33,7 +34,7 @@ interface AuthenticatableInterface extends HasBuilderInterface
      *              'email' => AuthIdentifierType::EMAIL,
      *              'mobile' => AuthIdentifierType::MOBILE
      * ];
-     * </code>
+     * </code>.
      */
     public static function getIdentifierMapper(): array;
 

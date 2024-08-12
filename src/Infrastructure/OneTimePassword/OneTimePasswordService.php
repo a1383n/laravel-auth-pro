@@ -46,7 +46,7 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
 
     public function createOneTimePasswordWithIdentifier(AuthIdentifierInterface $identifier): OneTimePasswordEntityInterface
     {
-        if (! $this->rateLimiterService->pass($identifier)) {
+        if (!$this->rateLimiterService->pass($identifier)) {
             //TODO: Returning result interface may be better approach
             throw new AuthException(OneTimePasswordError::RATE_LIMIT_EXCEEDED->value, 429);
         }
@@ -54,7 +54,7 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
         $otp = OneTimePasswordEntity::getBuilder()
             ->as($identifier);
 
-        if (! config('auth_pro.one_time_password.token.enabled', true)) {
+        if (!config('auth_pro.one_time_password.token.enabled', true)) {
             $otp->withoutToken();
         } else {
             $otp->withToken();
@@ -62,7 +62,7 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
 
         $otp = $otp->build();
 
-        if (! $this->repository->createOneTimePasswordWithIdentifier($otp)) {
+        if (!$this->repository->createOneTimePasswordWithIdentifier($otp)) {
             /**
              * @var OneTimePasswordEntity $otp
              */
@@ -85,7 +85,7 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
         }
 
         $result = $this->verifierService->verify($otp, $credential->getOneTimePassword() ?? throw new \Exception('code is null'));
-        if ($result->isSuccessful() && ! $dry) {
+        if ($result->isSuccessful() && !$dry) {
             $this->repository->removeOneTimePassword($otp);
         }
 

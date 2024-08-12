@@ -15,7 +15,7 @@ class PasswordSignInMethod implements AuthSignInMethodInterface
      */
     public function __invoke(AuthCredentialInterface $credential, ?AuthenticatableInterface $user = null): void
     {
-        if (! method_exists($credential, 'getPassword')) {
+        if (!method_exists($credential, 'getPassword')) {
             throw new \InvalidArgumentException('getPassword not found in given credential');
         }
 
@@ -23,7 +23,7 @@ class PasswordSignInMethod implements AuthSignInMethodInterface
             throw new AuthException('password_not_provided');
         }
 
-        if (! Hash::check($credential->getPassword(), $user->getPassword())) {
+        if (!Hash::check($credential->getPassword(), $user->getPassword())) {
             throw new AuthException('invalid_password');
         }
     }

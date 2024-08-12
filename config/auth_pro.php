@@ -14,20 +14,20 @@ return [
 
     'providers' => [
         \LaravelAuthPro\Contracts\Providers\EmailProviderInterface::class => [
-            'enabled' => true,
-            'class' => \LaravelAuthPro\Providers\EmailProvider::class,
+            'enabled'    => true,
+            'class'      => \LaravelAuthPro\Providers\EmailProvider::class,
             'credential' => \LaravelAuthPro\Credentials\EmailCredential::class,
         ],
         \LaravelAuthPro\Contracts\Providers\PhoneProviderInterface::class => [
-            'enabled' => false,
-            'class' => \LaravelAuthPro\Providers\PhoneProvider::class,
+            'enabled'    => false,
+            'class'      => \LaravelAuthPro\Providers\PhoneProvider::class,
             'credential' => \LaravelAuthPro\Credentials\PhoneCredential::class,
         ],
         \LaravelAuthPro\Contracts\Providers\OAuthProviderInterface::class => [
-            'enabled' => false,
-            'class' => \LaravelAuthPro\Providers\OAuthProvider::class,
+            'enabled'    => false,
+            'class'      => \LaravelAuthPro\Providers\OAuthProvider::class,
             'credential' => \LaravelAuthPro\Credentials\OAuthCredential::class,
-            'drivers' => ['google', 'github'],
+            'drivers'    => ['google', 'github'],
         ],
     ],
 
@@ -43,8 +43,8 @@ return [
 
     'sign_in_methods' => [
         'password' => \LaravelAuthPro\SignInMethods\PasswordSignInMethod::class,
-        'otp' => \LaravelAuthPro\SignInMethods\OneTimePasswordSignInMethod::class,
-        'oauth' => \LaravelAuthPro\SignInMethods\OAuthSignInMethod::class,
+        'otp'      => \LaravelAuthPro\SignInMethods\OneTimePasswordSignInMethod::class,
+        'oauth'    => \LaravelAuthPro\SignInMethods\OAuthSignInMethod::class,
     ],
 
     /*
@@ -121,7 +121,7 @@ return [
                 */
 
                 'redis' => [
-                    'prefix' => 'auth_pro_otp',
+                    'prefix'   => 'auth_pro_otp',
                     'database' => 3,
                 ],
             ],
@@ -168,7 +168,7 @@ return [
             */
 
             'via' => [
-                'email' => ['mail'],
+                'email'  => ['mail'],
                 'mobile' => [\LaravelAuthPro\Notifications\Channels\SMSChannel::class],
             ],
         ],
@@ -210,8 +210,8 @@ return [
 
         'token' => [
             'enabled' => true,
-            'length' => 16,
-            'type' => \LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordTokenType::RANDOM_STRING,
+            'length'  => 16,
+            'type'    => \LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordTokenType::RANDOM_STRING,
         ],
 
         /*
@@ -225,7 +225,7 @@ return [
 
         'code' => [
             'length' => 6,
-            'type' => \LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordCodeType::DIGIT,
+            'type'   => \LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordCodeType::DIGIT,
         ],
 
         /*
@@ -261,11 +261,11 @@ return [
         'rate_limit' => [
             \LaravelAuthPro\Infrastructure\OneTimePassword\Limiter\OneTimePasswordIpAddressLimiter::class => [
                 'decay_in_seconds' => 1800,
-                'max_attempts' => 5,
+                'max_attempts'     => 5,
             ],
             \LaravelAuthPro\Infrastructure\OneTimePassword\Limiter\OneTimePasswordIdentifierLimiter::class => [
                 'decay_in_seconds' => 900,
-                'max_attempts' => 10,
+                'max_attempts'     => 10,
             ],
         ],
     ],

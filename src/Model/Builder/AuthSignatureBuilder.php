@@ -23,7 +23,7 @@ class AuthSignatureBuilder implements EntityBuilderInterface
     private ?string $userId = null;
 
     /**
-     * @param  array<string, string>  $array
+     * @param array<string, string> $array
      */
     public static function fromArray(array $array): AuthSignatureInterface
     {

@@ -52,7 +52,8 @@ class AuthResultBuilder implements EntityBuilderInterface
     }
 
     /**
-     * @param  array<string, string|mixed>  $payload
+     * @param array<string, string|mixed> $payload
+     *
      * @return $this
      */
     public function with(array $payload): self

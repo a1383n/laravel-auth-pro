@@ -56,7 +56,8 @@ class AuthCredentialBuilder implements EntityBuilderInterface
     }
 
     /**
-     * @param  array<string, string>  $payload
+     * @param array<string, string> $payload
+     *
      * @return $this
      */
     public function withPayload(array $payload = []): self
@@ -74,10 +75,10 @@ class AuthCredentialBuilder implements EntityBuilderInterface
 
         return Container::getInstance()
             ->make(self::getClassFromProviderId($this->providerId), [
-                'providerId' => $this->providerId,
-                'identifier' => $this->identifier,
+                'providerId'   => $this->providerId,
+                'identifier'   => $this->identifier,
                 'signInMethod' => $this->signInMethod,
-                'payload' => $this->payload,
+                'payload'      => $this->payload,
             ]);
     }
 }

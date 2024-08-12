@@ -13,12 +13,12 @@ interface UserRepositoryInterface extends BaseRepositoryInterface
     public function isUserExist(AuthIdentifierInterface $identifier): bool;
 
     /**
-     * @param  string[]  $columns
+     * @param string[] $columns
      */
     public function getUserByIdentifier(AuthIdentifierInterface $identifier, array $columns = ['*']): ?AuthenticatableInterface;
 
     /**
-     * @param  string[]  $columns
+     * @param string[] $columns
      */
     public function getUserById(string $id, array $columns = ['*']): ?AuthenticatableInterface;
 

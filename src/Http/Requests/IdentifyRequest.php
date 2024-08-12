@@ -18,7 +18,7 @@ class IdentifyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'identifier' => ['required', 'string'],
+            'identifier'     => ['required', 'string'],
             'sign_in_method' => ['sometimes', 'nullable', 'string', Rule::enum(AuthProviderSignInMethod::class)],
         ];
     }

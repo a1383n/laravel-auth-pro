@@ -24,27 +24,27 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
     use HasBuilder;
 
     /**
-     * @type string|null
+     * @var string|null
      */
     public const ID = null;
 
     /**
-     * @type AuthProviderType|null
+     * @var AuthProviderType|null
      */
     public const TYPE = null;
 
     /**
-     * @type AuthIdentifierType|null
+     * @var AuthIdentifierType|null
      */
     public const IDENTIFIER_TYPE = null;
 
     /**
-     * @type AuthProviderSignInMethod[]|null
+     * @var AuthProviderSignInMethod[]|null
      */
     public const SUPPORTED_SIGN_IN_METHODS = [];
 
     /**
-     * @type array<string, class-string<AuthSignInMethodInterface>>
+     * @var array<string, class-string<AuthSignInMethodInterface>>
      */
     protected const SIGN_IN_METHODS = [];
 
@@ -102,7 +102,7 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
             $beforeBuildClosure($builder);
         }
 
-        if (! $this->getRepository()->createByAuthenticatable($identifier, $authenticatable = $builder->build())) {
+        if (!$this->getRepository()->createByAuthenticatable($identifier, $authenticatable = $builder->build())) {
             throw new \Exception('Failed to save the user to the database');
         }
 
@@ -113,7 +113,7 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
     {
         $signInMethodClass = $this->getSignInMethodClass($credential->getSignInMethod());
 
-        if ($this->isStrictMode() && ! $this->getRepository()->isUserExist($credential->getIdentifier())) {
+        if ($this->isStrictMode() && !$this->getRepository()->isUserExist($credential->getIdentifier())) {
             throw new AuthException('user_not_found');
         }
 

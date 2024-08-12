@@ -6,18 +6,14 @@ use Laravel\Socialite\Facades\Socialite;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthSignInMethodInterface;
-use LaravelAuthPro\Contracts\Credentials\OAuthCredentialInterface;
 use LaravelAuthPro\Contracts\Exceptions\AuthException;
 
 class OAuthSignInMethod implements AuthSignInMethodInterface
 {
     /**
-     * @param AuthenticatableInterface $user
-     * @param OAuthCredentialInterface|AuthCredentialInterface $credential
-     * @return AuthenticatableInterface
      * @throws AuthException
      */
-    public function __invoke(AuthenticatableInterface $user, OAuthCredentialInterface|AuthCredentialInterface $credential): AuthenticatableInterface
+    public function __invoke(AuthCredentialInterface $credential, ?AuthenticatableInterface $user = null): void
     {
         try {
             $oauthUser = Socialite::driver($credential->getDriver())->userFromToken($credential->getIdToken());
@@ -31,7 +27,7 @@ class OAuthSignInMethod implements AuthSignInMethodInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUserRequiredColumns(): array
     {

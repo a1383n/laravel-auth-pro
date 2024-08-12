@@ -12,7 +12,7 @@ abstract class OneTimePasswordLimiter implements OneTimePasswordLimiterInterface
 
     protected function getKey(): string
     {
-        return $this->prefix. '_' . $this->getName();
+        return $this->prefix.'_'.$this->getName();
     }
 
     protected function defaultPass(): bool

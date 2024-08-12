@@ -10,6 +10,7 @@ use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordCodeType;
 class CodeGenerator implements GeneratorInterface
 {
     protected readonly int $length;
+
     protected readonly OneTimePasswordCodeType $type;
 
     public function __construct(Repository $configRepository)
@@ -18,7 +19,7 @@ class CodeGenerator implements GeneratorInterface
         $this->type = $configRepository->get('auth_pro.one_time_password.code.type', OneTimePasswordCodeType::DIGIT);
     }
 
-    public function generate(int $length = null): string
+    public function generate(?int $length = null): string
     {
         $length ??= $this->length;
 

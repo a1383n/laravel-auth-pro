@@ -8,7 +8,9 @@ use LaravelAuthPro\Enums\AuthIdentifierType;
 class OAuthCredential extends AuthCredential implements OAuthCredentialInterface
 {
     protected ?string $driver;
+
     protected ?string $email;
+
     protected ?string $idToken;
 
     public function getSupportedIdentifiersTypes(): array

@@ -14,11 +14,10 @@ use LaravelAuthPro\Enums\AuthIdentifierType;
 class AuthIdentifierBuilder implements EntityBuilderInterface
 {
     private ?AuthIdentifierType $identifierType = null;
+
     private ?string $value = null;
 
     /**
-     * @param string $identifier
-     * @return self
      * @throws ValidationException if unprocessable identifier passed
      */
     public function fromPlainIdentifier(string $identifier): self

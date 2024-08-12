@@ -48,9 +48,23 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
      */
     protected const SIGN_IN_METHODS = [];
 
+    private bool $strictMode = true;
+
     public function __construct(private readonly UserRepositoryInterface $userRepository, protected readonly ?string $authenticatableModel = null)
     {
         //
+    }
+
+    public function isStrictMode(): bool
+    {
+        return $this->strictMode;
+    }
+
+    public function setStrictMode(bool $strictMode): self
+    {
+        $this->strictMode = $strictMode;
+
+        return $this;
     }
 
     protected static function getBuilderClass(): string
@@ -95,11 +109,11 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
         return $authenticatable;
     }
 
-    public function authenticate(AuthCredentialInterface $credential): AuthenticatableInterface
+    public function authenticate(AuthCredentialInterface $credential): ?AuthenticatableInterface
     {
         $signInMethodClass = $this->getSignInMethodClass($credential->getSignInMethod());
 
-        if (! $this->getRepository()->isUserExist($credential->getIdentifier())) {
+        if ($this->isStrictMode() && ! $this->getRepository()->isUserExist($credential->getIdentifier())) {
             throw new AuthException('user_not_found');
         }
 
@@ -113,6 +127,8 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
          */
         $user = $this->getRepository()->getUserByIdentifier($credential->getIdentifier(), $signInMethod->getUserRequiredColumns());
 
-        return $signInMethod($user, $credential);
+        $signInMethod($credential, $user);
+
+        return $user;
     }
 }

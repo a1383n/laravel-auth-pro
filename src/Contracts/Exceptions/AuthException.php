@@ -9,18 +9,18 @@ use LaravelAuthPro\Contracts\AuthExceptionInterface;
 class AuthException extends Exception implements AuthExceptionInterface
 {
     private const ERROR_MESSAGE_TEMPLE = '[%s]';
+
     private const ERROR_MESSAGE_TEMPLE_WITH_EXCEPTION = '[%s] - %s';
 
     private static ?Closure $renderClosure = null;
 
     /**
-     * @param string|null $error
-     * @param int $code
-     * @param array<string, mixed> $payload
+     * @param  int  $code
+     * @param  array<string, mixed>  $payload
      */
     public function __construct(protected ?string $error, protected $code = 400, protected array $payload = [])
     {
-        $key = 'auth.error.' . ($this->error ?? 'unknown');
+        $key = 'auth.error.'.($this->error ?? 'unknown');
         $this->code = $this->error === null ? 500 : $this->code;
 
         /**
@@ -48,8 +48,6 @@ class AuthException extends Exception implements AuthExceptionInterface
 
     /**
      * Report the exception.
-     *
-     * @return bool|null
      */
     public function report(): ?bool
     {
@@ -59,7 +57,7 @@ class AuthException extends Exception implements AuthExceptionInterface
     /**
      * Render the exception as an HTTP response.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function render($request)
@@ -76,7 +74,7 @@ class AuthException extends Exception implements AuthExceptionInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getErrorMessage(): string
     {
@@ -84,7 +82,7 @@ class AuthException extends Exception implements AuthExceptionInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getPayload(): array
     {

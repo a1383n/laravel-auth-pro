@@ -12,8 +12,11 @@ use LaravelAuthPro\Enums\AuthProviderType;
 class OAuthProvider extends AuthProvider implements OAuthProviderInterface
 {
     public const ID = 'oauth';
+
     public const TYPE = AuthProviderType::OAUTH;
+
     public const IDENTIFIER_TYPE = AuthIdentifierType::EMAIL;
+
     public const SUPPORTED_SIGN_IN_METHODS = [
         AuthProviderSignInMethod::OAUTH,
     ];
@@ -28,7 +31,7 @@ class OAuthProvider extends AuthProvider implements OAuthProviderInterface
         $authenticatable->authProviders()
             ->create([
                 'provider_type' => static::TYPE,
-                'provider_id' => static::ID . '.' . $driver,
+                'provider_id' => static::ID.'.'.$driver,
                 'payload' => [
                     'id' => $user->getId(),
                     'extra' => $user->getRaw(),

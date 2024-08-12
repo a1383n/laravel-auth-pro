@@ -7,12 +7,9 @@ use LaravelAuthPro\Contracts\Exceptions\AuthException;
 interface AuthSignInMethodInterface
 {
     /**
-     * @param AuthenticatableInterface $user
-     * @param AuthCredentialInterface $credential
-     * @return AuthenticatableInterface
      * @throws AuthException
      */
-    public function __invoke(AuthenticatableInterface $user, AuthCredentialInterface $credential): AuthenticatableInterface;
+    public function __invoke(AuthCredentialInterface $credential, ?AuthenticatableInterface $user = null): void;
 
     /**
      * @return string[]

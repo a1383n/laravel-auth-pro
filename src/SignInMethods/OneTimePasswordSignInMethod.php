@@ -6,7 +6,6 @@ use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthExceptionInterface;
 use LaravelAuthPro\Contracts\AuthSignInMethodInterface;
-use LaravelAuthPro\Contracts\Credentials\PhoneCredentialInterface;
 use LaravelAuthPro\Contracts\Exceptions\AuthException;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordServiceInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordVerifyResultInterface;
@@ -19,12 +18,9 @@ class OneTimePasswordSignInMethod implements AuthSignInMethodInterface
     }
 
     /**
-     * @param AuthenticatableInterface $user
-     * @param PhoneCredentialInterface $credential
-     * @return AuthenticatableInterface
      * @throws AuthException
      */
-    public function __invoke(AuthenticatableInterface $user, PhoneCredentialInterface|AuthCredentialInterface $credential): AuthenticatableInterface
+    public function __invoke(AuthCredentialInterface $credential, ?AuthenticatableInterface $user = null): void
     {
         if ($credential->getOneTimePassword() === null) {
             throw new \InvalidArgumentException('$code is null in $credential');
@@ -52,8 +48,6 @@ class OneTimePasswordSignInMethod implements AuthSignInMethodInterface
                 throw new AuthException($error, 400, $result->getPayload());
             }
         }
-
-        return $user;
     }
 
     public function getUserRequiredColumns(): array

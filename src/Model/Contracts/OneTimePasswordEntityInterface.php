@@ -14,7 +14,7 @@ interface OneTimePasswordEntityInterface extends Arrayable
 {
     public function getKey(): string;
 
-    public static function getKeyStatically(AuthIdentifierInterface $identifier, string $token = null): string;
+    public static function getKeyStatically(AuthIdentifierInterface $identifier, ?string $token = null): string;
 
     public function getIdentifier(): AuthIdentifierInterface;
 

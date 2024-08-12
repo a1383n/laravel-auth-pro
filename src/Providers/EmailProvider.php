@@ -12,8 +12,11 @@ use LaravelAuthPro\Model\Builder\AuthenticatableBuilder;
 class EmailProvider extends AuthProvider implements EmailProviderInterface
 {
     public const ID = 'email';
+
     public const TYPE = AuthProviderType::INTERNAL;
+
     public const IDENTIFIER_TYPE = AuthIdentifierType::EMAIL;
+
     public const SUPPORTED_SIGN_IN_METHODS = [
         AuthProviderSignInMethod::PASSWORD,
         AuthProviderSignInMethod::LINK,

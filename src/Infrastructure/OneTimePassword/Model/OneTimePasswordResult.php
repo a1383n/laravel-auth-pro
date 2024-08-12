@@ -7,8 +7,7 @@ use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordResul
 class OneTimePasswordResult implements OneTimePasswordResultInterface
 {
     /**
-     * @param mixed $error
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     public function __construct(protected mixed $error, protected array $payload = [])
     {

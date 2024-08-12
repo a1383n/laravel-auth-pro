@@ -14,12 +14,9 @@ class AuthIdentifier implements AuthIdentifierInterface
     use RoutesNotifications;
 
     protected AuthIdentifierType $type;
+
     protected string $value;
 
-    /**
-     * @param AuthIdentifierType $type
-     * @param string $value
-     */
     public function __construct(AuthIdentifierType $type, string $value)
     {
         $this->type = $type;

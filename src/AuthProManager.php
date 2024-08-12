@@ -2,7 +2,6 @@
 
 namespace LaravelAuthPro;
 
-use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthProviderInterface;
 use LaravelAuthPro\Contracts\AuthServiceInterface;
@@ -30,7 +29,7 @@ class AuthProManager
             AuthProviderSignInMethod::PASSWORD->value => PasswordSignInMethod::class,
             AuthProviderSignInMethod::ONE_TIME_PASSWORD->value => OneTimePasswordSignInMethod::class,
             AuthProviderSignInMethod::OAUTH->value => OAuthSignInMethod::class,
-//            AuthProviderSignInMethod::LINK => LinkSignInMethod::class,
+            //            AuthProviderSignInMethod::LINK => LinkSignInMethod::class,
         ];
 
         return config('auth_pro.sign_in_methods', $default);

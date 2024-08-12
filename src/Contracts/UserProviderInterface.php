@@ -15,7 +15,7 @@ interface UserProviderInterface
     public function getProviderPayload(): array;
 
     /**
-     * @param array<string, mixed> $payload
+     * @param  array<string, mixed>  $payload
      */
     public function setProviderPayload(array $payload): void;
 

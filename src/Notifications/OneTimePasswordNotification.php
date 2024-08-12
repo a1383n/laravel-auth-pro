@@ -47,7 +47,7 @@ class OneTimePasswordNotification extends Notification implements MailNotificati
          * @var array<string, array<string|class-string>> $notificationChannelMapper
          */
         $notificationChannelMapper = config('auth_pro.one_time_password.notification.via', [
-            'email'  => ['mail'],
+            'email' => ['mail'],
             'mobile' => [SMSChannel::class],
         ]);
 
@@ -62,7 +62,7 @@ class OneTimePasswordNotification extends Notification implements MailNotificati
 
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage())
+        return (new MailMessage)
             ->subject('OTP Code')
             ->line('You are receiving this email for OTP verification.')
             ->line('Your OTP code is: '.$this->code)
@@ -71,7 +71,7 @@ class OneTimePasswordNotification extends Notification implements MailNotificati
 
     public function toSMS(?object $notifiable): NotificationMessageInterface
     {
-        if (!$notifiable instanceof AuthIdentifierInterface) {
+        if (! $notifiable instanceof AuthIdentifierInterface) {
             throw new \InvalidArgumentException('$notifiable is not supported');
         }
 

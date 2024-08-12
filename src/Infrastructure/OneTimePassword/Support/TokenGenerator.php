@@ -25,7 +25,7 @@ class TokenGenerator implements GeneratorInterface
 
         return match ($this->type) {
             OneTimePasswordTokenType::RANDOM_STRING => Str::random($length),
-            OneTimePasswordTokenType::RANDOM_INT    => (string) $this->generateRandomInt($length),
+            OneTimePasswordTokenType::RANDOM_INT => (string) $this->generateRandomInt($length),
             OneTimePasswordTokenType::ULID, OneTimePasswordTokenType::UUID => (string) Str::{$this->type->value}(),
         };
     }

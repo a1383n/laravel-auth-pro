@@ -28,7 +28,7 @@ class OneTimePasswordSignInMethod implements AuthSignInMethodInterface
 
         $result = $this->oneTimePasswordService->verifyOneTimePassword($credential->getIdentifier(), $credential);
 
-        if (!$result->isSuccessful()) {
+        if (! $result->isSuccessful()) {
             if ($result instanceof OneTimePasswordVerifyResultInterface) {
                 throw new AuthException($result->getVerifierError()?->value, 400, $result->getPayload());
             } else {

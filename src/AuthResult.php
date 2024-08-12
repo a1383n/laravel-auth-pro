@@ -13,7 +13,7 @@ class AuthResult implements AuthResultInterface
     use HasBuilder;
 
     /**
-     * @param array<string,string|mixed>|null $payload
+     * @param  array<string,string|mixed>|null  $payload
      */
     public function __construct(protected ?AuthIdentifierInterface $identifier = null, protected ?AuthenticatableInterface $user = null, protected ?AuthExceptionInterface $exception = null, protected ?array $payload = null)
     {
@@ -52,6 +52,6 @@ class AuthResult implements AuthResultInterface
 
     public function throwIfError(): self
     {
-        return !$this->isSuccessful() ? throw $this->getException() : $this;
+        return ! $this->isSuccessful() ? throw $this->getException() : $this;
     }
 }

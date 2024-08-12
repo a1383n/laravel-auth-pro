@@ -28,12 +28,12 @@ abstract class AuthCredential implements AuthCredentialInterface, HasBuilderInte
 
     public static function getBuilder(): AuthCredentialBuilder
     {
-        return new AuthCredentialBuilder();
+        return new AuthCredentialBuilder;
     }
 
     public function throwIfIdentifierTypeNotSupported(): void
     {
-        if (!in_array($this->identifier->getIdentifierType(), $this->getSupportedIdentifiersTypes())) {
+        if (! in_array($this->identifier->getIdentifierType(), $this->getSupportedIdentifiersTypes())) {
             throw new \InvalidArgumentException(sprintf('Invalid identifier type [%s] in %s', $this->identifier->getIdentifierType()->name, class_basename(static::class)));
         }
     }

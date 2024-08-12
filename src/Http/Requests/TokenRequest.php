@@ -26,11 +26,11 @@ class TokenRequest extends FormRequest
          * @var array<string, array<string[]| mixed>> $rules
          */
         $rules = Collection::make([
-            'credential'                => ['required', 'array'],
-            'credential.identifier'     => ['required', 'string'],
-            'credential.provider_id'    => ['required', 'string', Rule::in($this->getProviderIds())],
+            'credential' => ['required', 'array'],
+            'credential.identifier' => ['required', 'string'],
+            'credential.provider_id' => ['required', 'string', Rule::in($this->getProviderIds())],
             'credential.sign_in_method' => ['required', 'string', Rule::in($this->getProviderSignInMethod())],
-            'credential.payload'        => ['required', 'array'],
+            'credential.payload' => ['required', 'array'],
         ])
             ->merge($this->getCredentialPayloadRules())
             ->toArray();

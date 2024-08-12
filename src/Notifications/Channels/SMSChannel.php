@@ -12,7 +12,7 @@ class SMSChannel implements NotificationChannelInterface
 {
     public function send(?object $notifiable, Notification $notification): mixed
     {
-        if (!$notification instanceof SMSNotificationInterface) {
+        if (! $notification instanceof SMSNotificationInterface) {
             throw new \InvalidArgumentException('$notification is not instance of SMSNotification');
         }
 

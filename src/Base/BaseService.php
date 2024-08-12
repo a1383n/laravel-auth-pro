@@ -24,7 +24,7 @@ abstract class BaseService implements BaseServiceInterface
 
     public function throwIfRepositoryNotProvided(): void
     {
-        if (!$this->hasRepository()) {
+        if (! $this->hasRepository()) {
             throw new \InvalidArgumentException('$repository not provided');
         }
     }

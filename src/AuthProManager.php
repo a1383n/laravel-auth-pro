@@ -26,9 +26,9 @@ class AuthProManager
     public function getDefaultSignInMethodsMapper(): array
     {
         $default = [
-            AuthProviderSignInMethod::PASSWORD->value          => PasswordSignInMethod::class,
+            AuthProviderSignInMethod::PASSWORD->value => PasswordSignInMethod::class,
             AuthProviderSignInMethod::ONE_TIME_PASSWORD->value => OneTimePasswordSignInMethod::class,
-            AuthProviderSignInMethod::OAUTH->value             => OAuthSignInMethod::class,
+            AuthProviderSignInMethod::OAUTH->value => OAuthSignInMethod::class,
             //            AuthProviderSignInMethod::LINK => LinkSignInMethod::class,
         ];
 

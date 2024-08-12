@@ -60,7 +60,7 @@ class AuthProServiceProvider extends ServiceProvider
 
     private function registerPublishable(): void
     {
-        if (!$this->app->runningInConsole()) {
+        if (! $this->app->runningInConsole()) {
             return;
         }
 

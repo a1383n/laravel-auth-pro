@@ -20,8 +20,7 @@ class OneTimePasswordVerifyResultBuilder implements EntityBuilderInterface
     protected ?OneTimePasswordVerifyError $error = null;
 
     /**
-     * @param array<string, mixed> $payload
-     *
+     * @param  array<string, mixed>  $payload
      * @return $this
      */
     public function successful(array $payload = []): self
@@ -32,8 +31,7 @@ class OneTimePasswordVerifyResultBuilder implements EntityBuilderInterface
     }
 
     /**
-     * @param array<string, mixed> $payload
-     *
+     * @param  array<string, mixed>  $payload
      * @return $this
      */
     public function failed(OneTimePasswordVerifyError $error, array $payload = []): self

@@ -30,7 +30,7 @@ class OneTimePasswordEntityBuilder
     }
 
     /**
-     * @param array<string, string> $array
+     * @param  array<string, string>  $array
      */
     public static function fromArray(AuthIdentifierInterface $identifier, string $key, array $array): OneTimePasswordEntityInterface
     {

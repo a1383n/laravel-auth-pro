@@ -49,7 +49,7 @@ class AuthenticatableBuilder implements EntityBuilderInterface
 
         $this->attributes = [$identifierKey => $this->authIdentifier->getIdentifierValue()] + $this->attributes;
 
-        if (!empty($this->password)) {
+        if (! empty($this->password)) {
             $this->attributes[$this->authenticatableModel::getPasswordKey()] = $this->password;
         }
 

@@ -19,7 +19,7 @@ trait OneTimePasswordConcerns
     {
         return [
             'token' => self::getOneTimePasswordTokenRule(),
-            'code'  => self::getOneTimePasswordCodeRule(),
+            'code' => self::getOneTimePasswordCodeRule(),
         ];
     }
 
@@ -83,7 +83,7 @@ trait OneTimePasswordConcerns
     {
         return match ($enumType) {
             OneTimePasswordTokenType::RANDOM_STRING => ['string', 'size:'.($length ?? throw new \InvalidArgumentException('$length cannot be null when type is'.$enumType->name))],
-            OneTimePasswordTokenType::RANDOM_INT    => ['int', 'digits:'.($length ?? throw new \InvalidArgumentException('$length cannot be null when type is'.$enumType->name))],
+            OneTimePasswordTokenType::RANDOM_INT => ['int', 'digits:'.($length ?? throw new \InvalidArgumentException('$length cannot be null when type is'.$enumType->name))],
             OneTimePasswordTokenType::UUID, OneTimePasswordTokenType::ULID => [$enumType->value]
         };
     }

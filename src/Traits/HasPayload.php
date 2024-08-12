@@ -5,7 +5,7 @@ namespace LaravelAuthPro\Traits;
 trait HasPayload
 {
     /**
-     * @param  array<string, string>  $payload
+     * @param array<string, string> $payload
      */
     private function fillAttributes(array $payload): void
     {
@@ -13,7 +13,7 @@ trait HasPayload
             ->keys()
             ->diff(collect(get_object_vars($this))->keys())
             ->each(function ($property) use ($payload) {
-                if (! empty($payload[$property])) {
+                if (!empty($payload[$property])) {
                     $this->{$property} = $payload[$property];
                 }
             });

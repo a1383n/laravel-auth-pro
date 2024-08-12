@@ -15,8 +15,8 @@ class AuthException extends Exception implements AuthExceptionInterface
     private static ?Closure $renderClosure = null;
 
     /**
-     * @param  int  $code
-     * @param  array<string, mixed>  $payload
+     * @param int                  $code
+     * @param array<string, mixed> $payload
      */
     public function __construct(protected ?string $error, protected $code = 400, protected array $payload = [])
     {
@@ -57,7 +57,8 @@ class AuthException extends Exception implements AuthExceptionInterface
     /**
      * Render the exception as an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function render($request)
@@ -67,8 +68,8 @@ class AuthException extends Exception implements AuthExceptionInterface
         } else {
             return response([
                 'is_successful' => false,
-                'error' => $this->error,
-                'message' => __($this->error, $this->payload ?? []),
+                'error'         => $this->error,
+                'message'       => __($this->error, $this->payload ?? []),
             ], $this->code);
         }
     }

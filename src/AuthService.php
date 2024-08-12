@@ -62,8 +62,8 @@ class AuthService extends BaseService implements AuthServiceInterface
         return AuthResult::getBuilder()
             ->as($identifier)
             ->with([
-                'token' => $otp->getToken(),
-                'expire_in' => $otp->getValidInterval(),
+                'token'      => $otp->getToken(),
+                'expire_in'  => $otp->getValidInterval(),
                 'created_at' => $otp->getCreatedAt(),
             ])
             ->build();
@@ -73,7 +73,7 @@ class AuthService extends BaseService implements AuthServiceInterface
     {
         $result = $this->loginWithCredential($phoneCredential);
 
-        if (! $result->isSuccessful()) {
+        if (!$result->isSuccessful()) {
             return $result;
         }
 
@@ -96,7 +96,7 @@ class AuthService extends BaseService implements AuthServiceInterface
     public function verifyOneTimePassword(PhoneCredentialInterface $phoneCredential, bool $dry = false): AuthResultInterface
     {
         $result = $this->oneTimePasswordService->verifyOneTimePassword($phoneCredential->getIdentifier(), $phoneCredential, $dry);
-        if (! $result->isSuccessful()) {
+        if (!$result->isSuccessful()) {
             return AuthResult::getBuilder()
                 ->failed(new AuthException($result->getError()->value))
                 ->build();
@@ -110,7 +110,7 @@ class AuthService extends BaseService implements AuthServiceInterface
     public function verifyOneTimePasswordSignature(AuthSignatureInterface $signature): AuthResultInterface
     {
         $result = $this->oneTimePasswordService->verifyOneTimePasswordSignature($signature);
-        if (! $result->isSuccessful()) {
+        if (!$result->isSuccessful()) {
             return $result;
         }
 

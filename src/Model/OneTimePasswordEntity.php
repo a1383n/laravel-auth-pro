@@ -66,7 +66,7 @@ class OneTimePasswordEntity implements OneTimePasswordEntityInterface
     public function toArray(): array
     {
         return [
-            'c' => ! $this->isRecentlyCreated() ? Hash::make($this->getCode()) : $this->getCode(),
+            'c' => !$this->isRecentlyCreated() ? Hash::make($this->getCode()) : $this->getCode(),
             'i' => $this->interval->totalSeconds,
             't' => $this->getCreatedAt()->timestamp,
         ];

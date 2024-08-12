@@ -27,7 +27,7 @@ class PhoneProvider extends AuthProvider implements PhoneProviderInterface
 
     protected const SIGN_IN_METHODS = [
         'password' => PasswordSignInMethod::class,
-        'otp' => OneTimePasswordSignInMethod::class,
+        'otp'      => OneTimePasswordSignInMethod::class,
     ];
 
     public function createUserWithPhoneAndPassword(string $phone, string $password, ?callable $beforeBuildClosure = null): AuthenticatableInterface

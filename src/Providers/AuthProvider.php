@@ -102,7 +102,7 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
             $beforeBuildClosure($builder);
         }
 
-        if (! $this->getRepository()->createByAuthenticatable($identifier, $authenticatable = $builder->build())) {
+        if (!$this->getRepository()->createByAuthenticatable($identifier, $authenticatable = $builder->build())) {
             throw new \Exception('Failed to save the user to the database');
         }
 
@@ -113,7 +113,7 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
     {
         $signInMethodClass = $this->getSignInMethodClass($credential->getSignInMethod());
 
-        if ($this->isStrictMode() && ! $this->getRepository()->isUserExist($credential->getIdentifier())) {
+        if ($this->isStrictMode() && !$this->getRepository()->isUserExist($credential->getIdentifier())) {
             throw new AuthException('user_not_found');
         }
 

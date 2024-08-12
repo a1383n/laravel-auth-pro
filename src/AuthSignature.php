@@ -29,8 +29,8 @@ class AuthSignature implements AuthSignatureInterface
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
-            'ip' => $this->ip,
+            'id'  => $this->id,
+            'ip'  => $this->ip,
             'sub' => $this->userId,
             'iat' => $this->createdAt->timestamp,
         ];

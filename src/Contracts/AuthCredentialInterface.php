@@ -8,7 +8,7 @@ use LaravelAuthPro\Enums\AuthProviderSignInMethod;
 interface AuthCredentialInterface
 {
     /**
-     * @param  array<string, string>  $payload
+     * @param array<string, string> $payload
      */
     public function __construct(string $providerId, AuthIdentifierInterface $identifier, AuthProviderSignInMethod $signInMethod, array $payload);
 

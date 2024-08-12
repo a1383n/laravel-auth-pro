@@ -7,5 +7,5 @@ interface AuthProviderInterface
     /**
      * @throws AuthExceptionInterface
      */
-    public function authenticate(AuthCredentialInterface $credential): AuthenticatableInterface;
+    public function authenticate(AuthCredentialInterface $credential): ?AuthenticatableInterface;
 }

@@ -109,7 +109,7 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
         return $authenticatable;
     }
 
-    public function authenticate(AuthCredentialInterface $credential): AuthenticatableInterface
+    public function authenticate(AuthCredentialInterface $credential): ?AuthenticatableInterface
     {
         $signInMethodClass = $this->getSignInMethodClass($credential->getSignInMethod());
 
@@ -127,6 +127,8 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
          */
         $user = $this->getRepository()->getUserByIdentifier($credential->getIdentifier(), $signInMethod->getUserRequiredColumns());
 
-        return $signInMethod($user, $credential);
+        $signInMethod($credential, $user);
+
+        return $user;
     }
 }

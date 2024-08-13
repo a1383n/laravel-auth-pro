@@ -29,14 +29,15 @@ class OneTimePasswordVerifierService extends BaseService implements OneTimePassw
     {
         $result = OneTimePasswordVerifyResult::getBuilder();
 
-        $failedAttempts = $this->repository->getFailedAttemptsCount($oneTimePasswordEntity);
-        if ($failedAttempts >= $this->maxFailedAttempts) {
+        if ($oneTimePasswordEntity->isExpired()) {
+            return $result
+                ->failed(OneTimePasswordVerifyError::EXPIRED)
+                ->build();
+        } elseif ($this->repository->getFailedAttemptsCount($oneTimePasswordEntity) >= $this->maxFailedAttempts) {
             return $result
                 ->failed(OneTimePasswordVerifyError::TOO_MANY_FAILED_ATTEMPTS)
                 ->build();
-        }
-
-        if ($this->check($oneTimePasswordEntity, $code)) {
+        } elseif ($this->check($oneTimePasswordEntity, $code)) {
             return $result
                 ->successful()
                 ->build();

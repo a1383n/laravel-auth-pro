@@ -63,6 +63,11 @@ class OneTimePasswordEntity implements OneTimePasswordEntityInterface
         return method_exists(Hash::class, 'isHashed') ? Hash::isHashed($this->code) : password_get_info($this->code)['algo'] !== null;
     }
 
+    public function isExpired(): bool
+    {
+        return $this->createdAt->add($this->interval)->isPast();
+    }
+
     public function toArray(): array
     {
         return [

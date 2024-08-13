@@ -6,9 +6,9 @@ use Carbon\CarbonInterval;
 
 interface OneTimePasswordLimiterInterface
 {
-    public function getName(): string;
+    public function getKey(): string;
 
-    public function decayInterval(): CarbonInterval;
+    public function decayInSeconds(): int;
 
     public function maxAttempts(): int;
 }

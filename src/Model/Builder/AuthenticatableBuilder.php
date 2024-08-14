@@ -43,7 +43,7 @@ class AuthenticatableBuilder implements EntityBuilderInterface
     public function build(): AuthenticatableInterface
     {
         $identifierKey = collect($this->authenticatableModel::getIdentifierMapper())
-            ->filter(fn($value) => $value == $this->authIdentifier->getIdentifierType())
+            ->filter(fn ($value) => $value == $this->authIdentifier->getIdentifierType())
             ->keys()
             ->first();
 

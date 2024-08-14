@@ -31,7 +31,7 @@ class AuthService extends BaseService implements AuthServiceInterface
     public function loginWithCredential(AuthCredentialInterface $credential, bool $strictMode = true): AuthResultInterface
     {
         return $this
-            ->tryAuthenticate(fn() => AuthProvider::getBuilder()->fromId($credential->getProviderId())->setStrictMode($strictMode)->authenticate($credential))
+            ->tryAuthenticate(fn () => AuthProvider::getBuilder()->fromId($credential->getProviderId())->setStrictMode($strictMode)->authenticate($credential))
             ->as($credential->getIdentifier())
             ->build();
     }
@@ -63,8 +63,8 @@ class AuthService extends BaseService implements AuthServiceInterface
         return AuthResult::getBuilder()
             ->as($identifier)
             ->with([
-                'token' => $otp->getToken(),
-                'expire_in' => $otp->getValidInterval(),
+                'token'      => $otp->getToken(),
+                'expire_in'  => $otp->getValidInterval(),
                 'created_at' => $otp->getCreatedAt(),
             ])
             ->build();

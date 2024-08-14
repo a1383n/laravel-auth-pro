@@ -62,11 +62,11 @@ class OneTimePasswordRepository extends BaseRepository implements OneTimePasswor
 
     public function isSignatureUsed(string $signatureId): bool
     {
-        return $this->connection->exists(self::getKey('signature:' . $signatureId)) === 1;
+        return $this->connection->exists(self::getKey('signature:'.$signatureId)) === 1;
     }
 
     public function markSignatureAsUsed(string $signatureId, int $ttl): bool
     {
-        return $this->connection->setex(self::getKey('signature:' . $signatureId), $ttl + 10, '1');
+        return $this->connection->setex(self::getKey('signature:'.$signatureId), $ttl + 10, '1');
     }
 }

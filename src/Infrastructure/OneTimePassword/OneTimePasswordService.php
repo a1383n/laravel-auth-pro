@@ -14,7 +14,6 @@ use LaravelAuthPro\Contracts\AuthResultInterface;
 use LaravelAuthPro\Contracts\AuthSignatureInterface;
 use LaravelAuthPro\Contracts\Credentials\PhoneCredentialInterface;
 use LaravelAuthPro\Contracts\Exceptions\AuthException;
-use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordRateLimiterServiceInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordResultInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordServiceInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordVerifierServiceInterface;
@@ -49,17 +48,17 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
         $limiters = RateLimiter::limiter($limiterScopeKey = 'auth_pro_otp');
         $limiters = collect(Arr::wrap($limiters !== null ? $limiters(request(), $identifier) : []))
             ->map(function (Limit $limit) use ($limiterScopeKey) {
-                $limit->key = md5($limiterScopeKey . $limit->key);
+                $limit->key = md5($limiterScopeKey.$limit->key);
 
                 return $limit;
             });
 
-        if ($limiter = $limiters->first(fn(Limit $limiter) => RateLimiter::tooManyAttempts($limiter->key, $limiter->maxAttempts))) {
+        if ($limiter = $limiters->first(fn (Limit $limiter) => RateLimiter::tooManyAttempts($limiter->key, $limiter->maxAttempts))) {
             throw new AuthException(OneTimePasswordError::RATE_LIMIT_EXCEEDED->value, 429, ['try_again_in' => now()->addSeconds(RateLimiter::availableIn($limiter->key))->diffForHumans()]);
         }
 
         return tap($this->createOneTimePasswordEntity($identifier), function () use ($limiters) {
-            $limiters->each(fn(Limit $limiter) => RateLimiter::hit($limiter->key));
+            $limiters->each(fn (Limit $limiter) => RateLimiter::hit($limiter->key));
         });
     }
 

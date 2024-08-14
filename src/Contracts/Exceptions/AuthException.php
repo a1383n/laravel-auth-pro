@@ -18,12 +18,12 @@ class AuthException extends Exception implements AuthExceptionInterface
     private static ?Closure $renderClosure = null;
 
     /**
-     * @param int $code
+     * @param int                  $code
      * @param array<string, mixed> $payload
      */
     public function __construct(protected ?string $error, protected $code = 400, protected array $payload = [])
     {
-        $key = 'auth.error.' . ($this->error ?? 'unknown');
+        $key = 'auth.error.'.($this->error ?? 'unknown');
         $this->code = $this->error === null ? 500 : $this->code;
 
         /**
@@ -71,8 +71,8 @@ class AuthException extends Exception implements AuthExceptionInterface
         } else {
             return response([
                 'is_successful' => false,
-                'error' => $this->error,
-                'message' => __($this->error, $this->payload ?? []),
+                'error'         => $this->error,
+                'message'       => __($this->error, $this->payload ?? []),
             ], $this->code);
         }
     }

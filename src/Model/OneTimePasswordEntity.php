@@ -30,7 +30,7 @@ class OneTimePasswordEntity implements OneTimePasswordEntityInterface
 
     public static function getKeyStatically(AuthIdentifierInterface $identifier, ?string $token = null): string
     {
-        return md5($identifier->getIdentifierValue()) . ':' . ($token ?? 'otp');
+        return md5($identifier->getIdentifierValue()).':'.($token ?? 'otp');
     }
 
     public function getIdentifier(): AuthIdentifierInterface

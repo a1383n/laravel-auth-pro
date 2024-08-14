@@ -13,12 +13,11 @@ class AuthSignature implements AuthSignatureInterface
     use HasBuilder;
 
     public function __construct(
-        protected readonly string          $id,
-        protected readonly string          $ip,
-        protected readonly string          $userId,
+        protected readonly string $id,
+        protected readonly string $ip,
+        protected readonly string $userId,
         protected readonly CarbonInterface $createdAt
-    )
-    {
+    ) {
         //
     }
 
@@ -30,8 +29,8 @@ class AuthSignature implements AuthSignatureInterface
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
-            'ip' => $this->ip,
+            'id'  => $this->id,
+            'ip'  => $this->ip,
             'sub' => $this->userId,
             'iat' => $this->createdAt->timestamp,
         ];

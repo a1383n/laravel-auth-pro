@@ -32,7 +32,7 @@ class AuthCredentialBuilder implements EntityBuilderInterface
     public static function getClassFromProviderId(string $id): string
     {
         return collect(AuthPro::getAuthProvidersConfiguration())
-            ->first(fn($provider) => $id === $provider['class']::ID)['credential'];
+            ->first(fn ($provider) => $id === $provider['class']::ID)['credential'];
     }
 
     public function with(string $providerId): self
@@ -76,10 +76,10 @@ class AuthCredentialBuilder implements EntityBuilderInterface
 
         return Container::getInstance()
             ->make(self::getClassFromProviderId($this->providerId), [
-                'providerId' => $this->providerId,
-                'identifier' => $this->identifier,
+                'providerId'   => $this->providerId,
+                'identifier'   => $this->identifier,
                 'signInMethod' => $this->signInMethod,
-                'payload' => $this->payload,
+                'payload'      => $this->payload,
             ]);
     }
 }

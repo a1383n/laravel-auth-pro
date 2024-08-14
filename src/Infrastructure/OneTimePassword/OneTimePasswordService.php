@@ -56,11 +56,9 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
             throw new AuthException(OneTimePasswordError::RATE_LIMIT_EXCEEDED->value, 429, ['try_again_in' => now()->addSeconds(RateLimiter::availableIn($limiter->key))->diffForHumans()]);
         }
 
-        $entity = $this->createOneTimePasswordEntity($identifier);
-
-        $limiters->each(fn(Limit $limiter) => RateLimiter::hit($limiter->key));
-
-        return $entity;
+        return tap($this->createOneTimePasswordEntity($identifier), function () use ($limiters) {
+            $limiters->each(fn(Limit $limiter) => RateLimiter::hit($limiter->key));
+        });
     }
 
     protected function createOneTimePasswordEntity(AuthIdentifierInterface $identifier): OneTimePasswordEntityInterface

@@ -26,7 +26,5 @@ interface OneTimePasswordEntityInterface extends Arrayable
 
     public function getValidInterval(): CarbonInterval;
 
-    public function isExpired(): bool;
-
     public function getCreatedAt(): CarbonInterface;
 }

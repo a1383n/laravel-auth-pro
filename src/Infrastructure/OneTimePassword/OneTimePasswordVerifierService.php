@@ -3,37 +3,24 @@
 namespace LaravelAuthPro\Infrastructure\OneTimePassword;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
 use LaravelAuthPro\Base\BaseService;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordVerifierServiceInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordVerifyResultInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordVerifyError;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Model\OneTimePasswordVerifyResult;
-use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordVerifierRepositoryInterface;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 
 /**
- * @extends BaseService<OneTimePasswordVerifierRepositoryInterface>
+ * @extends BaseService
  */
 class OneTimePasswordVerifierService extends BaseService implements OneTimePasswordVerifierServiceInterface
 {
-    protected readonly int $maxFailedAttempts;
-
-    public function __construct(OneTimePasswordVerifierRepositoryInterface $repository)
-    {
-        parent::__construct($repository);
-
-        $this->maxFailedAttempts = config('auth_pro.one_time_password.max_attempts', 3);
-    }
-
     public function verify(OneTimePasswordEntityInterface $oneTimePasswordEntity, string $code): OneTimePasswordVerifyResultInterface
     {
         $result = OneTimePasswordVerifyResult::getBuilder();
 
-        if ($oneTimePasswordEntity->isExpired()) {
-            return $result
-                ->failed(OneTimePasswordVerifyError::EXPIRED)
-                ->build();
-        } elseif ($this->repository->getFailedAttemptsCount($oneTimePasswordEntity) >= $this->maxFailedAttempts) {
+        if ($this->tooManyAttempts($oneTimePasswordEntity)) {
             return $result
                 ->failed(OneTimePasswordVerifyError::TOO_MANY_FAILED_ATTEMPTS)
                 ->build();
@@ -42,7 +29,7 @@ class OneTimePasswordVerifierService extends BaseService implements OneTimePassw
                 ->successful()
                 ->build();
         } else {
-            $this->repository->incrementFailAttemptsCount($oneTimePasswordEntity);
+            $this->incrementFailAttemptsCount($oneTimePasswordEntity);
 
             return $result
                 ->failed(OneTimePasswordVerifyError::INVALID_CODE)
@@ -53,5 +40,15 @@ class OneTimePasswordVerifierService extends BaseService implements OneTimePassw
     public function check(OneTimePasswordEntityInterface $oneTimePasswordEntity, string $code): bool
     {
         return Hash::check($code, $oneTimePasswordEntity->getCode());
+    }
+
+    protected function tooManyAttempts(OneTimePasswordEntityInterface $oneTimePasswordEntity): bool
+    {
+        return RateLimiter::tooManyAttempts(md5('auth_pro_otp_failed_attempts'. $oneTimePasswordEntity->getIdentifier()->getIdentifierValue()), config('auth_pro.one_time_password.max_attempts', 3));
+    }
+
+    protected function incrementFailAttemptsCount(OneTimePasswordEntityInterface $oneTimePasswordEntity): int
+    {
+        return RateLimiter::hit(md5('auth_pro_otp_failed_attempts'. $oneTimePasswordEntity->getIdentifier()->getIdentifierValue()), $oneTimePasswordEntity->getValidInterval()->seconds);
     }
 }

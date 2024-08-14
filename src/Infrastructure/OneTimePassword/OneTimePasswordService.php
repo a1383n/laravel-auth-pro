@@ -22,9 +22,7 @@ use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordError;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordVerifyError;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Model\OneTimePasswordVerifyResult;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordRepositoryInterface;
-use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordVerifierRepositoryInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\OneTimePasswordRepository;
-use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\OneTimePasswordVerifierRepository;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 use LaravelAuthPro\Model\OneTimePasswordEntity;
 
@@ -41,7 +39,6 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
     public static function register(Application $app): void
     {
         $app->bind(OneTimePasswordRepositoryInterface::class, OneTimePasswordRepository::class);
-        $app->bind(OneTimePasswordVerifierRepositoryInterface::class, OneTimePasswordVerifierRepository::class);
 
         $app->bind(OneTimePasswordVerifierServiceInterface::class, OneTimePasswordVerifierService::class);
         $app->bind(OneTimePasswordServiceInterface::class, OneTimePasswordService::class);
@@ -49,8 +46,13 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
 
     public function createOneTimePasswordWithIdentifier(AuthIdentifierInterface $identifier): OneTimePasswordEntityInterface
     {
-        $limiters = RateLimiter::limiter('auth_pro_otp');
-        $limiters = collect(Arr::wrap($limiters !== null ? $limiters(request(), $identifier) : []));
+        $limiters = RateLimiter::limiter($limiterScopeKey = 'auth_pro_otp');
+        $limiters = collect(Arr::wrap($limiters !== null ? $limiters(request(), $identifier) : []))
+            ->map(function (Limit $limit) use ($limiterScopeKey) {
+                $limit->key = md5($limiterScopeKey . $limit->key);
+
+                return $limit;
+            });
 
         if ($limiter = $limiters->first(fn(Limit $limiter) => RateLimiter::tooManyAttempts($limiter->key, $limiter->maxAttempts))) {
             throw new AuthException(OneTimePasswordError::RATE_LIMIT_EXCEEDED->value, 429, ['try_again_in' => now()->addSeconds(RateLimiter::availableIn($limiter->key))->diffForHumans()]);

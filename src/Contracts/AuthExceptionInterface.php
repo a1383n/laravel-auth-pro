@@ -2,7 +2,9 @@
 
 namespace LaravelAuthPro\Contracts;
 
-interface AuthExceptionInterface extends \Throwable
+use Throwable;
+
+interface AuthExceptionInterface extends Throwable
 {
     public function getErrorMessage(): string;
 

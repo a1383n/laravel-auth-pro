@@ -17,7 +17,7 @@ class SMSMessage implements NotificationMessageInterface
     public function toArray(): array
     {
         return [
-            'to'         => $this->to,
+            'to' => $this->to,
             'attributes' => $this->attributes,
         ];
     }

@@ -4,16 +4,18 @@ namespace LaravelAuthPro\Notifications\Channels;
 
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Log;
+use InvalidArgumentException;
 use LaravelAuthPro\Notifications\Contracts\NotificationChannelInterface;
 use LaravelAuthPro\Notifications\Contracts\SMSNotificationInterface;
 use LaravelAuthPro\Notifications\Messages\SMSMessage;
+use RuntimeException;
 
 class SMSChannel implements NotificationChannelInterface
 {
     public function send(?object $notifiable, Notification $notification): mixed
     {
         if (!$notification instanceof SMSNotificationInterface) {
-            throw new \InvalidArgumentException('$notification is not instance of SMSNotification');
+            throw new InvalidArgumentException('$notification is not instance of SMSNotification');
         }
 
         /**
@@ -33,6 +35,6 @@ class SMSChannel implements NotificationChannelInterface
     protected function sendSMS(SMSMessage $message): void
     {
         //TODO: Not implemented
-        throw new \RuntimeException('Not implemented');
+        throw new RuntimeException('Not implemented');
     }
 }

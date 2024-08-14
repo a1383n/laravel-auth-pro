@@ -26,11 +26,11 @@ class TokenRequest extends FormRequest
          * @var array<string, array<string[]| mixed>> $rules
          */
         $rules = Collection::make([
-            'credential'                => ['required', 'array'],
-            'credential.identifier'     => ['required', 'string'],
-            'credential.provider_id'    => ['required', 'string', Rule::in($this->getProviderIds())],
+            'credential' => ['required', 'array'],
+            'credential.identifier' => ['required', 'string'],
+            'credential.provider_id' => ['required', 'string', Rule::in($this->getProviderIds())],
             'credential.sign_in_method' => ['required', 'string', Rule::in($this->getProviderSignInMethod())],
-            'credential.payload'        => ['required', 'array'],
+            'credential.payload' => ['required', 'array'],
         ])
             ->merge($this->getCredentialPayloadRules())
             ->toArray();
@@ -45,7 +45,7 @@ class TokenRequest extends FormRequest
     {
         return Collection::make(AuthPro::getAuthProvidersConfiguration())
             ->values()
-            ->map(fn ($provider) => $provider['class']::ID);
+            ->map(fn($provider) => $provider['class']::ID);
     }
 
     /**
@@ -54,7 +54,7 @@ class TokenRequest extends FormRequest
     private function getProviderSignInMethod(): Collection
     {
         return Collection::make(AuthProvider::getBuilder()->fromId($this->input('credential.provider_id'))::SUPPORTED_SIGN_IN_METHODS)
-            ->map(fn (AuthProviderSignInMethod $method) => $method->value);
+            ->map(fn(AuthProviderSignInMethod $method) => $method->value);
     }
 
     /**
@@ -63,7 +63,7 @@ class TokenRequest extends FormRequest
     private function getCredentialPayloadRules(): Collection
     {
         return Collection::make(AuthCredential::getBuilder()::getClassFromProviderId($this->input('credential.provider_id'))::getPayloadRules())
-            ->mapWithKeys(fn ($item, $key) => ["credential.payload.$key" => $item]);
+            ->mapWithKeys(fn($item, $key) => ["credential.payload.$key" => $item]);
     }
 
     public function getAuthCredential(): AuthCredentialInterface

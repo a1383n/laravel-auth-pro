@@ -4,7 +4,10 @@ namespace LaravelAuthPro\Contracts\Exceptions;
 
 use Closure;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use LaravelAuthPro\Contracts\AuthExceptionInterface;
+use Throwable;
 
 class AuthException extends Exception implements AuthExceptionInterface
 {
@@ -15,16 +18,16 @@ class AuthException extends Exception implements AuthExceptionInterface
     private static ?Closure $renderClosure = null;
 
     /**
-     * @param int                  $code
+     * @param int $code
      * @param array<string, mixed> $payload
      */
     public function __construct(protected ?string $error, protected $code = 400, protected array $payload = [])
     {
-        $key = 'auth.error.'.($this->error ?? 'unknown');
+        $key = 'auth.error.' . ($this->error ?? 'unknown');
         $this->code = $this->error === null ? 500 : $this->code;
 
         /**
-         * @var \Throwable|null $e
+         * @var Throwable|null $e
          */
         $e = $payload['e'] ?? null;
 
@@ -57,9 +60,9 @@ class AuthException extends Exception implements AuthExceptionInterface
     /**
      * Render the exception as an HTTP response.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function render($request)
     {
@@ -68,8 +71,8 @@ class AuthException extends Exception implements AuthExceptionInterface
         } else {
             return response([
                 'is_successful' => false,
-                'error'         => $this->error,
-                'message'       => __($this->error, $this->payload ?? []),
+                'error' => $this->error,
+                'message' => __($this->error, $this->payload ?? []),
             ], $this->code);
         }
     }

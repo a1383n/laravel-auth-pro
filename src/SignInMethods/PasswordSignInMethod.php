@@ -3,6 +3,7 @@
 namespace LaravelAuthPro\SignInMethods;
 
 use Illuminate\Support\Facades\Hash;
+use InvalidArgumentException;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthSignInMethodInterface;
@@ -16,7 +17,7 @@ class PasswordSignInMethod implements AuthSignInMethodInterface
     public function __invoke(AuthCredentialInterface $credential, ?AuthenticatableInterface $user = null): void
     {
         if (!method_exists($credential, 'getPassword')) {
-            throw new \InvalidArgumentException('getPassword not found in given credential');
+            throw new InvalidArgumentException('getPassword not found in given credential');
         }
 
         if (empty($user->getPassword())) {

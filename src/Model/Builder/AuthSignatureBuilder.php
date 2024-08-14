@@ -3,6 +3,7 @@
 namespace LaravelAuthPro\Model\Builder;
 
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
@@ -66,7 +67,7 @@ class AuthSignatureBuilder implements EntityBuilderInterface
             }
         } else {
             if ($this->ip === null || $this->userId === null) {
-                throw new \Exception('ip or userId cannot be null');
+                throw new Exception('ip or userId cannot be null');
             }
 
             return new AuthSignature(Str::random(), $this->ip, $this->userId, now());

@@ -44,11 +44,11 @@ class OneTimePasswordVerifierService extends BaseService implements OneTimePassw
 
     protected function tooManyAttempts(OneTimePasswordEntityInterface $oneTimePasswordEntity): bool
     {
-        return RateLimiter::tooManyAttempts(md5('auth_pro_otp_failed_attempts'. $oneTimePasswordEntity->getIdentifier()->getIdentifierValue()), config('auth_pro.one_time_password.max_attempts', 3));
+        return RateLimiter::tooManyAttempts(md5('auth_pro_otp_failed_attempts' . $oneTimePasswordEntity->getIdentifier()->getIdentifierValue()), config('auth_pro.one_time_password.max_attempts', 3));
     }
 
     protected function incrementFailAttemptsCount(OneTimePasswordEntityInterface $oneTimePasswordEntity): int
     {
-        return RateLimiter::hit(md5('auth_pro_otp_failed_attempts'. $oneTimePasswordEntity->getIdentifier()->getIdentifierValue()), $oneTimePasswordEntity->getValidInterval()->seconds);
+        return RateLimiter::hit(md5('auth_pro_otp_failed_attempts' . $oneTimePasswordEntity->getIdentifier()->getIdentifierValue()), $oneTimePasswordEntity->getValidInterval()->seconds);
     }
 }

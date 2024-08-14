@@ -3,6 +3,7 @@
 namespace LaravelAuthPro\Model\Builder;
 
 use Illuminate\Container\Container;
+use InvalidArgumentException;
 use LaravelAuthPro\AuthProServiceProvider;
 use LaravelAuthPro\Contracts\AuthProviderInterface;
 use LaravelAuthPro\Contracts\Base\EntityBuilderInterface;
@@ -47,7 +48,7 @@ class AuthProviderBuilder implements EntityBuilderInterface
         if (empty($this->providerId) ^ empty($this->providerClass)) {
             return $this->fromClass($this->providerClass ?? sprintf(AuthProServiceProvider::CONTAINER_ALIAS_AUTH_PROVIDER_TEMPLATE, $this->providerId));
         } else {
-            throw new \InvalidArgumentException('Only one of $providerId or $providerClass should be set');
+            throw new InvalidArgumentException('Only one of $providerId or $providerClass should be set');
         }
     }
 }

@@ -2,11 +2,11 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword;
 
+use Exception;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Redis;
 use LaravelAuthPro\AuthResult;
 use LaravelAuthPro\Base\BaseService;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
@@ -69,7 +69,7 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
             ->as($identifier)
             ->build();
 
-        if (! $this->repository->createOneTimePasswordWithIdentifier($otp)) {
+        if (!$this->repository->createOneTimePasswordWithIdentifier($otp)) {
             /**
              * @var OneTimePasswordEntity $otp
              */
@@ -91,7 +91,7 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
                 ->build();
         }
 
-        $result = $this->verifierService->verify($otp, $credential->getOneTimePassword() ?? throw new \Exception('code is null'));
+        $result = $this->verifierService->verify($otp, $credential->getOneTimePassword() ?? throw new Exception('code is null'));
         if ($result->isSuccessful() && !$dry) {
             $this->repository->removeOneTimePassword($otp);
         }

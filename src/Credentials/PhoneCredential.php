@@ -2,6 +2,7 @@
 
 namespace LaravelAuthPro\Credentials;
 
+use Exception;
 use LaravelAuthPro\AuthSignature;
 use LaravelAuthPro\Concerns\Credentials\OneTimePasswordConcerns;
 use LaravelAuthPro\Concerns\Credentials\PasswordConcerns;
@@ -52,6 +53,6 @@ class PhoneCredential extends AuthCredential implements PhoneCredentialInterface
     public function getSignature(): AuthSignatureInterface
     {
         return AuthSignature::getBuilder()
-            ->fromEncryptedPlainSignature($this->signature ?? throw new \Exception('signature not provided'));
+            ->fromEncryptedPlainSignature($this->signature ?? throw new Exception('signature not provided'));
     }
 }

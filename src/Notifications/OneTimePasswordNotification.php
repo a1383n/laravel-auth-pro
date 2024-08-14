@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use InvalidArgumentException;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordRepositoryInterface;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
@@ -31,7 +32,7 @@ class OneTimePasswordNotification extends Notification implements MailNotificati
      */
     public function __construct(OneTimePasswordEntityInterface $entity)
     {
-        $this->tag = $entity->getIdentifier()->getIdentifierType()->value.':'.$entity->getIdentifier()->getIdentifierValue();
+        $this->tag = $entity->getIdentifier()->getIdentifierType()->value . ':' . $entity->getIdentifier()->getIdentifierValue();
         $this->code = $entity->getCode();
         $this->token = $entity->getToken();
     }
@@ -47,7 +48,7 @@ class OneTimePasswordNotification extends Notification implements MailNotificati
          * @var array<string, array<string|class-string>> $notificationChannelMapper
          */
         $notificationChannelMapper = config('auth_pro.one_time_password.notification.via', [
-            'email'  => ['mail'],
+            'email' => ['mail'],
             'mobile' => [SMSChannel::class],
         ]);
 
@@ -65,14 +66,14 @@ class OneTimePasswordNotification extends Notification implements MailNotificati
         return (new MailMessage())
             ->subject('OTP Code')
             ->line('You are receiving this email for OTP verification.')
-            ->line('Your OTP code is: '.$this->code)
+            ->line('Your OTP code is: ' . $this->code)
             ->line('If you did not request this OTP, no further action is required.');
     }
 
     public function toSMS(?object $notifiable): NotificationMessageInterface
     {
         if (!$notifiable instanceof AuthIdentifierInterface) {
-            throw new \InvalidArgumentException('$notifiable is not supported');
+            throw new InvalidArgumentException('$notifiable is not supported');
         }
 
         return new SMSMessage(

@@ -2,6 +2,8 @@
 
 namespace LaravelAuthPro\SignInMethods;
 
+use Exception;
+use InvalidArgumentException;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
 use LaravelAuthPro\Contracts\AuthExceptionInterface;
@@ -23,7 +25,7 @@ class OneTimePasswordSignInMethod implements AuthSignInMethodInterface
     public function __invoke(AuthCredentialInterface $credential, ?AuthenticatableInterface $user = null): void
     {
         if ($credential->getOneTimePassword() === null) {
-            throw new \InvalidArgumentException('$code is null in $credential');
+            throw new InvalidArgumentException('$code is null in $credential');
         }
 
         $result = $this->oneTimePasswordService->verifyOneTimePassword($credential->getIdentifier(), $credential);
@@ -36,7 +38,7 @@ class OneTimePasswordSignInMethod implements AuthSignInMethodInterface
 
                 if ($error instanceof AuthExceptionInterface) {
                     $error = $error->getErrorMessage();
-                } elseif ($error instanceof \Exception) {
+                } elseif ($error instanceof Exception) {
                     $error = $error->getMessage();
                 } else {
                     $error = json_encode($error);

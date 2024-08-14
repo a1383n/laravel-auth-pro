@@ -8,6 +8,6 @@ trait HasKeyPrefix
 
     protected static function getKey(string $key): string
     {
-        return self::$prefix.':'.$key;
+        return self::$prefix . ':' . $key;
     }
 }

@@ -3,6 +3,7 @@
 namespace LaravelAuthPro\Concerns\Credentials;
 
 use Illuminate\Validation\Rule;
+use InvalidArgumentException;
 use LaravelAuthPro\Contracts\Credentials\Base\HasOneTimePasswordInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordCodeType;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordTokenType;
@@ -82,8 +83,8 @@ trait OneTimePasswordConcerns
     protected static function mapTokenTypeToValidationRule(OneTimePasswordTokenType $enumType, ?int $length = null): array
     {
         return match ($enumType) {
-            OneTimePasswordTokenType::RANDOM_STRING => ['string', 'size:'.($length ?? throw new \InvalidArgumentException('$length cannot be null when type is'.$enumType->name))],
-            OneTimePasswordTokenType::RANDOM_INT    => ['int', 'digits:'.($length ?? throw new \InvalidArgumentException('$length cannot be null when type is'.$enumType->name))],
+            OneTimePasswordTokenType::RANDOM_STRING => ['string', 'size:'.($length ?? throw new InvalidArgumentException('$length cannot be null when type is'.$enumType->name))],
+            OneTimePasswordTokenType::RANDOM_INT    => ['int', 'digits:'.($length ?? throw new InvalidArgumentException('$length cannot be null when type is'.$enumType->name))],
             OneTimePasswordTokenType::UUID, OneTimePasswordTokenType::ULID => [$enumType->value]
         };
     }

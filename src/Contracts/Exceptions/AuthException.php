@@ -4,7 +4,10 @@ namespace LaravelAuthPro\Contracts\Exceptions;
 
 use Closure;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use LaravelAuthPro\Contracts\AuthExceptionInterface;
+use Throwable;
 
 class AuthException extends Exception implements AuthExceptionInterface
 {
@@ -24,7 +27,7 @@ class AuthException extends Exception implements AuthExceptionInterface
         $this->code = $this->error === null ? 500 : $this->code;
 
         /**
-         * @var \Throwable|null $e
+         * @var Throwable|null $e
          */
         $e = $payload['e'] ?? null;
 
@@ -57,9 +60,9 @@ class AuthException extends Exception implements AuthExceptionInterface
     /**
      * Render the exception as an HTTP response.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function render($request)
     {

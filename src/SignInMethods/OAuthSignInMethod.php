@@ -2,6 +2,7 @@
 
 namespace LaravelAuthPro\SignInMethods;
 
+use Exception;
 use Laravel\Socialite\Facades\Socialite;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthenticatableInterface;
@@ -20,8 +21,8 @@ class OAuthSignInMethod implements AuthSignInMethodInterface
 
             dump($user, $oauthUser);
 
-            throw new \Exception('not implemented');
-        } catch (\Exception $e) {
+            throw new Exception('not implemented');
+        } catch (Exception $e) {
             throw new AuthException('auth.oauth_error', 400, ['e' => $e]);
         }
     }

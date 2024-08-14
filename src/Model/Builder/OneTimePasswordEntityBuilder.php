@@ -26,7 +26,7 @@ class OneTimePasswordEntityBuilder
 
     public function __construct(private readonly TokenGenerator $tokenGenerator, private readonly CodeGenerator $codeGenerator)
     {
-        //
+        $this->setWithToken(config('auth_pro.one_time_password.token.enabled', true));
     }
 
     /**
@@ -51,6 +51,13 @@ class OneTimePasswordEntityBuilder
     public function as(AuthIdentifierInterface $identifier): self
     {
         $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    public function setWithToken(bool $withToken = true): self
+    {
+        $this->withToken = $withToken;
 
         return $this;
     }

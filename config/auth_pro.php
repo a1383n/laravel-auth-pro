@@ -70,80 +70,6 @@ return [
 
     'one_time_password' => [
 
-        /*
-        |--------------------------------------------------------------------------
-        | OTP Driver
-        |--------------------------------------------------------------------------
-        |
-        | Specify the OTP driver to use for generating and verifying OTP codes.
-        | Supported drivers: 'cache', 'database', 'redis', and more.
-        |
-        | Description: The OTP driver determines how OTP codes are generated and
-        | verified. Choose the appropriate driver for your application's needs.
-        |
-        */
-
-        'driver' => 'cache', // 'cache', 'database', 'redis', etc.
-
-        /*
-        |--------------------------------------------------------------------------
-        | OTP Driver Configurations
-        |--------------------------------------------------------------------------
-        |
-        | Define the configurations for each OTP driver.
-        |
-        */
-
-        'drivers' => [
-
-            'cache' => [
-
-                /*
-                |--------------------------------------------------------------------------
-                | Cache Store
-                |--------------------------------------------------------------------------
-                |
-                | Specify the cache store to use for OTP code storage.
-                |
-                | Description: Choose the cache store where OTP codes will be stored.
-                | Common options include 'file', 'redis', 'memcache', etc.
-                |
-                */
-
-                'store' => 'redis',
-
-                /*
-                |--------------------------------------------------------------------------
-                | Redis Store
-                |--------------------------------------------------------------------------
-                |
-                | Specify the redis store configuration
-                */
-
-                'redis' => [
-                    'prefix'   => 'auth_pro_otp',
-                    'database' => 3,
-                ],
-            ],
-
-            'database' => [
-
-                /*
-                |--------------------------------------------------------------------------
-                | Database Table
-                |--------------------------------------------------------------------------
-                |
-                | Define the database table for storing OTP codes.
-                |
-                | Description: Set the name of the database table where OTP codes will
-                | be stored and retrieved.
-                |
-                */
-
-                //                'model' => LaravelAuthPro\Infrastructure\OneTimePassword\Models\OneTimePasswordModel::class,
-            ],
-        ],
-
         'notification' => [
 
             /*
@@ -259,14 +185,7 @@ return [
         |
         */
         'rate_limit' => [
-            \LaravelAuthPro\Infrastructure\OneTimePassword\Limiter\OneTimePasswordIpAddressLimiter::class => [
-                'decay_in_seconds' => 1800,
-                'max_attempts'     => 5,
-            ],
-            \LaravelAuthPro\Infrastructure\OneTimePassword\Limiter\OneTimePasswordIdentifierLimiter::class => [
-                'decay_in_seconds' => 900,
-                'max_attempts'     => 10,
-            ],
+            'name' => 'auth_pro_otp',
         ],
     ],
 ];

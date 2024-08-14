@@ -3,6 +3,7 @@
 namespace LaravelAuthPro\Credentials;
 
 use Illuminate\Support\Arr;
+use InvalidArgumentException;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Contracts\Base\HasBuilderInterface;
@@ -34,7 +35,7 @@ abstract class AuthCredential implements AuthCredentialInterface, HasBuilderInte
     public function throwIfIdentifierTypeNotSupported(): void
     {
         if (!in_array($this->identifier->getIdentifierType(), $this->getSupportedIdentifiersTypes())) {
-            throw new \InvalidArgumentException(sprintf('Invalid identifier type [%s] in %s', $this->identifier->getIdentifierType()->name, class_basename(static::class)));
+            throw new InvalidArgumentException(sprintf('Invalid identifier type [%s] in %s', $this->identifier->getIdentifierType()->name, class_basename(static::class)));
         }
     }
 

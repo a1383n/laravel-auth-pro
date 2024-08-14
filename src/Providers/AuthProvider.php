@@ -2,7 +2,9 @@
 
 namespace LaravelAuthPro\Providers;
 
+use Exception;
 use Illuminate\Container\Container;
+use InvalidArgumentException;
 use LaravelAuthPro\AuthIdentifier;
 use LaravelAuthPro\AuthPro;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
@@ -90,7 +92,7 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
 
     protected function getSignInMethodClass(AuthProviderSignInMethod $signInMethod): string
     {
-        return (static::SIGN_IN_METHODS + AuthPro::getDefaultSignInMethodsMapper())[$signInMethod->value] ?? throw new \InvalidArgumentException("SignInMethod $signInMethod->value is not defined in mapper");
+        return (static::SIGN_IN_METHODS + AuthPro::getDefaultSignInMethodsMapper())[$signInMethod->value] ?? throw new InvalidArgumentException("SignInMethod $signInMethod->value is not defined in mapper");
     }
 
     protected function createAuthenticatable(string $identifierValue, ?callable $beforeBuildClosure = null): AuthenticatableInterface
@@ -103,7 +105,7 @@ abstract class AuthProvider implements AuthProviderInterface, HasBuilderInterfac
         }
 
         if (!$this->getRepository()->createByAuthenticatable($identifier, $authenticatable = $builder->build())) {
-            throw new \Exception('Failed to save the user to the database');
+            throw new Exception('Failed to save the user to the database');
         }
 
         return $authenticatable;

@@ -30,7 +30,7 @@ class OneTimePasswordEntity implements OneTimePasswordEntityInterface
 
     public static function getKeyStatically(AuthIdentifierInterface $identifier, ?string $token = null): string
     {
-        return substr(hash('sha256', $identifier->getIdentifierValue()), 0, 16).':'.($token ?? 'otp');
+        return md5($identifier->getIdentifierValue()).':'.($token ?? 'otp');
     }
 
     public function getIdentifier(): AuthIdentifierInterface
@@ -61,6 +61,11 @@ class OneTimePasswordEntity implements OneTimePasswordEntityInterface
     public function isRecentlyCreated(): bool
     {
         return method_exists(Hash::class, 'isHashed') ? Hash::isHashed($this->code) : password_get_info($this->code)['algo'] !== null;
+    }
+
+    public function getExpireAt(): CarbonInterface
+    {
+        return $this->createdAt->add($this->interval);
     }
 
     public function toArray(): array

@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldBeEncrypted;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use InvalidArgumentException;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordRepositoryInterface;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
@@ -72,7 +73,7 @@ class OneTimePasswordNotification extends Notification implements MailNotificati
     public function toSMS(?object $notifiable): NotificationMessageInterface
     {
         if (!$notifiable instanceof AuthIdentifierInterface) {
-            throw new \InvalidArgumentException('$notifiable is not supported');
+            throw new InvalidArgumentException('$notifiable is not supported');
         }
 
         return new SMSMessage(

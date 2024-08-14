@@ -2,7 +2,11 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword;
 
+use Exception;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\RateLimiter;
 use LaravelAuthPro\AuthResult;
 use LaravelAuthPro\Base\BaseService;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
@@ -10,7 +14,6 @@ use LaravelAuthPro\Contracts\AuthResultInterface;
 use LaravelAuthPro\Contracts\AuthSignatureInterface;
 use LaravelAuthPro\Contracts\Credentials\PhoneCredentialInterface;
 use LaravelAuthPro\Contracts\Exceptions\AuthException;
-use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordRateLimiterServiceInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordResultInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordServiceInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Contracts\OneTimePasswordVerifierServiceInterface;
@@ -18,9 +21,7 @@ use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordError;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Enum\OneTimePasswordVerifyError;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Model\OneTimePasswordVerifyResult;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordRepositoryInterface;
-use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\Contracts\OneTimePasswordVerifierRepositoryInterface;
 use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\OneTimePasswordRepository;
-use LaravelAuthPro\Infrastructure\OneTimePassword\Repositories\OneTimePasswordVerifierRepository;
 use LaravelAuthPro\Model\Contracts\OneTimePasswordEntityInterface;
 use LaravelAuthPro\Model\OneTimePasswordEntity;
 
@@ -29,7 +30,7 @@ use LaravelAuthPro\Model\OneTimePasswordEntity;
  */
 class OneTimePasswordService extends BaseService implements OneTimePasswordServiceInterface
 {
-    public function __construct(OneTimePasswordRepositoryInterface $repository, protected readonly OneTimePasswordRateLimiterServiceInterface $rateLimiterService, protected readonly OneTimePasswordVerifierServiceInterface $verifierService)
+    public function __construct(OneTimePasswordRepositoryInterface $repository, protected readonly OneTimePasswordVerifierServiceInterface $verifierService)
     {
         parent::__construct($repository);
     }
@@ -37,30 +38,35 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
     public static function register(Application $app): void
     {
         $app->bind(OneTimePasswordRepositoryInterface::class, OneTimePasswordRepository::class);
-        $app->bind(OneTimePasswordVerifierRepositoryInterface::class, OneTimePasswordVerifierRepository::class);
 
-        $app->bind(OneTimePasswordRateLimiterServiceInterface::class, OneTimePasswordRateLimiterService::class);
         $app->bind(OneTimePasswordVerifierServiceInterface::class, OneTimePasswordVerifierService::class);
         $app->bind(OneTimePasswordServiceInterface::class, OneTimePasswordService::class);
     }
 
     public function createOneTimePasswordWithIdentifier(AuthIdentifierInterface $identifier): OneTimePasswordEntityInterface
     {
-        if (!$this->rateLimiterService->pass($identifier)) {
-            //TODO: Returning result interface may be better approach
-            throw new AuthException(OneTimePasswordError::RATE_LIMIT_EXCEEDED->value, 429);
+        $limiters = RateLimiter::limiter($limiterScopeKey = 'auth_pro_otp');
+        $limiters = collect(Arr::wrap($limiters !== null ? $limiters(request(), $identifier) : []))
+            ->map(function (Limit $limit) use ($limiterScopeKey) {
+                $limit->key = md5($limiterScopeKey.$limit->key);
+
+                return $limit;
+            });
+
+        if ($limiter = $limiters->first(fn (Limit $limiter) => RateLimiter::tooManyAttempts($limiter->key, $limiter->maxAttempts))) {
+            throw new AuthException(OneTimePasswordError::RATE_LIMIT_EXCEEDED->value, 429, ['try_again_in' => now()->addSeconds(RateLimiter::availableIn($limiter->key))->diffForHumans()]);
         }
 
+        return tap($this->createOneTimePasswordEntity($identifier), function () use ($limiters) {
+            $limiters->each(fn (Limit $limiter) => RateLimiter::hit($limiter->key));
+        });
+    }
+
+    protected function createOneTimePasswordEntity(AuthIdentifierInterface $identifier): OneTimePasswordEntityInterface
+    {
         $otp = OneTimePasswordEntity::getBuilder()
-            ->as($identifier);
-
-        if (!config('auth_pro.one_time_password.token.enabled', true)) {
-            $otp->withoutToken();
-        } else {
-            $otp->withToken();
-        }
-
-        $otp = $otp->build();
+            ->as($identifier)
+            ->build();
 
         if (!$this->repository->createOneTimePasswordWithIdentifier($otp)) {
             /**
@@ -68,7 +74,7 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
              */
             $otp = $this->repository->getOneTimePasswordWithIdentifierAndToken($identifier);
 
-            throw new AuthException(OneTimePasswordError::CONFLICT->value, 409, ['try_again_in' => $otp->getCreatedAt()->addSeconds((int) $otp->getValidInterval()->totalSeconds)->diffForHumans()]);
+            throw new AuthException(OneTimePasswordError::CONFLICT->value, 409, ['try_again_in' => $otp->getCreatedAt()->add($otp->getValidInterval())->diffForHumans()]);
         }
 
         return $otp;
@@ -84,7 +90,7 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
                 ->build();
         }
 
-        $result = $this->verifierService->verify($otp, $credential->getOneTimePassword() ?? throw new \Exception('code is null'));
+        $result = $this->verifierService->verify($otp, $credential->getOneTimePassword() ?? throw new Exception('code is null'));
         if ($result->isSuccessful() && !$dry) {
             $this->repository->removeOneTimePassword($otp);
         }

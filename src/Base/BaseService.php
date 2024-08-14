@@ -2,6 +2,7 @@
 
 namespace LaravelAuthPro\Base;
 
+use InvalidArgumentException;
 use LaravelAuthPro\Contracts\Base\BaseRepositoryInterface;
 use LaravelAuthPro\Contracts\Base\BaseServiceInterface;
 
@@ -25,7 +26,7 @@ abstract class BaseService implements BaseServiceInterface
     public function throwIfRepositoryNotProvided(): void
     {
         if (!$this->hasRepository()) {
-            throw new \InvalidArgumentException('$repository not provided');
+            throw new InvalidArgumentException('$repository not provided');
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace LaravelAuthPro;
 
+use Exception;
 use Illuminate\Notifications\RoutesNotifications;
 use LaravelAuthPro\Base\BaseService;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
@@ -77,7 +78,7 @@ class AuthService extends BaseService implements AuthServiceInterface
             return $result;
         }
 
-        $user = $result->getUser() ?? throw new \Exception('user cannot be null in result');
+        $user = $result->getUser() ?? throw new Exception('user cannot be null in result');
 
         $signature = AuthSignature::getBuilder()
             ->setUserId($user->getId())
@@ -85,7 +86,7 @@ class AuthService extends BaseService implements AuthServiceInterface
             ->build();
 
         return AuthResult::getBuilder()
-            ->as($result->getIdentifier() ?? throw new \Exception('identifier is null'))
+            ->as($result->getIdentifier() ?? throw new Exception('identifier is null'))
             ->with([
                 'signature' => $signature,
             ])

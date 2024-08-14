@@ -3,6 +3,7 @@
 namespace LaravelAuthPro\Credentials\Builder;
 
 use Illuminate\Container\Container;
+use InvalidArgumentException;
 use LaravelAuthPro\AuthPro;
 use LaravelAuthPro\Contracts\AuthCredentialInterface;
 use LaravelAuthPro\Contracts\AuthIdentifierInterface;
@@ -70,7 +71,7 @@ class AuthCredentialBuilder implements EntityBuilderInterface
     public function build(): AuthCredentialInterface
     {
         if (empty($this->providerId)) {
-            throw new \InvalidArgumentException('$providerId is null');
+            throw new InvalidArgumentException('$providerId is null');
         }
 
         return Container::getInstance()

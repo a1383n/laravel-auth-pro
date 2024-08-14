@@ -2,7 +2,9 @@
 
 namespace LaravelAuthPro\Infrastructure\OneTimePassword;
 
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Redis;
 use LaravelAuthPro\AuthResult;
@@ -47,14 +49,18 @@ class OneTimePasswordService extends BaseService implements OneTimePasswordServi
 
     public function createOneTimePasswordWithIdentifier(AuthIdentifierInterface $identifier): OneTimePasswordEntityInterface
     {
-        $limiter = RateLimiter::limiter('auth_pro_otp');
+        $limiters = RateLimiter::limiter('auth_pro_otp');
+        $limiters = collect(Arr::wrap($limiters !== null ? $limiters(request(), $identifier) : []));
 
-
-
-
-        if ($this->rateLimiterService->tooManyAttempts($identifier)) {
-            throw new AuthException(OneTimePasswordError::RATE_LIMIT_EXCEEDED->value, 429, ['try_again_in' => now()->addSeconds($this->rateLimiterService->availableIn($identifier))->diffForHumans()]);
+        if ($limiter = $limiters->first(fn(Limit $limiter) => RateLimiter::tooManyAttempts($limiter->key, $limiter->maxAttempts))) {
+            throw new AuthException(OneTimePasswordError::RATE_LIMIT_EXCEEDED->value, 429, ['try_again_in' => now()->addSeconds(RateLimiter::availableIn($limiter->key))->diffForHumans()]);
         }
+
+        $entity = $this->createOneTimePasswordEntity($identifier);
+
+        $limiters->each(fn(Limit $limiter) => RateLimiter::hit($limiter->key));
+
+        return $entity;
     }
 
     protected function createOneTimePasswordEntity(AuthIdentifierInterface $identifier): OneTimePasswordEntityInterface

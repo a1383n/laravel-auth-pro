@@ -24,7 +24,7 @@ jobs:
       key: php_${{ matrix.php }}_analysis_cache_v1
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup cache environment
         id: ext_cache
